@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[CreateAssetMenu(fileName ="NewCharacterStats", menuName ="Game/Character Stats")]
 public class StatsScriptableObject : ScriptableObject
 {
     public int maxHealth;
     public int curHealth;
     public int atk;
     public int defense;
+    public int moveSpd;
 
     public int GetHealth()
     {
