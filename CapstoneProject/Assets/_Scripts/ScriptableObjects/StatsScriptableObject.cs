@@ -9,7 +9,8 @@ public class StatsScriptableObject : ScriptableObject
     public int curHealth;
     public int atk;
     public int defense;
-    public int moveSpd;
+    public float moveSpd;
+    public int rotateSpd;
 
     public int GetHealth()
     {
