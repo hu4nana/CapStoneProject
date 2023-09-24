@@ -73,7 +73,7 @@ public class PlayerControllers : MonoBehaviour
     }
 
 
-    // 공격을 몇 번 하는지 등
+    // 공격을 몇 번 하는지 등, 차징 타이머
     public void PlayerAttack(float Timer)
     {
         if(Input.GetKeyDown(GetAttackKey()))
@@ -131,14 +131,5 @@ public class PlayerControllers : MonoBehaviour
     {
         rigid.velocity=
             InputManager.GetInputMove() * playerScriptable.moveSpd;
-    }
-
-    private void OnTriggerStay(Collider other)
-    {
-        if (other.gameObject.tag != "Floor")
-        {
-            transform.LookAt(other.transform.position);
-        }
-        
     }
 }
