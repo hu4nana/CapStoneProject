@@ -16,5 +16,5 @@ MonoBehaviour:
   curHealth: 0
   atk: 5
   defense: 5
-  moveSpd: 1.4
+  moveSpd: 4
   rotateSpd: 20

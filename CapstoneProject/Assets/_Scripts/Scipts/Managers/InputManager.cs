@@ -51,7 +51,7 @@ public static class InputManager
     {
         return KeyCode.X;
     }
-    public static KeyCode GetDasyKey()
+    public static KeyCode GetDashKey()
     {
         return KeyCode.C;
     }

@@ -9,6 +9,10 @@ public class PlayerControllers : MonoBehaviour
     
     public StatsScriptableObject playerScriptable;
 
+    bool isWalk;
+    bool isDash;
+    bool isAtk;
+
     Animator ani;
     Rigidbody rigid;
     float pressAtkTime;
@@ -24,7 +28,7 @@ public class PlayerControllers : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        PlayerAttack(3);
+        PlayerCharging(3);
     }
     private void FixedUpdate()
     {
@@ -71,10 +75,13 @@ public class PlayerControllers : MonoBehaviour
     {
         return KeyCode.X;
     }
+    public KeyCode GetDashKey()
+    {
+        return KeyCode.C;
+    }
 
-
-    // 공격을 몇 번 하는지 등, 차징 타이머
-    public void PlayerAttack(float Timer)
+    // 차징 타이머, 매개변수 후에 차징됨
+    public void PlayerCharging(float Timer)
     {
         if(Input.GetKeyDown(GetAttackKey()))
             atkDown = true;
@@ -96,11 +103,18 @@ public class PlayerControllers : MonoBehaviour
         }
     }
 
+    
+
+    //이동관련 함수 정리본
     void PlayerMovement()
     {
         PlayerDirection();
         PlayerVelocity();
+        PlayerDash();
     }
+
+
+    // 플레이어 캐릭터가 바라보는 방향
     void PlayerDirection()
     {
         // 1 == right, -1 == left
@@ -127,9 +141,35 @@ public class PlayerControllers : MonoBehaviour
             ani.SetBool("isWalk", false);
         }
     }
+
+    // 플레이어 캐릭터의 이동
     void PlayerVelocity()
     {
         rigid.velocity=
             InputManager.GetInputMove() * playerScriptable.moveSpd;
+    }
+
+    // 플레이어 캐릭터의 대쉬
+    void PlayerDash()
+    {
+        bool dash = Input.GetKeyDown(GetDashKey());
+        float curDashTime=2;
+        if (dash)
+        {
+            isDash = true;
+            gameObject.layer = 0;
+            rigid.useGravity = false;
+            rigid.velocity = this.transform.forward * 10;
+        }
+        if (isDash)
+        {
+            curDashTime-=Time.deltaTime;
+            if (curDashTime <= 0)
+            {
+                rigid.useGravity = true;
+                isDash = false;
+            }
+                
+        }
     }
 }
