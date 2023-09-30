@@ -16,7 +16,7 @@ public class PlayerControllers : MonoBehaviour
     Animator ani;
     Rigidbody rigid;
     float pressAtkTime;
-    bool atkDown = false;
+    bool atkDown = false;    
 
     // Start is called before the first frame update
     void Start()

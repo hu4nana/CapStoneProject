@@ -8,7 +8,7 @@ using UnityEngine;
 public enum ModeType
 {
     GreatSword,
-    DuelBlades,
+    DualBlades,
     HandCannon
 }
 [CreateAssetMenu(fileName ="NewMode",menuName ="Game/Mode")]
