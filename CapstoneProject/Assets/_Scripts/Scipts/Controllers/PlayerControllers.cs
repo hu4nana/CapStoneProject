@@ -33,7 +33,6 @@ public class PlayerControllers : MonoBehaviour
     private void FixedUpdate()
     {
         PlayerMovement();
-        
     }
     public Vector3 GetInputMove()
     {
@@ -145,8 +144,11 @@ public class PlayerControllers : MonoBehaviour
     // 플레이어 캐릭터의 이동
     void PlayerVelocity()
     {
-        rigid.velocity=
-            InputManager.GetInputMove() * playerScriptable.moveSpd;
+        rigid.velocity =
+            new Vector3(
+            InputManager.GetInputHorizontal() * playerScriptable.moveSpd,
+            rigid.velocity.y,
+            0);
     }
 
     // 플레이어 캐릭터의 대쉬

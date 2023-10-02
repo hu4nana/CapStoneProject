@@ -26,6 +26,7 @@ public static class InputManager
 
         //return new Vector3(horizontal, 0, vertical);
         return new Vector3(horizontal, 0, 0);
+        
     }
     public static float GetInputVertical()
     {

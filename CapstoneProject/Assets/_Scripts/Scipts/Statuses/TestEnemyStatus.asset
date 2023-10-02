@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ab2072dc4f6f5f448b3c382f47a306d5, type: 3}
-  m_Name: PlayerStatus
+  m_Name: TestEnemyStatus
   m_EditorClassIdentifier: 
-  maxHealth: 5
+  maxHealth: 3
   curHealth: 0
-  atk: 5
-  defense: 5
-  moveSpd: 4
-  rotateSpd: 30
+  atk: 0
+  defense: 0
+  moveSpd: 3
+  rotateSpd: 10
