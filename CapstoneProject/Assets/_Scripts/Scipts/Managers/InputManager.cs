@@ -7,7 +7,16 @@ using static UnityEditor.Searcher.SearcherWindow.Alignment;
 // Å° ÇÒ´ç
 public static class InputManager
 {
-    
+    public static bool isCanInput = true;
+
+    public static void SetIsCanInput(bool value)
+    {
+        isCanInput = value;
+    }
+    public static bool GetIsCanInput()
+    {
+        return isCanInput;
+    }
     public static Vector3 GetInputMove()
     {
         float horizontal = 0;

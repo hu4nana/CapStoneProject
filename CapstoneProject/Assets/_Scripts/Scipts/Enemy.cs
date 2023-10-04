@@ -107,10 +107,10 @@ public class Enemy : MonoBehaviour
             isWall =
             Physics.Raycast(wallCheck.position, Vector2.left, 1, w_Layer);
 
-        //if (isWall)
-        //{
-        //    Debug.Log("WallCheck!");
-        //}
+        if (isWall)
+        {
+            Debug.Log("WallCheck!");
+        }
     }
 
     protected void FloorCheck()
@@ -118,9 +118,9 @@ public class Enemy : MonoBehaviour
         isFloor =
             (Physics.Raycast(floorCheck.position, Vector2.down,
             1, f_Layer));
-        if (isFloor)
-        {
-            Debug.Log("FloorCheck!");
-        }
+        //if (isFloor)
+        //{
+        //    Debug.Log("FloorCheck!");
+        //}             
     }
 }

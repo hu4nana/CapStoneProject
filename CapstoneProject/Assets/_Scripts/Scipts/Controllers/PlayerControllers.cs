@@ -16,7 +16,7 @@ public class PlayerControllers : MonoBehaviour
     Animator ani;
     Rigidbody rigid;
     float pressAtkTime;
-    bool atkDown = false;    
+    bool atkDown = false;
 
     // Start is called before the first frame update
     void Start()
@@ -29,64 +29,65 @@ public class PlayerControllers : MonoBehaviour
     void Update()
     {
         PlayerCharging(3);
+        PlayerDash();
     }
     private void FixedUpdate()
     {
         PlayerMovement();
     }
-    public Vector3 GetInputMove()
-    {
-        float horizontal = 0;
-        float vertical = 0;
-        //Vector3 inputXZ = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+    //public Vector3 GetInputMove()
+    //{
+    //    float horizontal = 0;
+    //    float vertical = 0;
+    //    //Vector3 inputXZ = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
 
 
-        if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow))
-        {
-            horizontal = Input.GetAxisRaw("Horizontal");
-        }
-        if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow))
-        {
-            vertical = Input.GetAxisRaw("Vertical");
-        }
+    //    if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow))
+    //    {
+    //        horizontal = Input.GetAxisRaw("Horizontal");
+    //    }
+    //    if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow))
+    //    {
+    //        vertical = Input.GetAxisRaw("Vertical");
+    //    }
 
-        return new Vector3(horizontal, 0, vertical);
-    }
-    public float GetInputVertical()
-    {
-        float vertical = 0;
-        if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow))
-        {
-            vertical = Input.GetAxisRaw("Vertical");
-        }
-        return vertical;
-    }
-    public float GetInputHorizontal()
-    {
-        float horizontal = 0;
-        if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow))
-        {
-            horizontal = Input.GetAxisRaw("Horizontal");
-        }
-        return horizontal;
-    }
-    public KeyCode GetAttackKey()
-    {
-        return KeyCode.X;
-    }
-    public KeyCode GetDashKey()
-    {
-        return KeyCode.C;
-    }
+    //    return new Vector3(horizontal, 0, vertical);
+    //}
+    //public float GetInputVertical()
+    //{
+    //    float vertical = 0;
+    //    if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow))
+    //    {
+    //        vertical = Input.GetAxisRaw("Vertical");
+    //    }
+    //    return vertical;
+    //}
+    //public float GetInputHorizontal()
+    //{
+    //    float horizontal = 0;
+    //    if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow))
+    //    {
+    //        horizontal = Input.GetAxisRaw("Horizontal");
+    //    }
+    //    return horizontal;
+    //}
+    //public KeyCode GetAttackKey()
+    //{
+    //    return KeyCode.X;
+    //}
+    //public KeyCode GetDashKey()
+    //{
+    //    return KeyCode.C;
+    //}
 
     // 차징 타이머, 매개변수 후에 차징됨
     public void PlayerCharging(float Timer)
     {
-        if(Input.GetKeyDown(GetAttackKey()))
+        if(Input.GetKeyDown(InputManager.GetAttackKey()))
             atkDown = true;
-        if (Input.GetKey(GetAttackKey()))
+        if (Input.GetKey(InputManager.GetAttackKey()))
             pressAtkTime += Time.deltaTime;
-        if (Input.GetKeyUp(GetAttackKey()))
+        if (Input.GetKeyUp(InputManager.GetAttackKey()))
         {
             Debug.Log(pressAtkTime);
             if (pressAtkTime < Timer)
@@ -107,9 +108,12 @@ public class PlayerControllers : MonoBehaviour
     //이동관련 함수 정리본
     void PlayerMovement()
     {
+        if (InputManager.GetIsCanInput())
+        {
+            PlayerVelocity();
+        }
         PlayerDirection();
-        PlayerVelocity();
-        PlayerDash();
+        
     }
 
 
@@ -154,24 +158,26 @@ public class PlayerControllers : MonoBehaviour
     // 플레이어 캐릭터의 대쉬
     void PlayerDash()
     {
-        bool dash = Input.GetKeyDown(GetDashKey());
-        float curDashTime=2;
-        if (dash)
+        bool dash = Input.GetKeyDown(InputManager.GetDashKey());
+        float curDashTime=0.5f;
+        if (!isDash&&dash)
         {
             isDash = true;
+            InputManager.SetIsCanInput(false);
             gameObject.layer = 0;
             rigid.useGravity = false;
-            rigid.velocity = this.transform.forward * 10;
+            rigid.velocity = new Vector3(3,0,0);
         }
         if (isDash)
         {
             curDashTime-=Time.deltaTime;
             if (curDashTime <= 0)
             {
+                rigid.velocity = new Vector3(0,rigid.velocity.y, 0);
                 rigid.useGravity = true;
                 isDash = false;
+                InputManager.SetIsCanInput(true);
             }
-                
         }
     }
 }
