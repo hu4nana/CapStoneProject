@@ -17,7 +17,7 @@ public static class InputManager
     {
         return isCanInput;
     }
-    public static Vector3 GetInputMove()
+    public static Vector3 GetMove()
     {
         float horizontal = 0;
         float vertical = 0;
@@ -33,11 +33,11 @@ public static class InputManager
             vertical = Input.GetAxisRaw("Vertical");
         }
 
-        //return new Vector3(horizontal, 0, vertical);
-        return new Vector3(horizontal, 0, 0);
+        return new Vector3(horizontal, 0, vertical);
+        //return new Vector3(horizontal, 0, 0);
         
     }
-    public static float GetInputVertical()
+    public static float GetVertical()
     {
         float vertical = 0;
         if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow))
@@ -46,7 +46,7 @@ public static class InputManager
         }
         return vertical;
     }
-    public static float GetInputHorizontal()
+    public static float GetHorizontal()
     {
         float horizontal = 0;
         if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow))
@@ -64,5 +64,9 @@ public static class InputManager
     public static KeyCode GetDashKey()
     {
         return KeyCode.C;
+    }
+    public static KeyCode GetJumpKey()
+    {
+        return KeyCode.Z;
     }
 }

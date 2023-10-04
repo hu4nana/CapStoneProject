@@ -102,15 +102,15 @@ public class Enemy : MonoBehaviour
     {
         if (this.transform.rotation.y>0)
             isWall =
-            Physics.Raycast(wallCheck.position, Vector2.right, 1, w_Layer);
+            Physics.Raycast(wallCheck.position, Vector2.right, 1.5f, w_Layer);
         else if(this.transform.rotation.y<0)
             isWall =
             Physics.Raycast(wallCheck.position, Vector2.left, 1, w_Layer);
 
-        if (isWall)
-        {
-            Debug.Log("WallCheck!");
-        }
+        //if (isWall)
+        //{
+        //    Debug.Log("WallCheck!");
+        //}
     }
 
     protected void FloorCheck()

@@ -9,8 +9,21 @@ public class PlayerControllers : MonoBehaviour
     
     public StatsScriptableObject playerScriptable;
 
+    int dir=1;
+
+    int maxDashCount = 2;
+    int curdashCount = 0;
+    int maxJumpCount = 2;
+    int curjumpCount = 0;
+    float pressJumpTimer = 0.3f;
+    float pressJumpTime = 0;
+
+    float dashTimer = 0.2f;
+    float dashTime = 0;
+
     bool isWalk;
-    bool isDash;
+    bool dash;
+    bool jump;
     bool isAtk;
 
     Animator ani;
@@ -28,57 +41,23 @@ public class PlayerControllers : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        PlayerCharging(3);
-        PlayerDash();
+        JumpChecker();
+        DashChecker();
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            if(Input.GetKeyUp(KeyCode.V))
+            {
+                Debug.Log("afd");
+            }
+            if(Input.GetKey(KeyCode.V)) {
+                Debug.Log("afdasdfsfad");
+            }
+        }
     }
     private void FixedUpdate()
     {
         PlayerMovement();
     }
-    //public Vector3 GetInputMove()
-    //{
-    //    float horizontal = 0;
-    //    float vertical = 0;
-    //    //Vector3 inputXZ = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-
-
-    //    if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow))
-    //    {
-    //        horizontal = Input.GetAxisRaw("Horizontal");
-    //    }
-    //    if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow))
-    //    {
-    //        vertical = Input.GetAxisRaw("Vertical");
-    //    }
-
-    //    return new Vector3(horizontal, 0, vertical);
-    //}
-    //public float GetInputVertical()
-    //{
-    //    float vertical = 0;
-    //    if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow))
-    //    {
-    //        vertical = Input.GetAxisRaw("Vertical");
-    //    }
-    //    return vertical;
-    //}
-    //public float GetInputHorizontal()
-    //{
-    //    float horizontal = 0;
-    //    if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow))
-    //    {
-    //        horizontal = Input.GetAxisRaw("Horizontal");
-    //    }
-    //    return horizontal;
-    //}
-    //public KeyCode GetAttackKey()
-    //{
-    //    return KeyCode.X;
-    //}
-    //public KeyCode GetDashKey()
-    //{
-    //    return KeyCode.C;
-    //}
 
     // 차징 타이머, 매개변수 후에 차징됨
     public void PlayerCharging(float Timer)
@@ -111,9 +90,12 @@ public class PlayerControllers : MonoBehaviour
         if (InputManager.GetIsCanInput())
         {
             PlayerVelocity();
+            PlayerDirection();
+            PlayerJump();
         }
-        PlayerDirection();
-        
+        PlayerDash();
+
+
     }
 
 
@@ -133,10 +115,12 @@ public class PlayerControllers : MonoBehaviour
         //}
 
         // 방법 2 ( 키 입력된 Vector3값에 따라 바라봄 )
-        if(InputManager.GetInputMove()!=Vector3.zero)
+        if(InputManager.GetHorizontal()!=0)
         {
-            Quaternion targetRotation = Quaternion.LookRotation(InputManager.GetInputMove());
+            Quaternion targetRotation = Quaternion.LookRotation(
+                Vector3.left*InputManager.GetHorizontal());
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * playerScriptable.rotateSpd);
+            dir=(int)InputManager.GetHorizontal();
             ani.SetBool("isWalk", true);
         }
         else
@@ -150,34 +134,115 @@ public class PlayerControllers : MonoBehaviour
     {
         rigid.velocity =
             new Vector3(
-            InputManager.GetInputHorizontal() * playerScriptable.moveSpd,
+            InputManager.GetHorizontal() * playerScriptable.moveSpd,
             rigid.velocity.y,
             0);
     }
-
+    void DashChecker()
+    {
+        if (Input.GetKeyDown(InputManager.GetDashKey()))
+            dash = true;
+    }
     // 플레이어 캐릭터의 대쉬
     void PlayerDash()
     {
-        bool dash = Input.GetKeyDown(InputManager.GetDashKey());
-        float curDashTime=0.5f;
-        if (!isDash&&dash)
+        if (curdashCount<maxDashCount&&dash)
         {
-            isDash = true;
             InputManager.SetIsCanInput(false);
             gameObject.layer = 0;
             rigid.useGravity = false;
-            rigid.velocity = new Vector3(3,0,0);
+            //rigid.velocity = transform.forward * 3;
+            rigid.velocity = new Vector2(dir * 7,0);
+            curdashCount++;
+            Debug.Log("DashStart");
+            Debug.Log(dash);
+            Debug.Log(rigid.velocity);
+
         }
-        if (isDash)
+        if (dash)
         {
-            curDashTime-=Time.deltaTime;
-            if (curDashTime <= 0)
+            dashTime += Time.deltaTime;
+            Debug.Log(dashTime);
+            if (dashTime >= dashTimer)
             {
-                rigid.velocity = new Vector3(0,rigid.velocity.y, 0);
                 rigid.useGravity = true;
-                isDash = false;
+                dash = false;
+                dashTime = 0;
+                curdashCount = 0;
                 InputManager.SetIsCanInput(true);
+                Debug.Log("DashEnd");
+                Debug.Log(rigid.velocity);
+                Debug.Log("===================");
             }
+        }
+    }
+
+    void JumpChecker()
+    {
+        if (Input.GetKeyDown(InputManager.GetJumpKey()))
+            jump = true;
+        if(Input.GetKeyUp(InputManager.GetJumpKey()))
+            jump = false;
+    }
+
+    // 플레이어 캐릭터의 점프
+    void PlayerJump()
+    {
+        //bool jump = Input.GetKey(InputManager.GetJumpKey());
+       
+        if (jump && curjumpCount < maxJumpCount)
+        {
+            pressJumpTime += Time.deltaTime;
+            if (Input.GetKeyUp(InputManager.GetJumpKey()))
+            {
+                Debug.Log(pressJumpTime);
+                Debug.Log("짧게 눌림");
+                Jump(5);
+            }
+            if (pressJumpTime >= pressJumpTimer)
+            {
+                Debug.Log(pressJumpTime);
+                Debug.Log("길게 눌림");
+                Jump(7);
+
+            }
+            
+        }
+        //if (!jump && curjumpCount < maxJumpCount)
+        //{
+        //    if (Input.GetKey(InputManager.GetJumpKey()))
+        //        pressJumpTime += Time.deltaTime;
+        //    if (pressJumpTime >= pressJumpTimer)
+        //    {
+        //        Debug.Log("길게 눌림");
+        //        Jump(6);
+
+        //    }
+        //    else if (Input.GetKeyUp(InputManager.GetJumpKey()))
+        //    {
+        //        Jump(3);
+        //        Debug.Log("짧게 눌림");
+        //    }
+        //    Debug.Log(pressJumpTime);
+        //}
+        
+    }
+    void Jump(int value)
+    {
+        if (!dash)
+        {
+            rigid.velocity = Vector2.up * 0;
+            rigid.velocity = Vector2.up * value;
+            pressJumpTime = 0;
+            jump = false;
+            curjumpCount++;
+        }
+    }
+    private void OnCollisionStay(Collision collision)
+    {
+        if(collision.gameObject.layer== 7)
+        {
+            curjumpCount = 0;
         }
     }
 }
