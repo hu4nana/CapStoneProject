@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static UnityEngine.Rendering.DebugUI;
 
 // Players의 기능
 public class PlayerControllers : MonoBehaviour
@@ -13,17 +14,14 @@ public class PlayerControllers : MonoBehaviour
 
     int maxDashCount = 2;
     int curdashCount = 0;
-    int maxJumpCount = 2;
+    int maxJumpCount = 1;
     int curjumpCount = 0;
-    float pressJumpTimer = 0.3f;
-    float pressJumpTime = 0;
 
     float dashTimer = 0.2f;
     float dashTime = 0;
 
     bool isWalk;
     bool dash;
-    bool jump;
     bool isAtk;
 
     Animator ani;
@@ -31,28 +29,23 @@ public class PlayerControllers : MonoBehaviour
     float pressAtkTime;
     bool atkDown = false;
 
+
+    float jumpPressTimer = 0.2f;
+    float jumpPressTime = 0;
+    bool jump = false;
     // Start is called before the first frame update
     void Start()
     {
         rigid= GetComponent<Rigidbody>();
         ani = GetComponentInChildren<Animator>();
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        JumpChecker();
-        DashChecker();
-        if (Input.GetKeyDown(KeyCode.V))
-        {
-            if(Input.GetKeyUp(KeyCode.V))
-            {
-                Debug.Log("afd");
-            }
-            if(Input.GetKey(KeyCode.V)) {
-                Debug.Log("afdasdfsfad");
-            }
-        }
+        PlayerJump();
+        PlayerDash();
     }
     private void FixedUpdate()
     {
@@ -91,9 +84,8 @@ public class PlayerControllers : MonoBehaviour
         {
             PlayerVelocity();
             PlayerDirection();
-            PlayerJump();
         }
-        PlayerDash();
+        
 
 
     }
@@ -138,26 +130,23 @@ public class PlayerControllers : MonoBehaviour
             rigid.velocity.y,
             0);
     }
-    void DashChecker()
-    {
-        if (Input.GetKeyDown(InputManager.GetDashKey()))
-            dash = true;
-    }
     // 플레이어 캐릭터의 대쉬
     void PlayerDash()
     {
-        if (curdashCount<maxDashCount&&dash)
+        if (curdashCount<maxDashCount&&
+            Input.GetKeyDown(InputManager.GetDashKey()))
         {
+            dash = true;
             InputManager.SetIsCanInput(false);
             gameObject.layer = 0;
             rigid.useGravity = false;
+            dashTime = 0;
             //rigid.velocity = transform.forward * 3;
             rigid.velocity = new Vector2(dir * 7,0);
             curdashCount++;
             Debug.Log("DashStart");
             Debug.Log(dash);
             Debug.Log(rigid.velocity);
-
         }
         if (dash)
         {
@@ -175,67 +164,57 @@ public class PlayerControllers : MonoBehaviour
                 Debug.Log("===================");
             }
         }
-    }
+        else
+        {
 
-    void JumpChecker()
-    {
-        if (Input.GetKeyDown(InputManager.GetJumpKey()))
-            jump = true;
-        if(Input.GetKeyUp(InputManager.GetJumpKey()))
-            jump = false;
+        }
     }
-
-    // 플레이어 캐릭터의 점프
     void PlayerJump()
     {
-        //bool jump = Input.GetKey(InputManager.GetJumpKey());
-       
-        if (jump && curjumpCount < maxJumpCount)
+        if (!jump &&
+            curjumpCount < maxJumpCount && 
+            Input.GetKey(KeyCode.V))
         {
-            pressJumpTime += Time.deltaTime;
-            if (Input.GetKeyUp(InputManager.GetJumpKey()))
-            {
-                Debug.Log(pressJumpTime);
-                Debug.Log("짧게 눌림");
-                Jump(5);
-            }
-            if (pressJumpTime >= pressJumpTimer)
-            {
-                Debug.Log(pressJumpTime);
-                Debug.Log("길게 눌림");
-                Jump(7);
-
-            }
-            
+            jumpPressTime += Time.deltaTime;
         }
-        //if (!jump && curjumpCount < maxJumpCount)
-        //{
-        //    if (Input.GetKey(InputManager.GetJumpKey()))
-        //        pressJumpTime += Time.deltaTime;
-        //    if (pressJumpTime >= pressJumpTimer)
-        //    {
-        //        Debug.Log("길게 눌림");
-        //        Jump(6);
-
-        //    }
-        //    else if (Input.GetKeyUp(InputManager.GetJumpKey()))
-        //    {
-        //        Jump(3);
-        //        Debug.Log("짧게 눌림");
-        //    }
-        //    Debug.Log(pressJumpTime);
-        //}
-        
-    }
-    void Jump(int value)
-    {
-        if (!dash)
+        if (jumpPressTime >= jumpPressTimer)
         {
-            rigid.velocity = Vector2.up * 0;
-            rigid.velocity = Vector2.up * value;
-            pressJumpTime = 0;
-            jump = false;
-            curjumpCount++;
+            jumpPressTime = 1;
+            if (curjumpCount < maxJumpCount)
+            {
+                jump = true;
+                curjumpCount++;
+                //rigid.velocity = Vector2.up * 0;
+                rigid.velocity = Vector2.up * 7;
+                Debug.Log("높은 점프");
+                jumpPressTime = 0;
+            }
+        }
+        if (Input.GetKeyUp(KeyCode.V))
+        {
+            if (jump)
+            {
+                jumpPressTime = 0;
+                jump = false;
+            }
+            else if (curjumpCount < maxJumpCount)
+                {
+                Debug.Log(jumpPressTime);
+                curjumpCount++;
+                //rigid.velocity = Vector2.up * 0;
+                rigid.velocity = Vector2.up * 5;
+                jumpPressTime = 0;
+                jump = false;
+                Debug.Log("낮은 점프");
+            }
+        }
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.layer == 7)
+        {
+            rigid.velocity = Vector2.zero;
+            curjumpCount = 0;
         }
     }
     private void OnCollisionStay(Collision collision)
