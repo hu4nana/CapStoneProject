@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Unity.VisualScripting;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using static UnityEditor.Experimental.GraphView.GraphView;
 
@@ -25,15 +26,13 @@ public class Enemy : MonoBehaviour
 
     protected GameObject target = null;
 
-
-
     /*--Bool 작성해야 함 --*/
-    protected bool isDamaged = false;
-    protected bool isDead = false;
+    protected bool damaged = false;
+    protected bool dead = false;
     protected bool isEnd = false;
     protected bool isTrace = false;
     protected float traceTimer = 0;
-    protected int traceTime = 0;
+    protected float traceTime = 0;
     protected bool isWall;
     protected bool isFloor;
     /*--Bool 작성해야 함 --*/
@@ -74,30 +73,75 @@ public class Enemy : MonoBehaviour
             }
         }
     }
+
+    // -1 = 왼쪽, 1 = 오른쪽 , 어디를 바라볼지 정하는 함수
     public void Direction()
     {
-        if (-90<transform.rotation.y||transform.rotation.y<90)
+        if (-90 < transform.rotation.y || transform.rotation.y < 90)
         {
             Quaternion targetRotation = Quaternion.LookRotation(new Vector3(dir, 0, 0));
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * enemyScriptable.rotateSpd);
         }
     }
-    public bool GetIsDead()
+
+    // 적을 쫓는 타이머
+    protected void TraceTimer()
     {
-        return isDead;
+        if (isTrace)
+        {
+            isTrace = true;
+            traceTime += Time.deltaTime;
+            if (traceTime >= traceTimer)
+            {
+                isTrace= false;
+                target = null;
+            }
+        }
+        if (damaged)
+        {
+            traceTime = 0;
+        }
     }
-    public void SetIsDead(bool value)
+
+    // 대상의 x값에 따라 좌, 우로 이동하는 함수
+    protected void TraceTarget(int value)
     {
-        isDead = value;
+        if (target.transform.position.x - transform.position.x > 0)
+        {
+            dir = 1;
+        }
+        else
+        {
+            dir = -1;
+        }
+        Direction();
+        if (isFloor)
+        {
+            rigid.velocity = new Vector2(dir * enemyScriptable.moveSpd * value, rigid.velocity.y);
+        }
+        else
+        {
+            rigid.velocity = Vector2.zero;
+        }
     }
-    public bool GetIsDamaged()
+    public bool GetDead()
     {
-        return isDamaged;
+        return dead;
     }
-    public void SetIsDamaged(bool value)
+    public void SetDead(bool value)
     {
-        isDamaged=value;
+        dead = value;
     }
+    public bool GetDamaged()
+    {
+        return damaged;
+    }
+    public void SetDamaged(bool value)
+    {
+        damaged=value;
+    }
+
+    // 벽인지 확인하는 함수
     protected void WallCheck()
     {
         if (this.transform.rotation.y>0)
@@ -113,6 +157,7 @@ public class Enemy : MonoBehaviour
         //}
     }
 
+    // 바닥인지 확인하는 함수
     protected void FloorCheck()
     {
         isFloor =

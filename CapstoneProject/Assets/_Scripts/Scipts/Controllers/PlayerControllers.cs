@@ -12,8 +12,10 @@ public class PlayerControllers : MonoBehaviour
 
     int dir=1;
 
+    [SerializeField]
     int maxDashCount = 2;
     int curdashCount = 0;
+    [SerializeField]
     int maxJumpCount = 1;
     int curjumpCount = 0;
 
@@ -44,7 +46,11 @@ public class PlayerControllers : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        PlayerJump();
+        if (InputManager.GetIsCanInput())
+        {
+            PlayerJump();
+        }
+        
         PlayerDash();
     }
     private void FixedUpdate()

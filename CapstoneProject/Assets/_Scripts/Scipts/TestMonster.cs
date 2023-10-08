@@ -35,20 +35,12 @@ public class TestMonster : Enemy
                 dir = -1;
             }
             Direction();
-            rigid.velocity = new Vector3(dir * enemyScriptable.moveSpd, rigid.velocity.y,0);
-            //if (isFloor)
-            //{
-            //    rigid.velocity = new Vector2(-dir * enemyScriptable.moveSpd, rigid.velocity.y);
-            //}
-            //else
-            //{
-            //    rigid.velocity = Vector2.zero;
-            //}
+            rigid.velocity = new Vector2(dir * enemyScriptable.moveSpd, rigid.velocity.y);
 
         }
         else
         {
-            if (!isDamaged)
+            if (!damaged)
             {
                 switch (curPattern)
                 {
@@ -88,7 +80,7 @@ public class TestMonster : Enemy
             }
             else if (rigid.velocity.x == 0)
             {
-                isDamaged = false;
+                damaged = false;
             }
         }
         if (rigid.velocity != Vector3.zero)
