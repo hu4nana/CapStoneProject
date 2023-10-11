@@ -31,6 +31,10 @@ public class PlayerControllers : MonoBehaviour
     float pressAtkTime;
     bool atkDown = false;
 
+    /*=========Attack함수 제작 중1==========*/
+
+    /*=========Attack함수 제작 중1==========*/
+
 
     float jumpPressTimer = 0.2f;
     float jumpPressTime = 0;
@@ -81,7 +85,12 @@ public class PlayerControllers : MonoBehaviour
         }
     }
 
-    
+    /*=========Attack함수 제작 중1==========*/
+    void Attack()
+    {
+
+    }
+    /*=========Attack함수 제작 중1==========*/
 
     //이동관련 함수 정리본
     void PlayerMovement()
