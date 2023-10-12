@@ -32,7 +32,9 @@ public class PlayerControllers : MonoBehaviour
     bool atkDown = false;
 
     /*=========Attack함수 제작 중1==========*/
-
+    bool combo = false;
+    float comboTime = 0;
+    float comboTimer = 3;
     /*=========Attack함수 제작 중1==========*/
 
 
@@ -56,6 +58,29 @@ public class PlayerControllers : MonoBehaviour
         }
         
         PlayerDash();
+        if (Input.GetKeyDown(InputManager.GetAttackKey()))
+        {
+            combo = true;
+            comboTime = 0;
+            Debug.Log("combo is True Timer has ticking");
+        }
+        if (combo == true)
+        {
+            comboTime += Time.deltaTime;
+            Debug.Log(comboTime);
+            if(comboTime>=comboTimer||
+                (Input.GetKeyDown(InputManager.GetDashKey())
+                || Input.GetKeyDown(InputManager.GetJumpKey())
+                || InputManager.GetHorizontal()==1))
+            {
+                combo = false;
+            }
+        }
+        if (combo == false)
+        {
+            Debug.Log("Combo is End");
+        }
+
     }
     private void FixedUpdate()
     {
