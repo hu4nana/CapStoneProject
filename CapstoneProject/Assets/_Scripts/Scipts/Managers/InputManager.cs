@@ -61,6 +61,11 @@ public static class InputManager
     {
         return KeyCode.X;
     }
+    public static KeyCode GetSkillKey()
+    {
+        return KeyCode.V;
+    }
+
     public static KeyCode GetDashKey()
     {
         return KeyCode.C;
@@ -68,5 +73,17 @@ public static class InputManager
     public static KeyCode GetJumpKey()
     {
         return KeyCode.Z;
+    }
+    public static KeyCode GetGreatSwordModeKey()
+    {
+        return KeyCode.A;
+    }
+    public static KeyCode GetDualBladeModeKey()
+    {
+        return KeyCode.S;
+    }
+    public static KeyCode GetHandCannonKey()
+    {
+        return KeyCode.D;
     }
 }

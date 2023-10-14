@@ -5,17 +5,17 @@ using UnityEngine;
 
 
 
-public enum ModeType
-{
-    GreatSword,
-    DualBlades,
-    HandCannon
-}
+//public enum ModeType
+//{
+//    GreatSword,
+//    DualBlades,
+//    HandCannon
+//}
 [CreateAssetMenu(fileName ="NewMode",menuName ="Game/Mode")]
 
 public class ModeScriptableObject : ScriptableObject
 {
-    public ModeType mode;
+    public CoreType mode;
     public Collider attackCollider;
     public float attackStart;
     public float attackEnd;
@@ -24,9 +24,9 @@ public class ModeScriptableObject : ScriptableObject
 
     public void NormalAttack()
     {
-        switch (curAttackCombo)
-        {
-        }
+        //switch (curAttackCombo)
+        //{
+        //}
     }
     public void ChargingAttack()
     {
