@@ -17,4 +17,7 @@ MonoBehaviour:
   atk: 5
   defense: 5
   moveSpd: 3
+  dashPow: 13
+  minJumpPow: 4
+  maxJumpPow: 8.2
   rotateSpd: 30

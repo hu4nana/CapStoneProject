@@ -55,31 +55,11 @@ public class PlayerControllers : MonoBehaviour
         if (InputManager.GetIsCanInput())
         {
             PlayerJump();
+            
         }
         
         PlayerDash();
-        if (Input.GetKeyDown(InputManager.GetAttackKey()))
-        {
-            combo = true;
-            comboTime = 0;
-            Debug.Log("combo is True Timer has ticking");
-        }
-        if (combo == true)
-        {
-            comboTime += Time.deltaTime;
-            Debug.Log(comboTime);
-            if(comboTime>=comboTimer||
-                (Input.GetKeyDown(InputManager.GetDashKey())
-                || Input.GetKeyDown(InputManager.GetJumpKey())
-                || InputManager.GetHorizontal()==1))
-            {
-                combo = false;
-            }
-        }
-        if (combo == false)
-        {
-            Debug.Log("Combo is End");
-        }
+        
 
     }
     private void FixedUpdate()
@@ -113,7 +93,28 @@ public class PlayerControllers : MonoBehaviour
     /*=========Attack함수 제작 중1==========*/
     void Attack()
     {
-
+        if (Input.GetKeyDown(InputManager.GetAttackKey()))
+        {
+            combo = true;
+            comboTime = 0;
+            Debug.Log("combo is True Timer has ticking");
+        }
+        if (combo == true)
+        {
+            comboTime += Time.deltaTime;
+            Debug.Log(comboTime);
+            if (comboTime >= comboTimer ||
+                (Input.GetKeyDown(InputManager.GetDashKey())
+                || Input.GetKeyDown(InputManager.GetJumpKey())
+                || InputManager.GetHorizontal() == 1))
+            {
+                combo = false;
+            }
+        }
+        if (combo == false)
+        {
+            Debug.Log("Combo is End");
+        }
     }
     /*=========Attack함수 제작 중1==========*/
 
@@ -132,6 +133,7 @@ public class PlayerControllers : MonoBehaviour
 
 
     // 플레이어 캐릭터가 바라보는 방향
+    // dir = 1 right, dir = -1 left
     void PlayerDirection()
     {
         // 1 == right, -1 == left
@@ -147,12 +149,24 @@ public class PlayerControllers : MonoBehaviour
         //}
 
         // 방법 2 ( 키 입력된 Vector3값에 따라 바라봄 )
-        if(InputManager.GetHorizontal()!=0)
+        //if(InputManager.GetHorizontal()!=0)
+        //{
+        //    Quaternion targetRotation = Quaternion.LookRotation(
+        //        Vector3.left*InputManager.GetHorizontal());
+        //    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * playerScriptable.rotateSpd);
+        //    dir=(int)InputManager.GetHorizontal();
+        //    ani.SetBool("isWalk", true);
+        //}
+        //else
+        //{
+        //    ani.SetBool("isWalk", false);
+        //}
+
+        if (InputManager.GetHorizontal() !=0)
         {
-            Quaternion targetRotation = Quaternion.LookRotation(
-                Vector3.left*InputManager.GetHorizontal());
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * playerScriptable.rotateSpd);
-            dir=(int)InputManager.GetHorizontal();
+            dir = (int)InputManager.GetHorizontal();
+            Debug.Log(dir);
+            ani.SetInteger("dir", -dir);
             ani.SetBool("isWalk", true);
         }
         else
@@ -182,11 +196,9 @@ public class PlayerControllers : MonoBehaviour
             rigid.useGravity = false;
             dashTime = 0;
             //rigid.velocity = transform.forward * 3;
-            rigid.velocity = new Vector2(dir * 7,0);
+            rigid.velocity = new Vector2(dir * playerScriptable.dashPow,0);
             curdashCount++;
-            Debug.Log("DashStart");
-            Debug.Log(dash);
-            Debug.Log(rigid.velocity);
+
         }
         if (dash)
         {
@@ -203,10 +215,6 @@ public class PlayerControllers : MonoBehaviour
                 Debug.Log(rigid.velocity);
                 Debug.Log("===================");
             }
-        }
-        else
-        {
-
         }
     }
     void PlayerJump()
@@ -225,7 +233,7 @@ public class PlayerControllers : MonoBehaviour
                 jump = true;
                 curjumpCount++;
                 //rigid.velocity = Vector2.up * 0;
-                rigid.velocity = Vector2.up * 7;
+                rigid.velocity = Vector2.up * playerScriptable.maxJumpPow;
                 Debug.Log("높은 점프");
                 jumpPressTime = 0;
             }
@@ -242,7 +250,7 @@ public class PlayerControllers : MonoBehaviour
                 Debug.Log(jumpPressTime);
                 curjumpCount++;
                 //rigid.velocity = Vector2.up * 0;
-                rigid.velocity = Vector2.up * 5;
+                rigid.velocity = Vector2.up * playerScriptable.minJumpPow;
                 jumpPressTime = 0;
                 jump = false;
                 Debug.Log("낮은 점프");
