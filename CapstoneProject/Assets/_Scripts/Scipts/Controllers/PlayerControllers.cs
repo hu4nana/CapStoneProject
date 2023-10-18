@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
-using static UnityEngine.Rendering.DebugUI;
 
 // Players의 기능
 public class PlayerControllers : MonoBehaviour
@@ -37,10 +35,16 @@ public class PlayerControllers : MonoBehaviour
     float comboTimer = 3;
     /*=========Attack함수 제작 중1==========*/
 
-
+    /*=========Jump=========*/
     float jumpPressTimer = 0.2f;
     float jumpPressTime = 0;
     bool jump = false;
+
+    float jumpStartPos;
+    float jumpEndPos = 3.5f;
+    /*=========Jump=========*/
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -219,8 +223,9 @@ public class PlayerControllers : MonoBehaviour
     }
     void PlayerJump()
     {
+        // Type 1
         if (!jump &&
-            curjumpCount < maxJumpCount && 
+            curjumpCount < maxJumpCount &&
             Input.GetKey(KeyCode.V))
         {
             jumpPressTime += Time.deltaTime;
@@ -236,6 +241,10 @@ public class PlayerControllers : MonoBehaviour
                 rigid.velocity = Vector2.up * playerScriptable.maxJumpPow;
                 Debug.Log("높은 점프");
                 jumpPressTime = 0;
+                if(Input.GetKeyUp(KeyCode.V))
+                {
+                    rigid.velocity = Vector2.up * 0;
+                }
             }
         }
         if (Input.GetKeyUp(KeyCode.V))
@@ -246,7 +255,7 @@ public class PlayerControllers : MonoBehaviour
                 jump = false;
             }
             else if (curjumpCount < maxJumpCount)
-                {
+            {
                 Debug.Log(jumpPressTime);
                 curjumpCount++;
                 //rigid.velocity = Vector2.up * 0;
@@ -256,6 +265,39 @@ public class PlayerControllers : MonoBehaviour
                 Debug.Log("낮은 점프");
             }
         }
+
+        // Type2
+        //if (!jump &&
+        //    curjumpCount < maxJumpCount &&
+        //    Input.GetKey(KeyCode.V))
+        //{
+        //    jumpPressTime += Time.deltaTime;
+
+        //    if (jumpPressTime <= jumpPressTimer)
+        //    {
+        //        jump = true;
+        //    }
+        //    else
+        //    {
+        //        jump = false;
+        //    }
+
+        //}
+        //if (Input.GetKeyUp(KeyCode.V))
+        //{
+        //    jump = false;
+        //}
+        //if(jump)
+        //{
+        //    rigid.velocity = Vector2.up * 10;
+        //}
+        //if(Input.GetKeyUp(KeyCode.V))
+        //{
+        //    rigid.velocity = Vector2.up * 0;
+        //    jumpPressTime = 0;
+        //}
+
+
     }
     private void OnCollisionEnter(Collision collision)
     {
