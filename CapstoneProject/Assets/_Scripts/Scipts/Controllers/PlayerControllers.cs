@@ -224,47 +224,43 @@ public class PlayerControllers : MonoBehaviour
     void PlayerJump()
     {
         // Type 1
-        if (!jump &&
-            curjumpCount < maxJumpCount &&
-            Input.GetKey(KeyCode.V))
-        {
-            jumpPressTime += Time.deltaTime;
-        }
-        if (jumpPressTime >= jumpPressTimer)
-        {
-            jumpPressTime = 1;
-            if (curjumpCount < maxJumpCount)
-            {
-                jump = true;
-                curjumpCount++;
-                //rigid.velocity = Vector2.up * 0;
-                rigid.velocity = Vector2.up * playerScriptable.maxJumpPow;
-                Debug.Log("높은 점프");
-                jumpPressTime = 0;
-                if(Input.GetKeyUp(KeyCode.V))
-                {
-                    rigid.velocity = Vector2.up * 0;
-                }
-            }
-        }
-        if (Input.GetKeyUp(KeyCode.V))
-        {
-            if (jump)
-            {
-                jumpPressTime = 0;
-                jump = false;
-            }
-            else if (curjumpCount < maxJumpCount)
-            {
-                Debug.Log(jumpPressTime);
-                curjumpCount++;
-                //rigid.velocity = Vector2.up * 0;
-                rigid.velocity = Vector2.up * playerScriptable.minJumpPow;
-                jumpPressTime = 0;
-                jump = false;
-                Debug.Log("낮은 점프");
-            }
-        }
+        //if (!jump &&
+        //    curjumpCount < maxJumpCount &&
+        //    Input.GetKey(KeyCode.V))
+        //{
+        //    jumpPressTime += Time.deltaTime;
+        //}
+        //if (jumpPressTime >= jumpPressTimer)
+        //{
+        //    jumpPressTime = 1;
+        //    if (curjumpCount < maxJumpCount)
+        //    {
+        //        jump = true;
+        //        curjumpCount++;
+        //        //rigid.velocity = Vector2.up * 0;
+        //        rigid.velocity = Vector2.up * playerScriptable.maxJumpPow;
+        //        Debug.Log("높은 점프");
+        //        jumpPressTime = 0;
+        //    }
+        //}
+        //if (Input.GetKeyUp(KeyCode.V))
+        //{
+        //    if (jump)
+        //    {
+        //        jumpPressTime = 0;
+        //        jump = false;
+        //    }
+        //    else if (curjumpCount < maxJumpCount)
+        //    {
+        //        Debug.Log(jumpPressTime);
+        //        curjumpCount++;
+        //        //rigid.velocity = Vector2.up * 0;
+        //        rigid.velocity = Vector2.up * playerScriptable.minJumpPow;
+        //        jumpPressTime = 0;
+        //        jump = false;
+        //        Debug.Log("낮은 점프");
+        //    }
+        //}
 
         // Type2
         //if (!jump &&
@@ -297,6 +293,12 @@ public class PlayerControllers : MonoBehaviour
         //    jumpPressTime = 0;
         //}
 
+        //Type 3
+        if((!jump &&
+            curjumpCount < maxJumpCount &&
+            Input.GetKey(KeyCode.V))){
+            
+        }
 
     }
     private void OnCollisionEnter(Collision collision)
