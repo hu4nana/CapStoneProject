@@ -142,7 +142,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!65 &72654919
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -548,6 +548,7 @@ GameObject:
   - component: {fileID: 217294490}
   - component: {fileID: 217294491}
   - component: {fileID: 217294492}
+  - component: {fileID: 217294493}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -579,7 +580,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 217294488}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ce393c44dcf9b5549a4f542f0e1cdb99, type: 3}
   m_Name: 
@@ -614,6 +615,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &217294493
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 217294488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3ca53f652101cf499229a3747169ed0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -957,7 +970,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: 439f5495ba1bcfa48be6b654de350a00, type: 2}
+      objectReference: {fileID: 9100000, guid: c8f1d5cf79ca08d48982086e33a2c868, type: 2}
     - target: {fileID: 6116104702756959958, guid: 050e8d468a15580448185d3ad40ad7b8,
         type: 3}
       propertyPath: m_LocalRotation.x
