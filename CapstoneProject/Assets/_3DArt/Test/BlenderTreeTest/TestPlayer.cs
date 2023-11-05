@@ -37,6 +37,7 @@ public class TestPlayer : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftArrow) ||
             Input.GetKey(KeyCode.RightArrow))
         {
+
             ani.SetBool("isWalk", true);
             Debug.Log("Key");
         }
@@ -48,9 +49,11 @@ public class TestPlayer : MonoBehaviour
         }
         if (InputManager.GetHorizontal() != 0)
         {
-            Quaternion targetrotation = Quaternion.LookRotation(
-                Vector3.right * InputManager.GetHorizontal());
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetrotation, Time.deltaTime * 90);
+            dir = InputManager.GetHorizontal();
+            this.transform.rotation = Quaternion.Euler(transform.rotation.x, dir * 90, transform.rotation.z);
+            // Quaternion targetrotation = Quaternion.LookRotation(
+            //     Vector3.right * InputManager.GetHorizontal());
+            // transform.rotation = Quaternion.Slerp(transform.rotation, targetrotation, Time.deltaTime * 90);
         }
         
         ////ani.SetFloat("xDir", InputManager.GetMove().x);
