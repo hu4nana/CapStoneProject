@@ -153,18 +153,18 @@ public class PlayerControllers : MonoBehaviour
         //}
 
         // 방법 2 ( 키 입력된 Vector3값에 따라 바라봄 )
-        //if(InputManager.GetHorizontal()!=0)
-        //{
-        //    Quaternion targetRotation = Quaternion.LookRotation(
-        //        Vector3.left*InputManager.GetHorizontal());
-        //    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * playerScriptable.rotateSpd);
-        //    dir=(int)InputManager.GetHorizontal();
-        //    ani.SetBool("isWalk", true);
-        //}
-        //else
-        //{
-        //    ani.SetBool("isWalk", false);
-        //}
+        if (InputManager.GetHorizontal() != 0)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(
+                Vector3.left * InputManager.GetHorizontal());
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * playerScriptable.rotateSpd);
+            dir = (int)InputManager.GetHorizontal();
+            ani.SetBool("isWalk", true);
+        }
+        else
+        {
+            ani.SetBool("isWalk", false);
+        }
 
         if (InputManager.GetHorizontal() !=0)
         {

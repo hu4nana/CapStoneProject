@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,7 +7,8 @@ public class TestPlayer : MonoBehaviour
 {
     Animator ani;
     Rigidbody rigid;
-    float dir;
+    //dir = 1 right, dir = -1 left
+    float dir = 1;
 
     // Start is called before the first frame update
     void Start()
@@ -19,45 +21,41 @@ public class TestPlayer : MonoBehaviour
     void Update()
     {
         PlayerMove();
-
+        PlayerDash();
     }
 
 
     void PlayerMove()
     {
-        //if (Input.GetKeyDown(KeyCode.LeftArrow)||
-        //    Input.GetKeyDown(KeyCode.RightArrow))
-        //{
-        //    if(InputManager.GetHorizontal()!=dir)
-        //    {
-        //        ani.SetBool("isTurn", true);
-        //    }
-        //    Debug.Log("KeyDown");
-        //}
-        if (Input.GetKey(KeyCode.LeftArrow) ||
-            Input.GetKey(KeyCode.RightArrow))
+        if (InputManager.GetIsCanInput()&&InputManager.GetHorizontal() != 0)
         {
-
+            dir=InputManager.GetHorizontal();
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(
+     Vector3.right * dir), Time.deltaTime * 24);
             ani.SetBool("isWalk", true);
-            Debug.Log("Key");
         }
-        if (Input.GetKeyUp(KeyCode.LeftArrow) ||
-            Input.GetKeyUp(KeyCode.RightArrow))
+        if (InputManager.GetHorizontal() == 0)
         {
             ani.SetBool("isWalk", false);
-            Debug.Log("KeyUp");
+
         }
-        if (InputManager.GetHorizontal() != 0)
-        {
-            dir = InputManager.GetHorizontal();
-            this.transform.rotation = Quaternion.Euler(transform.rotation.x, dir * 90, transform.rotation.z);
-            // Quaternion targetrotation = Quaternion.LookRotation(
-            //     Vector3.right * InputManager.GetHorizontal());
-            // transform.rotation = Quaternion.Slerp(transform.rotation, targetrotation, Time.deltaTime * 90);
+    }
+    void PlayerDash()
+    {
+        if (Input.GetKeyDown(KeyCode.X)){
+            ani.SetBool("isDash", true);
+            //gameObject.layer = 0;
+            rigid.useGravity = false;
+            InputManager.SetIsCanInput(false);
         }
-        
-        ////ani.SetFloat("xDir", InputManager.GetMove().x);
-        ////ani.SetFloat("yDir", InputManager.GetMove().y);
-        //ani.SetFloat("Blend", dir);
+        if (ani.GetCurrentAnimatorStateInfo(0).IsName("Dash")){
+            if (ani.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.9f)
+            {
+                Debug.Log("¤±");
+                InputManager.SetIsCanInput(true);
+                ani.SetBool("isDash", false);
+                rigid.useGravity = false;
+            }
+        }
     }
 }
