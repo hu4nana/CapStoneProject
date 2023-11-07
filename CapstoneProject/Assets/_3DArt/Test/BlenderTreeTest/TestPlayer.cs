@@ -9,7 +9,8 @@ public class TestPlayer : MonoBehaviour
     Rigidbody rigid;
     //dir = 1 right, dir = -1 left
     float dir = 1;
-
+    float curCombo = 0;
+    bool isAttack = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,9 +23,28 @@ public class TestPlayer : MonoBehaviour
     {
         PlayerMove();
         PlayerDash();
+        PlayerAttack();
     }
 
-
+    void PlayerAttack()
+    {
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            transform.rotation = Quaternion.Euler(0, 90 * dir, 0);
+            isAttack = true;
+            curCombo++;
+            ani.SetBool("isAttack", isAttack);
+            ani.SetFloat("curCombo", curCombo);
+        }
+        if (ani.GetCurrentAnimatorStateInfo(0).IsName("AttackTree")&&
+            ani.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
+        {
+            ani.SetBool("isAttack", false);
+            ani.SetFloat("curCombo", 0);
+            curCombo = 0;
+        }
+        
+    }
     void PlayerMove()
     {
         if (InputManager.GetIsCanInput()&&InputManager.GetHorizontal() != 0)
@@ -42,7 +62,7 @@ public class TestPlayer : MonoBehaviour
     }
     void PlayerDash()
     {
-        if (Input.GetKeyDown(KeyCode.X)){
+        if (Input.GetKeyDown(KeyCode.C)){
             ani.SetBool("isDash", true);
             //gameObject.layer = 0;
             rigid.useGravity = false;
