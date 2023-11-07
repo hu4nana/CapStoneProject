@@ -9,6 +9,7 @@ public class GreatSwordMode : ModeBase
     public int skillDamage = 20;
     public int energyCost = 30;
     public float attackDelay = 0.5f;
+    public float modeDelay = 0.0f;
 
     public override void Attack()
     {
@@ -45,5 +46,10 @@ public class GreatSwordMode : ModeBase
     public override int GetSkillDamage()
     {
         return skillDamage;
+    }
+
+    public override float GetDelayTimer()
+    {
+        return modeDelay;
     }
 }

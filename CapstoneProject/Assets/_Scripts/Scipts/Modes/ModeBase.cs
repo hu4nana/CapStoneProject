@@ -18,4 +18,5 @@ public abstract class ModeBase : MonoBehaviour
     public abstract int GetAttackDamage();//현재 일반공격의 데미지 반환
     public abstract int GetSkillDamage();//현재 스킬의 데미지 반환
 
+    public abstract float GetDelayTimer();
 }

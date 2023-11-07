@@ -8,6 +8,10 @@ using static UnityEngine.Rendering.DebugUI;
 public class PlayerControllers : MonoBehaviour
 {
     ModeManager modeManager;//모드매니저 객체
+    ModeBase modeA;
+    ModeBase modeB;
+    ModeBase modeC;
+
 
     public StatsScriptableObject playerScriptable;
 
@@ -47,6 +51,10 @@ public class PlayerControllers : MonoBehaviour
         ani = GetComponentInChildren<Animator>();
 
         modeManager = GetComponent<ModeManager>();//modeManager에 컴포넌트를 받아와서 초기화
+        modeA = new GreatSwordMode();
+        modeB = new DuelBladeMode();
+        modeC = new HandCannonMode();
+
     }
 
     // Update is called once per frame
@@ -56,7 +64,8 @@ public class PlayerControllers : MonoBehaviour
         {
             PlayerJump();
         }
-        ModeChange(); //모드변경 함수
+        //Invoke("ModeChange",modeManager.GetModeDelayTime()); //모드변경 함수
+        ModeChange();
         PlayerDash();
 
         if (Input.GetKeyDown(InputManager.GetAttackKey())) // 공격 입력체크
@@ -239,15 +248,15 @@ public class PlayerControllers : MonoBehaviour
     {
         if (Input.GetKeyDown(InputManager.GetGreatSwordModeKey()))//A버튼 입력을 받아서
         {
-            modeManager.SetMode(new GreatSwordMode()); // 대검모드로 변환
+            modeManager.SetMode(modeA); // 대검모드로 변환
         }
         else if (Input.GetKeyDown(InputManager.GetDualBladeModeKey()))//S버튼을 입력받아서
         {
-            modeManager.SetMode(new DuelBladeMode());//쌍검모드로 전환
+            modeManager.SetMode(modeB);//쌍검모드로 전환
         }
         else if (Input.GetKeyDown(InputManager.GetHandCannonKey()))//D버튼을 입력받아서
         {
-            modeManager.SetMode(new HandCannonMode());//총모드로 변환
+            modeManager.SetMode(modeC);//총모드로 변환
         }
     }
 

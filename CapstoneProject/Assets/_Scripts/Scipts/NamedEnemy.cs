@@ -5,21 +5,18 @@ using UnityEngine;
 public class NamedEnemy : Enemy
 {
     //Collider coreCollider;
+    int cur_BreakPoint;       //현재 그로기게이지
+    int max_BreakPoint = 100; //최대 그로기게이지
 
-    int cur_BreakPoint;//현재 그로기게이지
-    int max_BreakPoint = 100;//최대 그로기게이지
+    int cur_CoreCount = 0;    //현재 코어카운트
+    int max_CoreCount = 3;    //최대 코어카운트
 
-    int cur_CoreCount = 0;
-    int max_CoreCount = 3;
+    int cur_Monster_Hp;       //현재체력
+    int max_Monster_Hp = 100; //몬스터 최대 체력
 
-    int cur_Monster_Hp;
-    int max_Monster_Hp = 100;
+    bool isMonsterAlive;      //몬스터 살아있는지 체크
 
-    bool isMonsterAlive;
-
-
-
-    Core[] core = new Core[3];
+    Core[] core = new Core[3]; //코어생성
 
 
     private void Update()
@@ -60,16 +57,15 @@ public class NamedEnemy : Enemy
     {
         return max_BreakPoint;
     }
-    public void SetCurBreakPoint(int breakPoint)
+    public void SetCurBreakPoint(int breakPoint)//보스현재BreakPoint 세팅
     {
         cur_BreakPoint = breakPoint;
     }
-    public void SetMaxBreakPoint(int maxBreakPoint)
+    public void SetMaxBreakPoint(int maxBreakPoint)//보스 최대 BreakPoint세팅
     {
         max_BreakPoint = maxBreakPoint;
     }
-
-    private void IsCoreDead(Core core)
+    private void IsCoreDead(Core core)//코어죽었는지 체크
     {
         if (core.GetCoreAlive())
         {
@@ -85,26 +81,22 @@ public class NamedEnemy : Enemy
             core[1].CoreRevive();
             core[2].CoreRevive();
 
-            max_CoreCount = 3;
+            cur_CoreCount = max_CoreCount;
             max_BreakPoint = 100;
         }
     }
-
     private void Monster_Break()//그로기상태, 브레이크상태
     {
         Debug.Log("몬스터가 브레이크상태에 빠졌습니다!");
     }
-
     private void MonsterDead()
     {
         Debug.Log("몬스터 사망!");
     }
-
-    private void SetMonsterAlive(bool alive)
+    private void SetMonsterAlive(bool alive)//몬스터 살아있는지 체크
     {
         isMonsterAlive = alive;
     }
-
     private void Monster_Damaged(int damage)//몬스터 데미지입기
     {
         if (isMonsterAlive)

@@ -5,6 +5,8 @@ using UnityEngine;
 public class ModeManager : MonoBehaviour
 {
     private ModeBase currentMode; // 현재 모드 저장변수
+    private float modeTimer = 0.0f;
+    private float startTime = 0.0f;
 
     void Start()
     {
@@ -22,10 +24,15 @@ public class ModeManager : MonoBehaviour
 
     public void Attack()//공격메서드 
     {
+        if (startTime != modeTimer)
+            return ;
         currentMode.Attack();
+        modeTimer = currentMode.GetDelayTimer();
     }
     public void UseSkill()//스킬사용메서드
     {
+        if (modeTimer != 0.0f)
+            return;
         currentMode.UseSkill();
     }
 
@@ -47,5 +54,14 @@ public class ModeManager : MonoBehaviour
         SetMode(new GreatSwordMode());//기본모드 적용
     }
 
+    public float GetModeDelayTime()
+    {
+        modeTimer = GetModeDelayTime();
+        return currentMode.GetDelayTimer();
+    }
+    public void SetModeDelayTime(int time)
+    {
+        modeTimer = time;
+    }
 
 }

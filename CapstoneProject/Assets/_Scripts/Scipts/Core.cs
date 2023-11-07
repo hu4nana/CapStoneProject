@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class Core : MonoBehaviour
 {
-    int cur_Core_Hp;
-    int max_Core_Hp = 100;
+    int cur_Core_Hp; // 현재 체력
+    int max_Core_Hp = 100;//최대체력
 
-    int player_Damaged_Value = 0;
+    int player_Damaged_Value = 0;//플레이어가 가하는 데미지 저장
 
-    bool isCoreAlive;
+    bool isCoreAlive; // 코어살아있는지 체크
 
-    CoreType coreType;
-    CoreType playerType;
+    CoreType coreType; // 코어타입
+    CoreType playerType;//플레이어의 코어타입
 
     //public Collider core_Collider;
 
@@ -28,8 +28,10 @@ public class Core : MonoBehaviour
         
     }
 
+    
     private void OnCollisionEnter(Collision collision)
     {
+        //if(collision.gameObject.tag=="Player")
         if (collision.gameObject.CompareTag("Player"))
         {
             playerType = collision.gameObject.GetComponent<ModeManager>().GetCoreType();
