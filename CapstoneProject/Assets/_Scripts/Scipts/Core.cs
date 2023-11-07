@@ -9,16 +9,15 @@ public class Core : MonoBehaviour
 
     int player_Damaged_Value = 0;//플레이어가 가하는 데미지 저장
 
-    bool isCoreAlive; // 코어살아있는지 체크
+    bool isCoreAlive = true; // 코어살아있는지 체크
 
     CoreType coreType; // 코어타입
     CoreType playerType;//플레이어의 코어타입
 
-    //public Collider core_Collider;
 
     void Start()
     {
-        Init();
+        //Init();
         //core_Collider = GetComponent<Collider>();
     }
 
@@ -45,7 +44,7 @@ public class Core : MonoBehaviour
         cur_Core_Hp = max_Core_Hp;
         coreType = CoreType.Magenta;
         isCoreAlive = true;
-        
+        Debug.Log($"현재 코어의 체력은 {cur_Core_Hp}으로 초기화 되었습니다");
 
 
     }
@@ -66,6 +65,7 @@ public class Core : MonoBehaviour
                 SetCoreAlive(false);
                 CoreBreak();
             }
+            Debug.Log($"현재 코어의 체력은 {cur_Core_Hp}입니다.");
         }
 
     }
@@ -99,8 +99,15 @@ public class Core : MonoBehaviour
 
     public void CoreRevive()//코어 부활
     {
+
         cur_Core_Hp = max_Core_Hp;
     }
-
-
+    public void SetActiveCore()
+    {
+        this.gameObject.SetActive(true);
+    }
+    public void SetDeactiveCore()
+    {
+        this.gameObject.SetActive(false);
+    }
 }
