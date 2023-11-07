@@ -7,6 +7,7 @@ public class TestPlayer : MonoBehaviour
 {
     Animator ani;
     Rigidbody rigid;
+    WeaponManager weaponManager;
     //dir = 1 right, dir = -1 left
     float dir = 1;
     float curCombo = 0;
@@ -14,6 +15,7 @@ public class TestPlayer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        weaponManager = GetComponent<WeaponManager>();
         ani=GetComponentInChildren<Animator>();
         rigid=GetComponent<Rigidbody>();
     }
@@ -28,22 +30,31 @@ public class TestPlayer : MonoBehaviour
 
     void PlayerAttack()
     {
+        
         if (Input.GetKeyDown(KeyCode.X))
         {
             transform.rotation = Quaternion.Euler(0, 90 * dir, 0);
             isAttack = true;
             curCombo++;
             ani.SetBool("isAttack", isAttack);
-            ani.SetFloat("curCombo", curCombo);
+            ani.SetInteger("AttackCombo", (int)curCombo);
+            //ani.SetFloat("curCombo", curCombo);
         }
-        if (ani.GetCurrentAnimatorStateInfo(0).IsName("AttackTree")&&
-            ani.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
+        //if (ani.GetCurrentAnimatorStateInfo(0).IsName("AttackTree")&&
+        //    ani.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
+        //{
+        //    ani.SetBool("isAttack", false);
+        //    ani.SetFloat("curCombo", 0);
+        //    curCombo = 0;
+        //}
+
+        if (ani.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.4f)
         {
             ani.SetBool("isAttack", false);
-            ani.SetFloat("curCombo", 0);
+            ani.SetInteger("AttackCombo", 0);
             curCombo = 0;
         }
-        
+
     }
     void PlayerMove()
     {
