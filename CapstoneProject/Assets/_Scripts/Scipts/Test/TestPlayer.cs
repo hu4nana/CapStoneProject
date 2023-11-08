@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 public class TestPlayer : MonoBehaviour
@@ -12,6 +13,11 @@ public class TestPlayer : MonoBehaviour
     float dir = 1;
     float curCombo = 0;
     bool isAttack = false;
+    bool isJump = false;
+    float jumpTime=0;
+    float jumpPow;
+    int maxJump=1;
+    int curJump=0;
     // Start is called before the first frame update
     void Start()
     {
@@ -26,6 +32,7 @@ public class TestPlayer : MonoBehaviour
         PlayerMove();
         PlayerDash();
         PlayerAttack();
+        PlayerJump();
     }
 
     void PlayerAttack()
@@ -55,6 +62,29 @@ public class TestPlayer : MonoBehaviour
             curCombo = 0;
         }
 
+    }
+    void PlayerJump()
+    {
+        float jumpTimer = 0.4f;
+        float minJump = 5;
+        float maxJump = 10;
+        if (!isJump &&
+            curJump < maxJump &&
+            Input.GetKey(KeyCode.V))
+        {
+            jumpTime += Time.deltaTime;
+            jumpPow += 0.2f;
+            if (jumpPow >= maxJump)
+                jumpPow = maxJump;
+            Debug.Log(jumpTime);
+            Debug.Log(jumpPow);
+        }
+        if (Input.GetKeyUp(KeyCode.V)||jumpTime>=jumpTimer)
+        {
+            rigid.velocity = Vector2.up * jumpPow;
+            jumpTime = 0;
+            jumpPow = minJump;
+        }
     }
     void PlayerMove()
     {

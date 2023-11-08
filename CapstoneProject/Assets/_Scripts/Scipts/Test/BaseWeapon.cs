@@ -8,7 +8,7 @@ public abstract class BaseWeapon : MonoBehaviour
     public int MaxComboCount { get;set;}
     public string Name { get { return _name; } }
     public float AttackDamage { get { return attackDamage; } }
-
+    ModeState modeState;
     [Header("무기 정보")]
     [SerializeField] protected RuntimeAnimatorController weaponAnimator;
     [SerializeField] protected string _name;

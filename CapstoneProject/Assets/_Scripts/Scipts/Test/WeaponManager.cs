@@ -8,7 +8,6 @@ public class WeaponManager : MonoBehaviour
     public BaseWeapon Weapon { get; private set; }
     private GameObject weaponObject;
     private List<GameObject> weapons = new List<GameObject>();
-
     public void RegisterWeapon(GameObject weapon)
     {
         if(!weapons.Contains(weapon))
