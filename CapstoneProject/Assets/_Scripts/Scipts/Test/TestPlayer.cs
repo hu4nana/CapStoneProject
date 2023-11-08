@@ -82,6 +82,8 @@ public class TestPlayer : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.V)||jumpTime>=jumpTimer)
         {
             rigid.velocity = Vector2.up * jumpPow;
+            ani.SetBool("isJump", true);
+            ani.SetTrigger("Jump");
             jumpTime = 0;
             jumpPow = minJump;
         }
@@ -118,5 +120,9 @@ public class TestPlayer : MonoBehaviour
                 rigid.useGravity = false;
             }
         }
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        ani.SetBool("isJump", false);
     }
 }
