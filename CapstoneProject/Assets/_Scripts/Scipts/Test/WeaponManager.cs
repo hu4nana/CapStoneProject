@@ -17,7 +17,6 @@ public class WeaponManager : MonoBehaviour
             weapon.SetActive(false);
         }
     }
-
     public void SetWeapon(GameObject weapon)
     {
         if (Weapon == null)
@@ -25,6 +24,22 @@ public class WeaponManager : MonoBehaviour
             weaponObject = weapon;
             Weapon=weapon.GetComponent<BaseWeapon> ();
             weaponObject.SetActive(true);
+            Tester.Instance.animator.runtimeAnimatorController = Weapon.WeaponAnimator;
+            return;
         }
+
+        for(int i=0;i<weapons.Count; i++)
+        {
+            if (weapons[i].Equals(Weapon))
+            {
+                weaponObject = weapon;
+                weaponObject.SetActive(true);
+                Weapon = weapon.GetComponent<BaseWeapon>();
+                Tester.Instance.animator.runtimeAnimatorController = Weapon.WeaponAnimator;
+                continue;
+            }
+            weapons[i].SetActive(false);
+        }
+        
     }
 }

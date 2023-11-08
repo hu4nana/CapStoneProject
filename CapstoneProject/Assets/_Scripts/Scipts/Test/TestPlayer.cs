@@ -128,6 +128,19 @@ public class TestPlayer : MonoBehaviour
             }
         }
     }
+
+    public interface IEffect
+    {
+        public void PlayComboAttackEffects();
+        public void PlayDashEffect();
+        public void PlaySkillEffect();
+    }
+    public interface ISount
+    {
+        public void PlayComboAttackSound();
+        public void PlayDashSount();
+        public void PlaySkillSound();
+    }
     private void OnCollisionEnter(Collision collision)
     {
         ani.SetBool("isJump", false);
