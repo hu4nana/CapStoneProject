@@ -67,10 +67,8 @@ public class TestPlayer : MonoBehaviour
     {
         float jumpTimer = 0.4f;
         float minJump = 5;
-        float maxJump = 10;
-        if (!isJump &&
-            curJump < maxJump &&
-            Input.GetKey(KeyCode.V))
+        float maxJump = 8;
+        if (!isJump && Input.GetKey(KeyCode.V))
         {
             jumpTime += Time.deltaTime;
             jumpPow += 0.2f;
@@ -79,13 +77,22 @@ public class TestPlayer : MonoBehaviour
             Debug.Log(jumpTime);
             Debug.Log(jumpPow);
         }
-        if (Input.GetKeyUp(KeyCode.V)||jumpTime>=jumpTimer)
+        if (!isJump&&(Input.GetKeyUp(KeyCode.V)||jumpTime>=jumpTimer))
         {
-            rigid.velocity = Vector2.up * jumpPow;
+            rigid.AddForce(Vector2.up * jumpPow, ForceMode.Impulse);
+            
+            isJump = true;
+            ++curJump;
             ani.SetBool("isJump", true);
-            ani.SetTrigger("Jump");
             jumpTime = 0;
             jumpPow = minJump;
+        }
+        if (isJump)
+        {
+            if(Input.GetKey(KeyCode.LeftArrow)||
+                Input.GetKey(KeyCode.RightArrow))
+                transform.Translate(0, 0, 4*Time.deltaTime);
+            
         }
     }
     void PlayerMove()
@@ -124,5 +131,7 @@ public class TestPlayer : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         ani.SetBool("isJump", false);
+        curJump = 0;
+        isJump = false;
     }
 }
