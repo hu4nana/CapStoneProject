@@ -21,11 +21,15 @@ public class NamedEnemy : Enemy
 
     int player_Damaged_Value = 0;//플레이어가 가하는 데미지 저장
 
+    //Rigidbody monsterRigidbody;
+
+    //Vector3 direction;
 
 
     private void Start()
     {
         Init();
+        //monsterRigidbody = GetComponent<Rigidbody>();
     }
 
 
@@ -50,7 +54,12 @@ public class NamedEnemy : Enemy
         {
             player_Damaged_Value = collision.gameObject.GetComponent<ModeManager>().GetAttackDamage();
             Monster_Damaged(player_Damaged_Value);
+
+            //direction = (transform.position - collision.transform.position).normalized;
+            //monsterRigidbody.AddForce(direction * 3.0f, ForceMode.Impulse);
         }
+
+
     }
 
 
@@ -144,6 +153,7 @@ public class NamedEnemy : Enemy
     private void MonsterDead()
     {
         Debug.Log("몬스터 사망!");
+        Destroy(this.gameObject,1.0f);
     }
     private void SetMonsterAlive(bool alive)//몬스터 살아있는지 체크
     {
@@ -156,7 +166,7 @@ public class NamedEnemy : Enemy
             cur_Monster_Hp -= damage;
             cur_BreakPoint += 10;
 
-            if (cur_Monster_Hp < 0)
+            if (cur_Monster_Hp <= 0)
             {
                 SetMonsterAlive(false);
                 MonsterDead();
@@ -166,7 +176,7 @@ public class NamedEnemy : Enemy
                 Monster_Break();
             }
         }
-        Debug.Log($"현재 체력 : {cur_Monster_Hp}");
+        Debug.Log($"현재 몬스터 체력 : {cur_Monster_Hp}");
         Debug.Log($"현재 브레이크포인트 : {cur_BreakPoint}");
         Debug.Log($"최대 브레이크포인트 : {max_BreakPoint}");
     }

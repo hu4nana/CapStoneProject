@@ -28,36 +28,36 @@ public class Core : MonoBehaviour
     }
 
     
-    private void OnCollisionEnter(Collision collision)
-    {
-
-        //Debug.Log($"충돌한 오브젝트 이름 : {collision.gameObject.name }");
-        if (UnityEngine.LayerMask.LayerToName(collision.gameObject.layer) == "Player")
-        {
-            //Debug.Log("플레이어 레이어와 코어 충돌은 되었습니다");
-            if (collision.gameObject.CompareTag("Player"))
-            {
-
-                //Debug.Log("플레이어 태그와 코어 충돌 되었습니다");
-                playerType = collision.gameObject.GetComponent<ModeManager>().GetCoreType();
-                player_Damaged_Value = collision.gameObject.GetComponent<ModeManager>().GetAttackDamage();
-                Core_Damaged(playerType);
-            }
-        }
-        //Debug.Log("코어 충돌은 되었습니다");
-        //if(collision.gameObject.tag=="Player")
-
-    }
-
-    //private void OnTriggerEnter(Collider collision)
+    //private void OnCollisionEnter(Collision collision)
     //{
-    //    if (collision.gameObject.CompareTag("Player"))
+
+    //    //Debug.Log($"충돌한 오브젝트 이름 : {collision.gameObject.name }");
+    //    if (UnityEngine.LayerMask.LayerToName(collision.gameObject.layer) == "Player")
     //    {
-    //        playerType = collision.gameObject.GetComponent<ModeManager>().GetCoreType();
-    //        player_Damaged_Value = collision.gameObject.GetComponent<ModeManager>().GetAttackDamage();
-    //        Core_Damaged(playerType);
+    //        //Debug.Log("플레이어 레이어와 코어 충돌은 되었습니다");
+    //        if (collision.gameObject.CompareTag("Player"))
+    //        {
+
+    //            //Debug.Log("플레이어 태그와 코어 충돌 되었습니다");
+    //            playerType = collision.gameObject.GetComponent<ModeManager>().GetCoreType();
+    //            player_Damaged_Value = collision.gameObject.GetComponent<ModeManager>().GetAttackDamage();
+    //            Core_Damaged(playerType);
+    //        }
     //    }
+    //    //Debug.Log("코어 충돌은 되었습니다");
+    //    //if(collision.gameObject.tag=="Player")
+
     //}
+
+    private void OnTriggerEnter(Collider collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            playerType = collision.gameObject.GetComponent<ModeManager>().GetCoreType();
+            player_Damaged_Value = collision.gameObject.GetComponent<ModeManager>().GetAttackDamage();
+            Core_Damaged(playerType);
+        }
+    }
 
     public void Init()//코어초기설정
     {
