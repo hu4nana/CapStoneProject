@@ -18,12 +18,22 @@ public class TestPlayer : MonoBehaviour
     float jumpPow;
     int maxJump=1;
     int curJump=0;
+
+    ModeManager modeManager;//모드매니저 객체
+    ModeBase modeA;
+    ModeBase modeB;
+    ModeBase modeC;
     // Start is called before the first frame update
     void Start()
     {
         weaponManager = GetComponent<WeaponManager>();
         ani=GetComponentInChildren<Animator>();
         rigid=GetComponent<Rigidbody>();
+
+        modeManager = GetComponent<ModeManager>();//modeManager에 컴포넌트를 받아와서 초기화
+        modeA = new GreatSwordMode();
+        modeB = new DuelBladeMode();
+        modeC = new HandCannonMode();
     }
 
     // Update is called once per frame
@@ -33,6 +43,16 @@ public class TestPlayer : MonoBehaviour
         PlayerDash();
         PlayerAttack();
         PlayerJump();
+
+        ModeChange();
+        if (Input.GetKeyDown(InputManager.GetAttackKey())) // 공격 입력체크
+        {
+            modeManager.Attack();//모드에 따른 공격 실행
+        }
+        if (Input.GetKeyDown(InputManager.GetSkillKey()))// 스킬 입력 체크
+        {
+            modeManager.UseSkill();//모드에 따른 스킬 실행
+        }
     }
 
     void PlayerAttack()
@@ -131,7 +151,21 @@ public class TestPlayer : MonoBehaviour
             }
         }
     }
-
+    void ModeChange()//모드변경 메서드
+    {
+        if (Input.GetKeyDown(InputManager.GetGreatSwordModeKey()))//A버튼 입력을 받아서
+        {
+            modeManager.SetMode(modeA); // 대검모드로 변환
+        }
+        else if (Input.GetKeyDown(InputManager.GetDualBladeModeKey()))//S버튼을 입력받아서
+        {
+            modeManager.SetMode(modeB);//쌍검모드로 전환
+        }
+        else if (Input.GetKeyDown(InputManager.GetHandCannonKey()))//D버튼을 입력받아서
+        {
+            modeManager.SetMode(modeC);//총모드로 변환
+        }
+    }
     public interface IEffect
     {
         public void PlayComboAttackEffects();
