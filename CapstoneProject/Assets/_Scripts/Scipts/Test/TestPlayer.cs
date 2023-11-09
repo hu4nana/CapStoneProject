@@ -68,30 +68,33 @@ public class TestPlayer : MonoBehaviour
         float jumpTimer = 0.4f;
         float minJump = 5;
         float maxJump = 8;
+        if(Input.GetKeyDown(KeyCode.V))
+        {
+            jumpPow = minJump;
+        }
         if (!isJump && Input.GetKey(KeyCode.V))
         {
             jumpTime += Time.deltaTime;
-            jumpPow += 0.2f;
+            jumpPow += 0.1f;
+            Debug.Log(jumpPow);
             if (jumpPow >= maxJump)
                 jumpPow = maxJump;
-            Debug.Log(jumpTime);
-            Debug.Log(jumpPow);
         }
         if (!isJump&&(Input.GetKeyUp(KeyCode.V)||jumpTime>=jumpTimer))
         {
             rigid.AddForce(Vector2.up * jumpPow, ForceMode.Impulse);
-            
             isJump = true;
             ++curJump;
             ani.SetBool("isJump", true);
             jumpTime = 0;
             jumpPow = minJump;
+            
         }
         if (isJump)
         {
             if(Input.GetKey(KeyCode.LeftArrow)||
                 Input.GetKey(KeyCode.RightArrow))
-                transform.Translate(0, 0, 4*Time.deltaTime);
+                transform.Translate(0, 0, 4 * Time.deltaTime);
             
         }
     }
