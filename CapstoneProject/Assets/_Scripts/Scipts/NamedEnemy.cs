@@ -21,15 +21,15 @@ public class NamedEnemy : Enemy
 
     int player_Damaged_Value = 0;//플레이어가 가하는 데미지 저장
 
-    //Rigidbody monsterRigidbody;
+    Rigidbody monsterRigidbody;
 
-    //Vector3 direction;
+    Vector3 direction;
 
 
     private void Start()
     {
         Init();
-        //monsterRigidbody = GetComponent<Rigidbody>();
+        monsterRigidbody = GetComponent<Rigidbody>();
     }
 
 
@@ -55,8 +55,8 @@ public class NamedEnemy : Enemy
             player_Damaged_Value = collision.gameObject.GetComponent<ModeManager>().GetAttackDamage();
             Monster_Damaged(player_Damaged_Value);
 
-            //direction = (transform.position - collision.transform.position).normalized;
-            //monsterRigidbody.AddForce(direction * 3.0f, ForceMode.Impulse);
+            direction = (transform.position - collision.transform.position).normalized;
+            monsterRigidbody.AddForce(direction * 3.0f, ForceMode.Impulse);
         }
 
 
