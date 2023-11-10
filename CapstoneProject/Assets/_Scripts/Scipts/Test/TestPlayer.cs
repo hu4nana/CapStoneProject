@@ -6,6 +6,36 @@ using UnityEngine;
 
 public class TestPlayer : MonoBehaviour
 {
+    [SerializeField] float maxHp;
+    float curHp;
+    [SerializeField] float maxMp;
+    float curMp;
+    ModeType mode = 0;
+
+    public float GetCurHp()
+    {
+        return curHp;
+    }
+    public void SetCurHp(float value)
+    {
+        this.curHp = value;
+    }
+    public float GetCurMp()
+    {
+        return curMp;
+    }
+    public void SetCurMp(float value)
+    {
+        this.curMp = value;
+    }
+    public ModeType GetCurMode()
+    {
+        return mode;
+    }
+    public void SetCurMode(ModeType value)
+    {
+        mode = value;
+    }
     Animator ani;
     Rigidbody rigid;
     WeaponManager weaponManager;
@@ -19,10 +49,12 @@ public class TestPlayer : MonoBehaviour
     int maxJump=1;
     int curJump=0;
 
+    /* 성준님 코드 원본 */
     ModeManager modeManager;//모드매니저 객체
     ModeBase modeA;
     ModeBase modeB;
     ModeBase modeC;
+    /* 성준님 코드 원본 */
     // Start is called before the first frame update
     void Start()
     {
@@ -31,9 +63,11 @@ public class TestPlayer : MonoBehaviour
         rigid=GetComponent<Rigidbody>();
 
         modeManager = GetComponent<ModeManager>();//modeManager에 컴포넌트를 받아와서 초기화
+        /* 성준님 코드 원본 */
         modeA = new GreatSwordMode();
         modeB = new DuelBladeMode();
         modeC = new HandCannonMode();
+        /* 성준님 코드 원본 */
     }
 
     // Update is called once per frame
@@ -151,6 +185,8 @@ public class TestPlayer : MonoBehaviour
             }
         }
     }
+
+    /* 성준님 코드 원본 */
     void ModeChange()//모드변경 메서드
     {
         if (Input.GetKeyDown(InputManager.GetGreatSwordModeKey()))//A버튼 입력을 받아서
@@ -166,6 +202,8 @@ public class TestPlayer : MonoBehaviour
             modeManager.SetMode(modeC);//총모드로 변환
         }
     }
+    /* 성준님 코드 원본 */
+
     public interface IEffect
     {
         public void PlayComboAttackEffects();
