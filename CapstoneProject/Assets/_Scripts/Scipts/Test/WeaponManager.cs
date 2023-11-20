@@ -7,14 +7,29 @@ public class WeaponManager : MonoBehaviour
 {
     public BaseWeapon Weapon { get; private set; }
     private GameObject weaponObject;
-    private List<GameObject> weapons = new List<GameObject>();
-    public void RegisterWeapon(GameObject weapon)
+    public List<GameObject> weapons = new List<GameObject>();
+    //private List<GameObject> weapons = new List<GameObject>();
+
+    public void ChangeWeapon(GameObject weapon)
     {
-        if(!weapons.Contains(weapon))
+        for(int i=0; i< weapons.Count; i++)
         {
-            BaseWeapon weaponInfo=weapon.GetComponent<BaseWeapon>();
-            weapons.Add(weapon);
-            weapon.SetActive(false);
+            if (weapons[i] == weapon)
+                SetWeapon(weapons[i]);
+            else
+                weapons[i].SetActive(false);
+        }
+    }
+    public void WeaponAttack()
+    {
+        Weapon.Attack();
+    }
+    public void UnRegisterWeapon(GameObject weapon)
+    {
+        if (weapons.Contains(weapon))
+        {
+            weaponObject = weapon;
+            weaponObject.SetActive(false);
         }
     }
     public void SetWeapon(GameObject weapon)
@@ -38,7 +53,6 @@ public class WeaponManager : MonoBehaviour
                 Tester.Instance.animator.runtimeAnimatorController = Weapon.WeaponAnimator;
                 continue;
             }
-            weapons[i].SetActive(false);
         }
         
     }
