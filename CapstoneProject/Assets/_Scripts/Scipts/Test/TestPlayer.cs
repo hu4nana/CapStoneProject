@@ -103,15 +103,14 @@ public class TestPlayer : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.X))
         {
-            switch (weaponManager.Weapon.Core)
-            {
-                case CoreType.Yellow: break;
-                case CoreType.Magenta: break;
-                case CoreType.Saian: break;
+            //switch (weaponManager.Weapon.Core)
+            //{
+            //    case CoreType.Yellow: break;
+            //    case CoreType.Magenta: break;
+            //    case CoreType.Saian: break;
+            //}
 
-            }
-
-            weaponManager.WeaponAttack();
+            //weaponManager.WeaponAttack();
             transform.rotation = Quaternion.Euler(0, 90 * dir, 0);
             isAttack = true;
             curCombo++;
