@@ -2,17 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Weapon2 : MonoBehaviour
+public class Weapon2 : BaseWeapon
 {
-    // Start is called before the first frame update
-    void Start()
+    
+    public override void Attack()
     {
-        
+        Debug.Log(_name + " 공격 중");
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void Skill()
     {
-        
+        Debug.Log(_name + " 스킬 사용");
     }
 }

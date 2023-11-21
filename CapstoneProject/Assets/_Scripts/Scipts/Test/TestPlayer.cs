@@ -2,40 +2,30 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class TestPlayer : MonoBehaviour
 {
     [SerializeField] float maxHp;
-    float curHp;
     [SerializeField] float maxMp;
-    float curMp;
+    public float curHp { get; set; }
+    public float curMp { get; set; }
     ModeType mode = 0;
 
-    public float GetCurHp()
-    {
-        return curHp;
-    }
-    public void SetCurHp(float value)
-    {
-        this.curHp = value;
-    }
-    public float GetCurMp()
-    {
-        return curMp;
-    }
-    public void SetCurMp(float value)
-    {
-        this.curMp = value;
-    }
-    public ModeType GetCurMode()
-    {
-        return mode;
-    }
-    public void SetCurMode(ModeType value)
-    {
-        mode = value;
-    }
+    bool isWall = false;
+    bool isFloor = false;
+    [SerializeField]
+    protected Transform floorCheck;
+    [SerializeField]
+    protected Transform wallCheck;
+    [SerializeField]
+    protected LayerMask w_Layer;
+    [SerializeField]
+    protected LayerMask f_Layer;
+
+
     Animator ani;
     Rigidbody rigid;
     WeaponManager weaponManager;
@@ -54,9 +44,24 @@ public class TestPlayer : MonoBehaviour
     //ModeBase modeA;
     //ModeBase modeB;
     //ModeBase modeC;
+    //void ModeChange()//모드변경 메서드
+    //{
+    //    if (Input.GetKeyDown(InputManager.GetGreatSwordModeKey()))//A버튼 입력을 받아서
+    //    {
+    //        modeManager.SetMode(modeA); // 대검모드로 변환
+    //    }
+    //    else if (Input.GetKeyDown(InputManager.GetDualBladeModeKey()))//S버튼을 입력받아서
+    //    {
+    //        modeManager.SetMode(modeB);//쌍검모드로 전환
+    //    }
+    //    else if (Input.GetKeyDown(InputManager.GetHandCannonKey()))//D버튼을 입력받아서
+    //    {
+    //        modeManager.SetMode(modeC);//총모드로 변환
+    //    }
+    //}
     /* 성준님 코드 원본 */
 
-    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -64,6 +69,8 @@ public class TestPlayer : MonoBehaviour
         ani=GetComponentInChildren<Animator>();
         rigid=GetComponent<Rigidbody>();
         weaponManager.ChangeWeapon(weaponManager.weapons[0]);
+        curHp = maxHp;
+        curMp = maxMp;
         //modeManager = GetComponent<ModeManager>();//modeManager에 컴포넌트를 받아와서 초기화
         /* 성준님 코드 원본 */
         //modeA = new GreatSwordMode();
@@ -80,6 +87,7 @@ public class TestPlayer : MonoBehaviour
         PlayerAttack();
         PlayerJump();
         WeaponChange();
+        CheckWallAndGroundCollision();
         //ModeChange();
         //if (Input.GetKeyDown(InputManager.GetAttackKey())) // 공격 입력체크
         //{
@@ -95,6 +103,14 @@ public class TestPlayer : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.X))
         {
+            switch (weaponManager.Weapon.Core)
+            {
+                case CoreType.Yellow: break;
+                case CoreType.Magenta: break;
+                case CoreType.Saian: break;
+
+            }
+
             weaponManager.WeaponAttack();
             transform.rotation = Quaternion.Euler(0, 90 * dir, 0);
             isAttack = true;
@@ -123,7 +139,7 @@ public class TestPlayer : MonoBehaviour
     }
     void PlayerJump()
     {
-        float jumpTimer = 0.2f;
+        float jumpTimer = 0.4f;
         //float minJump = 5;
         //float maxJump = 8;
         //if(Input.GetKeyDown(KeyCode.V))
@@ -155,7 +171,7 @@ public class TestPlayer : MonoBehaviour
         //        transform.Translate(0, 0, 4 * Time.deltaTime);
 
         //}
-        Vector3 jumpPow = new Vector3(rigid.velocity.x, 4, rigid.velocity.z);
+        Vector3 jumpPow = new Vector3(rigid.velocity.x, 6, rigid.velocity.z);
         if (Input.GetKeyDown(InputManager.GetJumpKey()))
         {
             isJump = true;
@@ -175,7 +191,7 @@ public class TestPlayer : MonoBehaviour
             isJump = false;
             jumpTime = 0;
         }
-        if (rigid.velocity.y!=0)
+        if (rigid.velocity.y!=0&&!isWall)
         {
             if (Input.GetKey(KeyCode.LeftArrow) ||
                 Input.GetKey(KeyCode.RightArrow))
@@ -217,23 +233,6 @@ public class TestPlayer : MonoBehaviour
         }
     }
 
-    /* 성준님 코드 원본 */
-    //void ModeChange()//모드변경 메서드
-    //{
-    //    if (Input.GetKeyDown(InputManager.GetGreatSwordModeKey()))//A버튼 입력을 받아서
-    //    {
-    //        modeManager.SetMode(modeA); // 대검모드로 변환
-    //    }
-    //    else if (Input.GetKeyDown(InputManager.GetDualBladeModeKey()))//S버튼을 입력받아서
-    //    {
-    //        modeManager.SetMode(modeB);//쌍검모드로 전환
-    //    }
-    //    else if (Input.GetKeyDown(InputManager.GetHandCannonKey()))//D버튼을 입력받아서
-    //    {
-    //        modeManager.SetMode(modeC);//총모드로 변환
-    //    }
-    //}
-    /* 성준님 코드 원본 */
     void WeaponChange()
     {
         if (Input.GetKeyDown(InputManager.GetGreatSwordModeKey()))//A버튼 입력을 받아서
@@ -242,11 +241,29 @@ public class TestPlayer : MonoBehaviour
         }
         else if (Input.GetKeyDown(InputManager.GetDualBladeModeKey()))//S버튼을 입력받아서
         {
-            weaponManager.ChangeWeapon(weaponManager.weapons[0]);
+            weaponManager.ChangeWeapon(weaponManager.weapons[1]);
         }
         else if (Input.GetKeyDown(InputManager.GetHandCannonKey()))//D버튼을 입력받아서
         {
             weaponManager.ChangeWeapon(weaponManager.weapons[0]);
+        }
+    }
+    void CheckWallAndGroundCollision()
+    {
+        // 플레이어의 위치와 방향을 기반으로 레이캐스트를 발사하여 충돌 검사
+        RaycastHit hitInfo;
+        isFloor = Physics.Raycast(floorCheck.position, Vector3.down, out hitInfo, 0.5f,f_Layer);
+        isWall = Physics.Raycast(transform.position, transform.forward, out hitInfo, 0.5f,w_Layer);
+        if (Physics.Raycast(floorCheck.position, Vector3.down, out hitInfo, 0.1f))
+        {
+            // 바닥과 충돌
+            Debug.Log("플레이어가 바닥에 닿아있습니다.");
+        }
+
+        if (Physics.Raycast(transform.position, transform.forward, out hitInfo, 0.5f))
+        {
+            // 벽과 충돌
+            Debug.Log("플레이어가 벽에 닿아있습니다.");
         }
     }
     public interface IEffect
@@ -263,8 +280,11 @@ public class TestPlayer : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-        ani.SetBool("isJump", false);
-        curJump = 0;
-        isJump = false;
+        if (isFloor)
+        {
+            ani.SetBool("isJump", false);
+            curJump = 0;
+            isJump = false;
+        }
     }
 }
