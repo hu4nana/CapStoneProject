@@ -16,7 +16,7 @@ public class NamedEnemy : Enemy
 
     bool isMonsterAlive;      //몬스터 살아있는지 체크
 
-    public GameObject[] monster_Core = new GameObject[3];
+    public GameObject[] monster_Core;
     Core[] core = new Core[3]; //코어생성
 
     int player_Damaged_Value = 0;//플레이어가 가하는 데미지 저장
@@ -35,9 +35,15 @@ public class NamedEnemy : Enemy
 
     private void Update()
     {
-        IsCoreDead(core[0]);
-        IsCoreDead(core[1]);
-        IsCoreDead(core[2]);
+
+        foreach (Core cores in core)
+        {
+            IsCoreDead(cores);
+        }
+
+        //IsCoreDead(core[0]);
+        //IsCoreDead(core[1]);
+        //IsCoreDead(core[2]);
 
         if (cur_BreakPoint >= GetMaxBreakPoint())
         {
@@ -84,9 +90,9 @@ public class NamedEnemy : Enemy
         {
             cores.Init();
         }
-        core[0].Set_CoreType(CoreType.Magenta);
-        core[1].Set_CoreType(CoreType.Yellow);
-        core[2].Set_CoreType(CoreType.Saian);
+        //core[0].Set_CoreType(CoreType.Magenta);
+        //core[1].Set_CoreType(CoreType.Yellow);
+        //core[2].Set_CoreType(CoreType.Saian);
 
         //cur_BreakPoint = max_BreakPoint;
         isMonsterAlive = true;
@@ -114,18 +120,31 @@ public class NamedEnemy : Enemy
     {
         cur_Monster_Hp = hp;
     }
+
     public void SetMaxBreakPoint(int maxBreakPoint)//보스 최대 BreakPoint세팅
     {
         max_BreakPoint = maxBreakPoint;
     }
     private void IsCoreDead(Core core)//코어죽었는지 체크
     {
-        if (!core.GetCoreAlive())
+        if (!core.GetCoreAlive() && core.GetIsCoreActive())
         {
-            core.SetDeactiveCore();
+            
+
             max_BreakPoint -= 25;
+            if (max_BreakPoint <= 0)
+            {
+                max_BreakPoint = 0;
+            }
+
+            core.SetDeactiveCore();
         }
+
         cur_CoreCount -= 1;
+        if (cur_CoreCount < 0)
+        {
+            cur_CoreCount = 0;
+        }
     }
     private void ReviveCore()//코어 3개 부활
     {

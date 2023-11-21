@@ -241,6 +241,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b01e402a83dad5d4f9405498c5d2ac25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  coreType: 0
 --- !u!1 &179180723
 GameObject:
   m_ObjectHideFlags: 0
@@ -2582,6 +2583,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b01e402a83dad5d4f9405498c5d2ac25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  coreType: 0
 --- !u!65 &632901226
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2873,6 +2875,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b01e402a83dad5d4f9405498c5d2ac25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  coreType: 0
 --- !u!65 &1338980755
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3046,9 +3049,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   monster_Core:
-  - {fileID: 100371764}
-  - {fileID: 1338980752}
   - {fileID: 632901224}
+  - {fileID: 1338980752}
+  - {fileID: 100371764}
 --- !u!65 &1379638806
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3427,7 +3430,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1921139407
 MonoBehaviour:
   m_ObjectHideFlags: 0

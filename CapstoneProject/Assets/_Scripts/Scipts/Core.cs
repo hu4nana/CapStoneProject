@@ -11,7 +11,9 @@ public class Core : MonoBehaviour
 
     bool isCoreAlive = true; // 코어살아있는지 체크
 
-    CoreType coreType; // 코어타입
+    bool isAcitveCore = false;
+
+    public CoreType coreType; // 코어타입
     CoreType playerType;//플레이어의 코어타입
 
 
@@ -61,6 +63,7 @@ public class Core : MonoBehaviour
 
     public void Init()//코어초기설정
     {
+        isAcitveCore = true;
         cur_Core_Hp = max_Core_Hp;
         coreType = CoreType.Magenta;
         isCoreAlive = true;
@@ -124,10 +127,19 @@ public class Core : MonoBehaviour
     }
     public void SetActiveCore()
     {
+        isAcitveCore = true;
         this.gameObject.SetActive(true);
+
     }
     public void SetDeactiveCore()
     {
+        isAcitveCore = false;
         this.gameObject.SetActive(false);
+    }
+
+
+    public bool GetIsCoreActive()
+    {
+        return isAcitveCore;
     }
 }
