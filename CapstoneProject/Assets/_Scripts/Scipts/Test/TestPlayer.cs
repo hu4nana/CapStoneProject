@@ -26,16 +26,16 @@ public class TestPlayer : MonoBehaviour
     protected LayerMask f_Layer;
 
 
-    Animator ani;
+    public Animator ani { get; set; }
     Rigidbody rigid;
     WeaponManager weaponManager;
     //dir = 1 right, dir = -1 left
     float dir = 1;
     float curCombo = 0;
-    bool isAttack = false;
-    bool isJump = false;
+    public bool isDash { get; set; }
+    public bool isAttack {get;set;}
+    public bool isJump { get; set; }
     float jumpTime=0;
-    float jumpPow;
     int maxJump=1;
     int curJump=0;
 
@@ -114,7 +114,7 @@ public class TestPlayer : MonoBehaviour
             transform.rotation = Quaternion.Euler(0, 90 * dir, 0);
             isAttack = true;
             curCombo++;
-            ani.SetBool("isAttack", isAttack);
+            //ani.SetBool("isAttack", isAttack);
             ani.SetInteger("AttackCombo", (int)curCombo);
             
             //ani.SetFloat("curCombo", curCombo);
@@ -129,11 +129,13 @@ public class TestPlayer : MonoBehaviour
 
         if (ani.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.4f)
         {
-            ani.SetBool("isAttack", false);
+            isAttack = false;
+            
             ani.SetInteger("AttackCombo", 0);
             curCombo = 0;
         }
-        
+        ani.SetBool("isAttack", isAttack);
+
 
     }
     void PlayerJump()
@@ -171,10 +173,11 @@ public class TestPlayer : MonoBehaviour
 
         //}
         Vector3 jumpPow = new Vector3(rigid.velocity.x, 6, rigid.velocity.z);
-        if (Input.GetKeyDown(InputManager.GetJumpKey()))
+        if (Input.GetKeyDown(InputManager.GetJumpKey())&&curJump<=maxJump)
         {
             isJump = true;
             rigid.velocity = jumpPow;
+            curJump++;
             ani.SetBool("isJump", true);
         }
         if (isJump&&Input.GetKey(InputManager.GetJumpKey()))
@@ -199,7 +202,7 @@ public class TestPlayer : MonoBehaviour
     }
     void PlayerMove()
     {
-        if (InputManager.GetIsCanInput()&&InputManager.GetHorizontal() != 0)
+        if (!isAttack&&InputManager.GetIsCanInput()&&InputManager.GetHorizontal() != 0)
         {
             dir=InputManager.GetHorizontal();
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(
@@ -216,20 +219,25 @@ public class TestPlayer : MonoBehaviour
     void PlayerDash()
     {
         if (Input.GetKeyDown(KeyCode.C)){
-            ani.SetBool("isDash", true);
+            isDash = true;
+            
+            rigid.velocity = Vector3.zero;
             //gameObject.layer = 0;
             rigid.useGravity = false;
             InputManager.SetIsCanInput(false);
         }
         if (ani.GetCurrentAnimatorStateInfo(0).IsName("Dash")){
+
             if (ani.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.9f)
             {
                 Debug.Log("¤±");
                 InputManager.SetIsCanInput(true);
-                ani.SetBool("isDash", false);
+                isDash = false;
                 rigid.useGravity = true;
             }
         }
+        ani.SetBool("isDash", isDash);
+
     }
 
     void WeaponChange()

@@ -5,6 +5,9 @@ using UnityEngine;
 
 public abstract class BaseWeapon : MonoBehaviour
 {
+    public bool isAttack { get; set; }
+    public int curCombo { get; set; }
+
     public int ComboCount { get; set; }
     public int MaxComboCount { get; set; }
     

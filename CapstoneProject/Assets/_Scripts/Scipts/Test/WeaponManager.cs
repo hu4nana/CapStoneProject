@@ -8,6 +8,7 @@ public class WeaponManager : MonoBehaviour
     public BaseWeapon Weapon { get; private set; }
     private GameObject weaponObject;
     public List<GameObject> weapons = new List<GameObject>();
+    public TestPlayer testPlayer;
     //private List<GameObject> weapons = new List<GameObject>();
 
     public void ChangeWeapon(GameObject weapon)
@@ -27,6 +28,10 @@ public class WeaponManager : MonoBehaviour
     public void WeaponAttack()
     {
         Weapon.Attack();
+        if (testPlayer.isAttack == false)
+        {
+            weaponObject.SetActive(false);
+        }
     }
     public void UnRegisterWeapon(GameObject weapon)
     {
@@ -55,7 +60,9 @@ public class WeaponManager : MonoBehaviour
             weaponObject = weapon;
             Weapon=weapon.GetComponent<BaseWeapon> ();
             weaponObject.SetActive(true);
+            //testPlayer.ani.runtimeAnimatorController = Weapon.WeaponAnimator;
             //Tester.Instance.animator.runtimeAnimatorController = Weapon.WeaponAnimator;
+
             return;
         }
 
@@ -66,6 +73,7 @@ public class WeaponManager : MonoBehaviour
                 weaponObject = weapon;
                 weaponObject.SetActive(true);
                 Weapon = weapon.GetComponent<BaseWeapon>();
+                //testPlayer.ani.runtimeAnimatorController = Weapon.WeaponAnimator;
                 //Tester.Instance.animator.runtimeAnimatorController = Weapon.WeaponAnimator;
                 continue;
             }
