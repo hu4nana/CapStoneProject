@@ -1310,7 +1310,7 @@ SphereCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Radius: 0.05
   m_Center: {x: 0, y: 0, z: 0}
@@ -1887,7 +1887,7 @@ Transform:
   m_GameObject: {fileID: 1458847296}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.09, z: 0}
+  m_LocalPosition: {x: 0, y: 0.12, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1964,6 +1964,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1458847296}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1614231592
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1614231593}
+  m_Layer: 0
+  m_Name: Sheath
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1614231593
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1614231592}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: -0.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1400826366}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1619755605 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5771797030906886346, guid: c93d7e8b0746d4440af579bf5d422d51,
@@ -2228,14 +2259,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e8d18b313e26e446876a6c1c74f023b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Player: {fileID: 0}
+  Player: {fileID: 2139886744}
   weaponAnimator: {fileID: 22100000, guid: 89f122ea150a56b48ae6776d39ae27dd, type: 2}
   _name: DuelBlades
   attackDamage: 4
   attackSpeed: 0
   attackRange: 0
   skillCost: 0
-  normalizedTime: 0
+  normalizedTime: 0.5
   core: 0
 --- !u!1 &1872157362
 GameObject:
@@ -2524,6 +2555,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 878471209451058168, guid: c93d7e8b0746d4440af579bf5d422d51,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 976212896897992274, guid: c93d7e8b0746d4440af579bf5d422d51,
         type: 3}
       propertyPath: m_IsActive
@@ -2548,6 +2584,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: MANUKA_lilToon_Assemble
+      objectReference: {fileID: 0}
+    - target: {fileID: 4454243522142818639, guid: c93d7e8b0746d4440af579bf5d422d51,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4735713780076674590, guid: c93d7e8b0746d4440af579bf5d422d51,
         type: 3}
@@ -2718,6 +2759,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 312340779}
+    - targetCorrespondingSourceObject: {fileID: 5877731962335890320, guid: c93d7e8b0746d4440af579bf5d422d51,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1614231593}
     - targetCorrespondingSourceObject: {fileID: 5771797030906886346, guid: c93d7e8b0746d4440af579bf5d422d51,
         type: 3}
       insertIndex: 1

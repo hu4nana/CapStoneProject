@@ -188,7 +188,7 @@ public class TestPlayer : MonoBehaviour
             isJump = false;
             jumpTime = 0;
         }
-        if (rigid.velocity.y!=0&&!isWall)
+        if (!isWall&&rigid.velocity.y!=0)
         {
             if (Input.GetKey(KeyCode.LeftArrow) ||
                 Input.GetKey(KeyCode.RightArrow))
@@ -208,7 +208,6 @@ public class TestPlayer : MonoBehaviour
         if (InputManager.GetHorizontal() == 0)
         {
             ani.SetBool("isWalk", false);
-
         }
     }
     void PlayerDash()
@@ -254,14 +253,20 @@ public class TestPlayer : MonoBehaviour
     {
         // 플레이어의 위치와 방향을 기반으로 레이캐스트를 발사하여 충돌 검사
         RaycastHit hitInfo;
-        isFloor = Physics.Raycast(floorCheck.position, Vector3.down, out hitInfo, 0.5f,f_Layer);
+        isFloor = Physics.Raycast(floorCheck.position, Vector3.down, out hitInfo, 0.1f);
         isWall = Physics.Raycast(transform.position, transform.forward, out hitInfo, 0.5f,w_Layer);
         if (Physics.Raycast(floorCheck.position, Vector3.down, out hitInfo, 0.1f))
         {
             // 바닥과 충돌
             Debug.Log("플레이어가 바닥에 닿아있습니다.");
         }
-
+        if (isFloor)
+        {
+            ani.SetBool("isJump", false);
+            curJump = 0;
+            isJump = false;
+        }
+        
         if (Physics.Raycast(transform.position, transform.forward, out hitInfo, 0.5f))
         {
             // 벽과 충돌
@@ -282,11 +287,11 @@ public class TestPlayer : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-        if (isFloor)
-        {
-            ani.SetBool("isJump", false);
-            curJump = 0;
-            isJump = false;
-        }
+        //if (isFloor)
+        //{
+        //    ani.SetBool("isJump", false);
+        //    curJump = 0;
+        //    isJump = false;
+        //}
     }
 }

@@ -7,7 +7,11 @@ public class Weapon2 : BaseWeapon
     
     public override void Attack()
     {
-        Debug.Log(_name + " АјАн Сп");
+        TestPlayer testPlayer = Player.GetComponent<TestPlayer>();
+
+        testPlayer.isAttack = true;
+        testPlayer.curCombo++;
+        testPlayer.ani.SetInteger("AttackCombo", (int)testPlayer.curCombo);
     }
 
     public override void Skill()

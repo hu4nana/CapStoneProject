@@ -45,6 +45,11 @@ public  class BaseWeapon : MonoBehaviour
     public virtual void Attack()
     {
         Debug.Log("Virtual Attack...");
+        TestPlayer testPlayer = Player.GetComponent<TestPlayer>();
+
+        testPlayer.isAttack = true;
+        testPlayer.curCombo++;
+        //testPlayer.ani.SetInteger("AttackCombo", (int)testPlayer.curCombo);
     }
     public virtual void Skill()
     {

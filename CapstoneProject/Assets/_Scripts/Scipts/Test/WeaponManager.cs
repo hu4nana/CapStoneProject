@@ -12,18 +12,6 @@ public class WeaponManager : MonoBehaviour
     public float NormalizedTime { get { return weaponObject.
                 GetComponent<BaseWeapon>().NormalizedTime; } }
     //private List<GameObject> weapons = new List<GameObject>();
-
-    private void Update()
-    {
-        if (testPlayer.isAttack)
-        {
-            weaponObject.SetActive(true);
-        }
-        else
-        {
-            weaponObject.SetActive(false);
-        }
-    }
     public void ChangeWeapon(GameObject weapon)
     {
         for(int i=0; i< weapons.Count; i++)
