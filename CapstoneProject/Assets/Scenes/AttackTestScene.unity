@@ -1162,12 +1162,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e8d18b313e26e446876a6c1c74f023b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Player: {fileID: 0}
   weaponAnimator: {fileID: 0}
   _name: DuelBlades
   attackDamage: 4
   attackSpeed: 0
   attackRange: 0
   skillCost: 0
+  normalizedTime: 0
   core: 0
 --- !u!1 &494560375
 GameObject:
@@ -2226,12 +2228,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e8d18b313e26e446876a6c1c74f023b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponAnimator: {fileID: 0}
+  Player: {fileID: 0}
+  weaponAnimator: {fileID: 22100000, guid: 89f122ea150a56b48ae6776d39ae27dd, type: 2}
   _name: DuelBlades
   attackDamage: 4
   attackSpeed: 0
   attackRange: 0
   skillCost: 0
+  normalizedTime: 0
   core: 0
 --- !u!1 &1872157362
 GameObject:
@@ -2600,6 +2604,32 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6041936186428306381, guid: c93d7e8b0746d4440af579bf5d422d51,
+        type: 3}
+      propertyPath: Player
+      value: 
+      objectReference: {fileID: 2139886744}
+    - target: {fileID: 6041936186428306381, guid: c93d7e8b0746d4440af579bf5d422d51,
+        type: 3}
+      propertyPath: testPlayer
+      value: 
+      objectReference: {fileID: 2139886753}
+    - target: {fileID: 6041936186428306381, guid: c93d7e8b0746d4440af579bf5d422d51,
+        type: 3}
+      propertyPath: attackSpeed
+      value: 1.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 6041936186428306381, guid: c93d7e8b0746d4440af579bf5d422d51,
+        type: 3}
+      propertyPath: normalizedTime
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 6041936186428306381, guid: c93d7e8b0746d4440af579bf5d422d51,
+        type: 3}
+      propertyPath: weaponAnimator
+      value: 
+      objectReference: {fileID: 22100000, guid: 4fbcffb843e74e54d92b7758586de294,
+        type: 2}
     - target: {fileID: 6675409044609822934, guid: c93d7e8b0746d4440af579bf5d422d51,
         type: 3}
       propertyPath: m_IsActive

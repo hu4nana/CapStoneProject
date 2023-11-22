@@ -31,7 +31,7 @@ public class TestPlayer : MonoBehaviour
     WeaponManager weaponManager;
     //dir = 1 right, dir = -1 left
     float dir = 1;
-    float curCombo = 0;
+    public float curCombo { get; set; }
     public bool isDash { get; set; }
     public bool isAttack {get;set;}
     public bool isJump { get; set; }
@@ -103,38 +103,33 @@ public class TestPlayer : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.X))
         {
-            //switch (weaponManager.Weapon.Core)
-            //{
-            //    case CoreType.Yellow: break;
-            //    case CoreType.Magenta: break;
-            //    case CoreType.Saian: break;
-            //}
-
-            //weaponManager.WeaponAttack();
+            weaponManager.WeaponAttack();
             transform.rotation = Quaternion.Euler(0, 90 * dir, 0);
-            isAttack = true;
-            curCombo++;
-            //ani.SetBool("isAttack", isAttack);
-            ani.SetInteger("AttackCombo", (int)curCombo);
-            
-            //ani.SetFloat("curCombo", curCombo);
-        }
-        //if (ani.GetCurrentAnimatorStateInfo(0).IsName("AttackTree")&&
-        //    ani.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
-        //{
-        //    ani.SetBool("isAttack", false);
-        //    ani.SetFloat("curCombo", 0);
-        //    curCombo = 0;
-        //}
+            //isAttack = true;
+            //curCombo++;
 
-        if (ani.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.4f)
+            //ani.SetInteger("AttackCombo", (int)curCombo);
+
+
+        }
+        if (ani.GetCurrentAnimatorStateInfo(0).normalizedTime >=
+                weaponManager.NormalizedTime)
         {
             isAttack = false;
-            
+
             ani.SetInteger("AttackCombo", 0);
             curCombo = 0;
         }
+
         ani.SetBool("isAttack", isAttack);
+        //if (ani.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
+        //{
+        //    isAttack = false;
+
+        //    ani.SetInteger("AttackCombo", 0);
+        //    curCombo = 0;
+        //}
+        //ani.SetBool("isAttack", isAttack);
 
 
     }

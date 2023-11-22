@@ -3,14 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class BaseWeapon : MonoBehaviour
+public  class BaseWeapon : MonoBehaviour
 {
-    public bool isAttack { get; set; }
-    public int curCombo { get; set; }
-
     public int ComboCount { get; set; }
     public int MaxComboCount { get; set; }
-    
+    public float NormalizedTime { get { return normalizedTime; } }
+    public GameObject Player;
     public RuntimeAnimatorController WeaponAnimator { get { return weaponAnimator; } }
     public string Name { get { return _name; } }
     public float AttackDamage { get { return attackDamage; } }
@@ -27,6 +25,7 @@ public abstract class BaseWeapon : MonoBehaviour
     [SerializeField] protected float attackSpeed;
     [SerializeField] protected float attackRange;
     [SerializeField] protected float skillCost;
+    [SerializeField] protected float normalizedTime;
     [SerializeField] protected CoreType core;
 
 
@@ -43,7 +42,13 @@ public abstract class BaseWeapon : MonoBehaviour
         this.core = core;
     }
 
-    public abstract void Attack();
-    public abstract void Skill();
+    public virtual void Attack()
+    {
+        Debug.Log("Virtual Attack...");
+    }
+    public virtual void Skill()
+    {
+        Debug.Log("Virtual Skill...");
+    }
     
 }
