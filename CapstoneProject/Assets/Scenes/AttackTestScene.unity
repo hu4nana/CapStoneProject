@@ -1170,6 +1170,7 @@ MonoBehaviour:
   attackRange: 0
   skillCost: 0
   normalizedTime: 0
+  maxCombo: 0
   core: 0
 --- !u!1 &494560375
 GameObject:
@@ -1887,7 +1888,7 @@ Transform:
   m_GameObject: {fileID: 1458847296}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.12, z: 0}
+  m_LocalPosition: {x: 0, y: 0.103, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2267,6 +2268,7 @@ MonoBehaviour:
   attackRange: 0
   skillCost: 0
   normalizedTime: 0.5
+  maxCombo: 0
   core: 0
 --- !u!1 &1872157362
 GameObject:
@@ -2650,6 +2652,11 @@ PrefabInstance:
       propertyPath: Player
       value: 
       objectReference: {fileID: 2139886744}
+    - target: {fileID: 6041936186428306381, guid: c93d7e8b0746d4440af579bf5d422d51,
+        type: 3}
+      propertyPath: maxCombo
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6041936186428306381, guid: c93d7e8b0746d4440af579bf5d422d51,
         type: 3}
       propertyPath: testPlayer

@@ -103,6 +103,8 @@ public class TestPlayer : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.X))
         {
+            isAttack = true;
+
             weaponManager.WeaponAttack();
             transform.rotation = Quaternion.Euler(0, 90 * dir, 0);
             //isAttack = true;
@@ -113,7 +115,7 @@ public class TestPlayer : MonoBehaviour
 
         }
         if (ani.GetCurrentAnimatorStateInfo(0).normalizedTime >=
-                weaponManager.NormalizedTime)
+                weaponManager.NormalizedTime||(isJump||isDash))
         {
             isAttack = false;
 
@@ -205,7 +207,7 @@ public class TestPlayer : MonoBehaviour
             transform.position = new Vector3(transform.position.x, transform.position.y, 0);
             ani.SetBool("isWalk", true);
         }
-        if (InputManager.GetHorizontal() == 0)
+        if (InputManager.GetHorizontal() == 0||isAttack)
         {
             ani.SetBool("isWalk", false);
         }

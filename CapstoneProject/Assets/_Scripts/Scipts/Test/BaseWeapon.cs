@@ -6,7 +6,7 @@ using UnityEngine;
 public  class BaseWeapon : MonoBehaviour
 {
     public int ComboCount { get; set; }
-    public int MaxComboCount { get; set; }
+    public int MaxCombo { get { return maxCombo; } }
     public float NormalizedTime { get { return normalizedTime; } }
     public GameObject Player;
     public RuntimeAnimatorController WeaponAnimator { get { return weaponAnimator; } }
@@ -26,6 +26,7 @@ public  class BaseWeapon : MonoBehaviour
     [SerializeField] protected float attackRange;
     [SerializeField] protected float skillCost;
     [SerializeField] protected float normalizedTime;
+    [SerializeField] protected int maxCombo;
     [SerializeField] protected CoreType core;
 
 
