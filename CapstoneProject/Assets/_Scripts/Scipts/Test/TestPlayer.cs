@@ -35,8 +35,9 @@ public class TestPlayer : MonoBehaviour
     public bool isDash { get; set; }
     public bool isAttack {get;set;}
     public bool isJump { get; set; }
+    bool isAttacking;
     float jumpTime=0;
-    int maxJump=1;
+    int maxJump=0;
     int curJump=0;
 
     /* 성준님 코드 원본 */
@@ -82,21 +83,13 @@ public class TestPlayer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        PlayerAttack();
         PlayerMove();
         PlayerDash();
-        PlayerAttack();
         PlayerJump();
         WeaponChange();
         CheckWallAndGroundCollision();
         //ModeChange();
-        //if (Input.GetKeyDown(InputManager.GetAttackKey())) // 공격 입력체크
-        //{
-        //    modeManager.Attack();//모드에 따른 공격 실행
-        //}
-        //if (Input.GetKeyDown(InputManager.GetSkillKey()))// 스킬 입력 체크
-        //{
-        //    modeManager.UseSkill();//모드에 따른 스킬 실행
-        //}
     }
 
     void PlayerAttack()
@@ -104,7 +97,6 @@ public class TestPlayer : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.X))
         {
             isAttack = true;
-
             weaponManager.WeaponAttack();
             transform.rotation = Quaternion.Euler(0, 90 * dir, 0);
             //isAttack = true;
@@ -122,7 +114,7 @@ public class TestPlayer : MonoBehaviour
             ani.SetInteger("AttackCombo", 0);
             curCombo = 0;
         }
-
+        InputManager.SetIsCanInput(!isAttack);
         ani.SetBool("isAttack", isAttack);
         //if (ani.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
         //{
@@ -170,14 +162,14 @@ public class TestPlayer : MonoBehaviour
 
         //}
         Vector3 jumpPow = new Vector3(rigid.velocity.x, 6, rigid.velocity.z);
-        if (Input.GetKeyDown(InputManager.GetJumpKey())&&curJump<=maxJump)
+        if (!isDash&&Input.GetKeyDown(InputManager.GetJumpKey())&&curJump<=maxJump)
         {
             isJump = true;
             rigid.velocity = jumpPow;
             curJump++;
             ani.SetBool("isJump", true);
         }
-        if (isJump&&Input.GetKey(InputManager.GetJumpKey()))
+        if (isJump&&!isDash&&Input.GetKey(InputManager.GetJumpKey()))
         {
             rigid.velocity = jumpPow;
             jumpTime += Time.deltaTime;
@@ -207,7 +199,7 @@ public class TestPlayer : MonoBehaviour
             transform.position = new Vector3(transform.position.x, transform.position.y, 0);
             ani.SetBool("isWalk", true);
         }
-        if (InputManager.GetHorizontal() == 0||isAttack)
+        if (isAttack||InputManager.GetHorizontal() == 0)
         {
             ani.SetBool("isWalk", false);
         }
@@ -226,7 +218,7 @@ public class TestPlayer : MonoBehaviour
 
             if (ani.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.9f)
             {
-                Debug.Log("ㅁ");
+                //Debug.Log("ㅁ");
                 InputManager.SetIsCanInput(true);
                 isDash = false;
                 rigid.useGravity = true;
@@ -260,10 +252,11 @@ public class TestPlayer : MonoBehaviour
         if (Physics.Raycast(floorCheck.position, Vector3.down, out hitInfo, 0.1f))
         {
             // 바닥과 충돌
-            Debug.Log("플레이어가 바닥에 닿아있습니다.");
+            
         }
         if (isFloor)
         {
+            Debug.Log("플레이어가 바닥에 닿아있습니다.");
             ani.SetBool("isJump", false);
             curJump = 0;
             isJump = false;

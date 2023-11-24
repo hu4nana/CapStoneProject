@@ -10,6 +10,7 @@ public class Weapon1 : BaseWeapon
     public override void Attack()
     {
         TestPlayer testPlayer = Player.GetComponent<TestPlayer>();
+
         if(testPlayer.curCombo>=maxCombo)
         {
             testPlayer.curCombo = maxCombo;
