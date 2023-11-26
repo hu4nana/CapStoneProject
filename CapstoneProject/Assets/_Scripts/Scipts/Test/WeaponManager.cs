@@ -10,6 +10,7 @@ public class WeaponManager : MonoBehaviour
     private GameObject weaponObject;
     public List<GameObject> weapons = new List<GameObject>();
     public TestPlayer testPlayer;
+    public GameObject leftHand;
     public float NormalizedTime { get { return weaponObject.
                 GetComponent<BaseWeapon>().NormalizedTime; } }
     public float ExitTime
@@ -30,8 +31,13 @@ public class WeaponManager : MonoBehaviour
             else
             {
                 weapons[i].SetActive(false);
+                
                 Weapon = null;
             }
+            if (weapons[1]==weapon)
+                leftHand.SetActive(true);
+            else
+                leftHand.SetActive(false);
         }
     }
     public void WeaponAttack()

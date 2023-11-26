@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Weapon3 : MonoBehaviour
+public class Weapon3 : BaseWeapon
 {
+    [SerializeField] GameObject bullet;
     // Start is called before the first frame update
     void Start()
     {
