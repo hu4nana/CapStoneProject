@@ -26,6 +26,7 @@ public class NamedEnemy : Enemy
     Vector3 direction;
 
 
+
     private void Start()
     {
         Init();
@@ -64,6 +65,7 @@ public class NamedEnemy : Enemy
             direction = (transform.position - collision.transform.position).normalized;
             monsterRigidbody.AddForce(direction * 3.0f, ForceMode.Impulse);
         }
+
 
 
     }
