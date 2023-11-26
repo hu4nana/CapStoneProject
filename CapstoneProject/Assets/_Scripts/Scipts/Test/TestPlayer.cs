@@ -29,9 +29,11 @@ public class TestPlayer : MonoBehaviour
     public Animator ani { get; set; }
     Rigidbody rigid;
     WeaponManager weaponManager;
+    public float Dir { get { return dir; } }
+
     //dir = 1 right, dir = -1 left
     float dir = 1;
-    public float curCombo { get; set; }
+    public int curCombo { get; set; }
     public bool isDash { get; set; }
     public bool isAttack {get;set;}
     public bool isJump { get; set; }
@@ -110,7 +112,6 @@ public class TestPlayer : MonoBehaviour
                 weaponManager.NormalizedTime||(isJump||isDash))
         {
             isAttack = false;
-
             ani.SetInteger("AttackCombo", 0);
             curCombo = 0;
         }

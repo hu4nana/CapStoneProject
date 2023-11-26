@@ -11,16 +11,18 @@ public class Weapon1 : BaseWeapon
     {
         TestPlayer testPlayer = Player.GetComponent<TestPlayer>();
 
+        Animator ani= testPlayer.GetComponent<Animator>();
         if(testPlayer.curCombo>=maxCombo)
         {
             testPlayer.curCombo = maxCombo;
         }
         else
         {
+            SetEffectGenerator(0);
+            PlayEffect();
             testPlayer.curCombo++;
         }
-        
-        testPlayer.ani.SetInteger("AttackCombo",(int)testPlayer.curCombo);
+        testPlayer.ani.SetInteger("AttackCombo",testPlayer.curCombo);
     }
 
     public override void Skill()

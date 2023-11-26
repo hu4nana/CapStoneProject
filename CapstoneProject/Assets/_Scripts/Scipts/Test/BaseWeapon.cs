@@ -20,6 +20,10 @@ public  class BaseWeapon : MonoBehaviour
     
     [Header("무기 정보")]
     [SerializeField] protected RuntimeAnimatorController weaponAnimator;
+    [SerializeField] protected GameObject effectGenerator;
+    [SerializeField] protected ParticleSystem effectParticle;
+    [SerializeField] protected List<Vector3> effectPos=new List<Vector3>();
+    [SerializeField] protected List<Vector3> effectRot=new List<Vector3>();
     [SerializeField] protected string _name;
     [SerializeField] protected float attackDamage;
     [SerializeField] protected float attackSpeed;
@@ -28,6 +32,8 @@ public  class BaseWeapon : MonoBehaviour
     [SerializeField] protected float normalizedTime;
     [SerializeField] protected int maxCombo;
     [SerializeField] protected CoreType core;
+
+    protected bool playedEffect;
 
 
 
@@ -51,6 +57,25 @@ public  class BaseWeapon : MonoBehaviour
         testPlayer.isAttack = true;
         testPlayer.curCombo++;
         //testPlayer.ani.SetInteger("AttackCombo", (int)testPlayer.curCombo);
+    }
+    public void PlayEffect()
+    {
+        if(effectParticle != null)
+        {
+            effectParticle.Play();
+
+            //playedEffect = true;
+        }
+        else
+        {
+            Debug.Log("effectParticle이 존재하지 않음");
+        }
+    }
+    public void SetEffectGenerator(int curCombo)
+    {
+        TestPlayer testPlayer = Player.GetComponent<TestPlayer>();
+        effectGenerator.transform.localPosition= effectPos[curCombo];
+        effectGenerator.transform.localRotation = Quaternion.Euler(effectRot[curCombo]);
     }
     public virtual void Skill()
     {
