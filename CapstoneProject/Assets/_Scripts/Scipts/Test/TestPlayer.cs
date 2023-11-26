@@ -96,7 +96,7 @@ public class TestPlayer : MonoBehaviour
 
     void PlayerAttack()
     {
-        if (Input.GetKeyDown(KeyCode.X))
+        if (isFloor&&Input.GetKeyDown(KeyCode.X))
         {
             isAttack = true;
             weaponManager.WeaponAttack();
@@ -108,13 +108,18 @@ public class TestPlayer : MonoBehaviour
 
 
         }
-        if (ani.GetCurrentAnimatorStateInfo(0).normalizedTime >=
-                weaponManager.NormalizedTime||(isJump||isDash))
+        if (ani.GetCurrentAnimatorStateInfo(0).IsName("Attack_"+(curCombo-1)))
         {
-            isAttack = false;
-            ani.SetInteger("AttackCombo", 0);
-            curCombo = 0;
+            weaponManager.PlayedEffect = false;
+            if (ani.GetCurrentAnimatorStateInfo(0).normalizedTime >=
+                weaponManager.NormalizedTime || (isJump || isDash))
+            {
+                isAttack = false;
+                ani.SetInteger("AttackCombo", 0);
+                curCombo = 0;
+            }
         }
+        
         InputManager.SetIsCanInput(!isAttack);
         ani.SetBool("isAttack", isAttack);
         //if (ani.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
@@ -165,22 +170,16 @@ public class TestPlayer : MonoBehaviour
         Vector3 jumpPow = new Vector3(rigid.velocity.x, 6, rigid.velocity.z);
         if (!isDash&&Input.GetKeyDown(InputManager.GetJumpKey())&&curJump<=maxJump)
         {
-            isJump = true;
             rigid.velocity = jumpPow;
-            curJump++;
-            ani.SetBool("isJump", true);
         }
-        if (isJump&&!isDash&&Input.GetKey(InputManager.GetJumpKey()))
+        if (jumpTime <= jumpTimer&&!isDash&&Input.GetKey(InputManager.GetJumpKey()))
         {
             rigid.velocity = jumpPow;
             jumpTime += Time.deltaTime;
-            if(jumpTime >jumpTimer)
-                isJump = false;
         }
         if (Input.GetKeyUp(InputManager.GetJumpKey()))
         {
             rigid.velocity=rigid.velocity;
-            isJump = false;
             jumpTime = 0;
         }
         if (!isWall&&rigid.velocity.y!=0)
@@ -189,16 +188,19 @@ public class TestPlayer : MonoBehaviour
                 Input.GetKey(KeyCode.RightArrow))
                 transform.Translate(0, 0, 4 * Time.deltaTime);
         }
+        ani.SetBool("isJump", isJump);
     }
     void PlayerMove()
     {
-        if (!isAttack&&InputManager.GetIsCanInput()&&InputManager.GetHorizontal() != 0)
+        if (InputManager.GetIsCanInput()&& (Input.GetKey(KeyCode.LeftArrow)||Input.GetKey(KeyCode.RightArrow)))
         {
-            dir=InputManager.GetHorizontal();
+            if(InputManager.GetHorizontal()!=0)
+                dir=InputManager.GetHorizontal();
+            ani.SetBool("isWalk", true);
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(
      Vector3.right * dir), Time.deltaTime * 24);
             transform.position = new Vector3(transform.position.x, transform.position.y, 0);
-            ani.SetBool("isWalk", true);
+            
         }
         if (isAttack||InputManager.GetHorizontal() == 0)
         {
@@ -241,7 +243,7 @@ public class TestPlayer : MonoBehaviour
         }
         else if (Input.GetKeyDown(InputManager.GetHandCannonKey()))//D버튼을 입력받아서
         {
-            weaponManager.ChangeWeapon(weaponManager.weapons[0]);
+            weaponManager.ChangeWeapon(weaponManager.weapons[2]);
         }
     }
     void CheckWallAndGroundCollision()
@@ -259,8 +261,14 @@ public class TestPlayer : MonoBehaviour
         {
             Debug.Log("플레이어가 바닥에 닿아있습니다.");
             ani.SetBool("isJump", false);
+            jumpTime = 0;
             curJump = 0;
             isJump = false;
+        }
+        else
+        {
+            isJump = true;
+            curJump++;
         }
         
         if (Physics.Raycast(transform.position, transform.forward, out hitInfo, 0.5f))

@@ -12,6 +12,14 @@ public class WeaponManager : MonoBehaviour
     public TestPlayer testPlayer;
     public float NormalizedTime { get { return weaponObject.
                 GetComponent<BaseWeapon>().NormalizedTime; } }
+    public float ExitTime
+    {
+        get { return weaponObject.GetComponent<BaseWeapon>().ExitTime; }}
+    public bool PlayedEffect
+    {
+        get { return weaponObject.GetComponent<BaseWeapon>().PlayedEffect; }
+        set { weaponObject.GetComponent<BaseWeapon>().PlayedEffect = value; }
+    }
     //private List<GameObject> weapons = new List<GameObject>();
     public void ChangeWeapon(GameObject weapon)
     {

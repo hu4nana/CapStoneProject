@@ -16,6 +16,8 @@ public  class BaseWeapon : MonoBehaviour
     public float AttackRange { get { return AttackRange; } }
     public float SkillCost { get { return skillCost; } }
     public CoreType Core { get { return core; } }
+    public bool PlayedEffect { get { return playedEffect; } set {  playedEffect = value; } }
+    public float ExitTime { get { return exitTime; } }
     
     
     [Header("무기 정보")]
@@ -29,9 +31,11 @@ public  class BaseWeapon : MonoBehaviour
     [SerializeField] protected float attackSpeed;
     [SerializeField] protected float attackRange;
     [SerializeField] protected float skillCost;
+    [SerializeField] protected float exitTime;
     [SerializeField] protected float normalizedTime;
     [SerializeField] protected int maxCombo;
     [SerializeField] protected CoreType core;
+    
 
     protected bool playedEffect;
 
@@ -60,11 +64,10 @@ public  class BaseWeapon : MonoBehaviour
     }
     public void PlayEffect()
     {
-        if(effectParticle != null)
+        if(effectParticle != null&&!playedEffect)
         {
             effectParticle.Play();
-
-            //playedEffect = true;
+            playedEffect = true;
         }
         else
         {
