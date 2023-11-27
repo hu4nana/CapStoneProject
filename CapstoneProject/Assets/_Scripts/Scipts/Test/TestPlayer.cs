@@ -99,37 +99,54 @@ public class TestPlayer : MonoBehaviour
         if (isFloor&&Input.GetKeyDown(KeyCode.X))
         {
             isAttack = true;
-            weaponManager.WeaponAttack();
+
+            ani.SetBool("isAttack", true);
             transform.rotation = Quaternion.Euler(0, 90 * dir, 0);
-            //isAttack = true;
-            //curCombo++;
 
-            //ani.SetInteger("AttackCombo", (int)curCombo);
-
-
-        }
-        if (ani.GetCurrentAnimatorStateInfo(0).IsName("Attack_"+(curCombo-1)))
-        {
-            weaponManager.PlayedEffect = false;
-            if (ani.GetCurrentAnimatorStateInfo(0).normalizedTime >=
-                weaponManager.NormalizedTime || (isJump || isDash))
+            if (curCombo >= weaponManager.MaxCombo)
             {
-                isAttack = false;
-                ani.SetInteger("AttackCombo", 0);
-                curCombo = 0;
+                curCombo = weaponManager.MaxCombo;
+                
             }
+            else
+            {
+                ani.SetBool("NextCombo", true);
+                Debug.Log(weaponManager.MaxCombo);
+                //if (ani.GetCurrentAnimatorStateInfo(0).IsName("Attack_" + (curCombo-1)))
+                //{
+                //    weaponManager.PlayedEffect = false;
+                //}
+                weaponManager.PlayedEffect = false;
+                weaponManager.WeaponAttack();
+                curCombo++;
+            }
+            //ani.SetInteger("AttackCombo", curCombo);
         }
         
-        InputManager.SetIsCanInput(!isAttack);
+        if(isAttack&&!(isJump||isDash))
+        {
+            ani.SetBool("AttackEnd", ani.GetCurrentAnimatorStateInfo(0).normalizedTime >= weaponManager.AttackEndTime);
+            if (ani.GetCurrentAnimatorStateInfo(0).normalizedTime <= 0.1f)
+            {
+                ani.SetBool("NextCombo", false);
+            }
+            if (ani.GetCurrentAnimatorStateInfo(0).normalizedTime >=
+                ani.GetFloat("MotionTime"))
+            {
+                isAttack = false;
+                weaponManager.PlayedEffect = true;
+                //InputManager.SetIsCanInput(true);
+            }
+        }
+        else
+        {
+            curCombo = 0;
+            ani.StopPlayback();
+            ani.SetBool("NextCombo", false);
+            ani.SetBool("AttackEnd", false);
+        }
         ani.SetBool("isAttack", isAttack);
-        //if (ani.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
-        //{
-        //    isAttack = false;
-
-        //    ani.SetInteger("AttackCombo", 0);
-        //    curCombo = 0;
-        //}
-        //ani.SetBool("isAttack", isAttack);
+        ani.SetInteger("AttackCombo", curCombo);
 
 
     }
@@ -200,7 +217,14 @@ public class TestPlayer : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(
      Vector3.right * dir), Time.deltaTime * 24);
             transform.position = new Vector3(transform.position.x, transform.position.y, 0);
-            
+            if(Input.GetKeyDown(InputManager.GetAttackKey()))
+            {
+                //ani.SetBool("isWalk", false);
+                //InputManager.SetIsCanInput(false);
+                isAttack = true;
+                ani.SetBool("isAttack", true);
+                return;
+            }
         }
         if (isAttack||InputManager.GetHorizontal() == 0)
         {
@@ -259,7 +283,7 @@ public class TestPlayer : MonoBehaviour
         }
         if (isFloor)
         {
-            Debug.Log("플레이어가 바닥에 닿아있습니다.");
+            //Debug.Log("플레이어가 바닥에 닿아있습니다.");
             ani.SetBool("isJump", false);
             jumpTime = 0;
             curJump = 0;

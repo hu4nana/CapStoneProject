@@ -8,10 +8,8 @@ public class Weapon2 : BaseWeapon
     public override void Attack()
     {
         TestPlayer testPlayer = Player.GetComponent<TestPlayer>();
-
-        testPlayer.isAttack = true;
-        testPlayer.curCombo++;
-        testPlayer.ani.SetInteger("AttackCombo", (int)testPlayer.curCombo);
+        SetEffectGenerator(testPlayer.curCombo);
+        PlayEffect();
     }
 
     public override void Skill()

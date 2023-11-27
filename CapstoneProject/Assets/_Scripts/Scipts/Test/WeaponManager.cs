@@ -11,8 +11,12 @@ public class WeaponManager : MonoBehaviour
     public List<GameObject> weapons = new List<GameObject>();
     public TestPlayer testPlayer;
     public GameObject leftHand;
-    public float NormalizedTime { get { return weaponObject.
-                GetComponent<BaseWeapon>().NormalizedTime; } }
+    public float Speed { get { return weaponObject.GetComponent<BaseWeapon>().Speed; } }
+    public float AttackEndTime { get { return weaponObject.
+                GetComponent<BaseWeapon>().AttackEndTime; } }
+    public int CurCombo { get { return weaponObject.GetComponent<BaseWeapon>().CurCombo; }
+        set { weaponObject.GetComponent<BaseWeapon>().CurCombo = value; } }
+    public int MaxCombo { get { return weaponObject.GetComponent<BaseWeapon>().MaxCombo; } }
     public float ExitTime
     {
         get { return weaponObject.GetComponent<BaseWeapon>().ExitTime; }}
@@ -73,6 +77,8 @@ public class WeaponManager : MonoBehaviour
             Weapon=weapon.GetComponent<BaseWeapon> ();
             weaponObject.SetActive(true);
             testPlayer.ani.runtimeAnimatorController = Weapon.WeaponAnimator;
+            testPlayer.ani.SetFloat("Speed", Speed);
+            testPlayer.ani.SetFloat("MotionTime", ExitTime);
             //Tester.Instance.animator.runtimeAnimatorController = Weapon.WeaponAnimator;
 
             return;
@@ -86,6 +92,7 @@ public class WeaponManager : MonoBehaviour
                 weaponObject.SetActive(true);
                 Weapon = weapon.GetComponent<BaseWeapon>();
                 testPlayer.ani.runtimeAnimatorController = Weapon.WeaponAnimator;
+                
                 //Tester.Instance.animator.runtimeAnimatorController = Weapon.WeaponAnimator;
                 continue;
             }

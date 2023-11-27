@@ -5,9 +5,9 @@ using UnityEngine;
 
 public  class BaseWeapon : MonoBehaviour
 {
-    public int ComboCount { get; set; }
+    public int CurCombo { get { return curCombo; } set { curCombo = value; } }
     public int MaxCombo { get { return maxCombo; } }
-    public float NormalizedTime { get { return normalizedTime; } }
+    public float AttackEndTime { get { return attackEndTime; } }
     public GameObject Player;
     public RuntimeAnimatorController WeaponAnimator { get { return weaponAnimator; } }
     public string Name { get { return _name; } }
@@ -18,6 +18,7 @@ public  class BaseWeapon : MonoBehaviour
     public CoreType Core { get { return core; } }
     public bool PlayedEffect { get { return playedEffect; } set {  playedEffect = value; } }
     public float ExitTime { get { return exitTime; } }
+    public float Speed { get { return speed; } }
     
     
     [Header("무기 정보")]
@@ -32,7 +33,9 @@ public  class BaseWeapon : MonoBehaviour
     [SerializeField] protected float attackRange;
     [SerializeField] protected float skillCost;
     [SerializeField] protected float exitTime;
-    [SerializeField] protected float normalizedTime;
+    [SerializeField] protected float attackEndTime;
+    [SerializeField] protected float speed;
+    [SerializeField] protected int curCombo;
     [SerializeField] protected int maxCombo;
     [SerializeField] protected CoreType core;
     

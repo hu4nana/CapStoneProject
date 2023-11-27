@@ -10,18 +10,20 @@ public class Weapon1 : BaseWeapon
     public override void Attack()
     {
         TestPlayer testPlayer = Player.GetComponent<TestPlayer>();
-        if(testPlayer.curCombo>=maxCombo)
-        {
-            testPlayer.curCombo = maxCombo;
-        }
-        else
-        {
+        //if(testPlayer.curCombo>=maxCombo)
+        //{
+        //    testPlayer.curCombo = maxCombo;
+        //}
+        //else
+        //{
             
-            SetEffectGenerator(testPlayer.curCombo);
-            PlayEffect();
-            testPlayer.curCombo++;
-        }
-        testPlayer.ani.SetInteger("AttackCombo", testPlayer.curCombo);
+        //    SetEffectGenerator(testPlayer.curCombo);
+        //    PlayEffect();
+        //    testPlayer.curCombo++;
+        //}
+        //testPlayer.ani.SetInteger("AttackCombo", testPlayer.curCombo);
+        SetEffectGenerator(testPlayer.curCombo);
+        PlayEffect();
     }
 
     public override void Skill()
