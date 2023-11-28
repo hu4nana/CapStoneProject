@@ -58,12 +58,21 @@ public  class BaseWeapon : MonoBehaviour
 
     public virtual void Attack()
     {
-        Debug.Log("Virtual Attack...");
         TestPlayer testPlayer = Player.GetComponent<TestPlayer>();
+        //if(testPlayer.curCombo>=maxCombo)
+        //{
+        //    testPlayer.curCombo = maxCombo;
+        //}
+        //else
+        //{
 
-        testPlayer.isAttack = true;
-        testPlayer.curCombo++;
-        //testPlayer.ani.SetInteger("AttackCombo", (int)testPlayer.curCombo);
+        //    SetEffectGenerator(testPlayer.curCombo);
+        //    PlayEffect();
+        //    testPlayer.curCombo++;
+        //}
+        //testPlayer.ani.SetInteger("AttackCombo", testPlayer.curCombo);
+        SetEffectGenerator(testPlayer.curCombo);
+        PlayEffect();
     }
     public void PlayEffect()
     {

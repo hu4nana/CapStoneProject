@@ -57,17 +57,17 @@ public class WeaponManager : MonoBehaviour
             weaponObject.SetActive(false);
         }
     }
-    public void SetGreatSword()
+    public void SetActive(bool value)
     {
-
-    }
-    public void SetDuelBlades()
-    {
-
-    }
-    public void SetHandCannon()
-    {
-
+        if (weaponObject != weapons[2])
+        {
+            weaponObject.SetActive(value);
+            if (weaponObject == weapons[1])
+            {
+                leftHand.SetActive(value);
+                Debug.Log(weaponObject.name + value);
+            }
+        }
     }
     public void SetWeapon(GameObject weapon)
     {
@@ -75,7 +75,8 @@ public class WeaponManager : MonoBehaviour
         {
             weaponObject = weapon;
             Weapon=weapon.GetComponent<BaseWeapon> ();
-            weaponObject.SetActive(true);
+            if (weaponObject == weapons[2])
+                weaponObject.SetActive(true);
             testPlayer.ani.runtimeAnimatorController = Weapon.WeaponAnimator;
             testPlayer.ani.SetFloat("Speed", Speed);
             testPlayer.ani.SetFloat("MotionTime", ExitTime);
@@ -89,7 +90,7 @@ public class WeaponManager : MonoBehaviour
             if (weapons[i].Equals(weapon))
             {
                 weaponObject = weapon;
-                weaponObject.SetActive(true);
+                //weaponObject.SetActive(true);
                 Weapon = weapon.GetComponent<BaseWeapon>();
                 testPlayer.ani.runtimeAnimatorController = Weapon.WeaponAnimator;
                 

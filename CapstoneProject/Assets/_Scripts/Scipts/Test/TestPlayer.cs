@@ -118,7 +118,9 @@ public class TestPlayer : MonoBehaviour
                 //}
                 weaponManager.PlayedEffect = false;
                 weaponManager.WeaponAttack();
+                weaponManager.SetActive(true);
                 curCombo++;
+                ani.SetInteger("AttackCombo", curCombo);
             }
             //ani.SetInteger("AttackCombo", curCombo);
         }
@@ -134,6 +136,7 @@ public class TestPlayer : MonoBehaviour
                 ani.GetFloat("MotionTime"))
             {
                 isAttack = false;
+                ani.SetBool("isAttack", false);
                 weaponManager.PlayedEffect = true;
                 //InputManager.SetIsCanInput(true);
             }
@@ -141,12 +144,13 @@ public class TestPlayer : MonoBehaviour
         else
         {
             curCombo = 0;
+            weaponManager.SetActive(false);
             ani.StopPlayback();
             ani.SetBool("NextCombo", false);
             ani.SetBool("AttackEnd", false);
         }
-        ani.SetBool("isAttack", isAttack);
-        ani.SetInteger("AttackCombo", curCombo);
+        //ani.SetBool("isAttack", isAttack);
+        //ani.SetInteger("AttackCombo", curCombo);
 
 
     }
@@ -209,7 +213,7 @@ public class TestPlayer : MonoBehaviour
     }
     void PlayerMove()
     {
-        if (InputManager.GetIsCanInput()&& (Input.GetKey(KeyCode.LeftArrow)||Input.GetKey(KeyCode.RightArrow)))
+        if (!isAttack&&InputManager.GetIsCanInput()&& (Input.GetKey(KeyCode.LeftArrow)||Input.GetKey(KeyCode.RightArrow)))
         {
             if(InputManager.GetHorizontal()!=0)
                 dir=InputManager.GetHorizontal();

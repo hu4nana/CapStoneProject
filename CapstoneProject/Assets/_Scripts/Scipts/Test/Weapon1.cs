@@ -16,7 +16,7 @@ public class Weapon1 : BaseWeapon
         //}
         //else
         //{
-            
+
         //    SetEffectGenerator(testPlayer.curCombo);
         //    PlayEffect();
         //    testPlayer.curCombo++;
