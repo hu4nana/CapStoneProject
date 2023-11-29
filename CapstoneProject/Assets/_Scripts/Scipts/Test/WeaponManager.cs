@@ -25,6 +25,11 @@ public class WeaponManager : MonoBehaviour
         get { return weaponObject.GetComponent<BaseWeapon>().PlayedEffect; }
         set { weaponObject.GetComponent<BaseWeapon>().PlayedEffect = value; }
     }
+
+    public void PlayEffect()
+    {
+        weaponObject.GetComponent<BaseWeapon>().PlayEffect();
+    }
     //private List<GameObject> weapons = new List<GameObject>();
     public void ChangeWeapon(GameObject weapon)
     {

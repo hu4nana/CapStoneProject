@@ -23,7 +23,7 @@ public class Weapon1 : BaseWeapon
         //}
         //testPlayer.ani.SetInteger("AttackCombo", testPlayer.curCombo);
         SetEffectGenerator(testPlayer.curCombo);
-        PlayEffect();
+        //PlayEffect();
     }
 
     public override void Skill()

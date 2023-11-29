@@ -8,16 +8,18 @@ public class TestMonster : Enemy
     private void Start()
     {
         maxPattern = 3;
+        //curPattern = 0;
     }
 
     private void Update()
     {
 
         PatternSelecter();
-        WallCheck();
-        FloorCheck();
-        // rigid.velocity = Vector3.forward * enemyScriptable.moveSpd;
+        CheckWallAndGroundCollision();
         TestPattern();
+        //WallCheck();
+        //FloorCheck();
+        // rigid.velocity = Vector3.forward * enemyScriptable.moveSpd;
     }
 
     public void TestPattern()
@@ -35,7 +37,7 @@ public class TestMonster : Enemy
                 dir = -1;
             }
             Direction();
-            rigid.velocity = new Vector2(dir * enemyScriptable.moveSpd, rigid.velocity.y);
+            rigid.velocity = new Vector2(dir * speed, rigid.velocity.y);
 
         }
         else
@@ -57,13 +59,13 @@ public class TestMonster : Enemy
                         break;
                 }
 
-                if ((isWall || !isFloor))
+                if (isFloor&&!isWall)
                 {
-                    rigid.velocity = Vector3.zero;
+                    rigid.velocity = new Vector3(dir * speed, rigid.velocity.y, 0);
                 }
                 else
                 {
-                    rigid.velocity = new Vector3(dir * enemyScriptable.moveSpd, rigid.velocity.y, 0);
+                    rigid.velocity = Vector3.zero;
                 }
 
 

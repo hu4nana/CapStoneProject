@@ -9,7 +9,7 @@ public class Weapon2 : BaseWeapon
     {
         TestPlayer testPlayer = Player.GetComponent<TestPlayer>();
         SetEffectGenerator(testPlayer.curCombo);
-        PlayEffect();
+        //PlayEffect();
     }
 
     public override void Skill()

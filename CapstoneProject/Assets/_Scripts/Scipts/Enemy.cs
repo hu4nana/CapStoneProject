@@ -9,7 +9,10 @@ using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class Enemy : MonoBehaviour
 {
-    public StatsScriptableObject enemyScriptable;
+    [SerializeField]
+    protected float speed;
+    [SerializeField]
+    protected float rotateSpd;
 
 
     protected Rigidbody rigid;
@@ -80,7 +83,7 @@ public class Enemy : MonoBehaviour
         if (-90 < transform.rotation.y || transform.rotation.y < 90)
         {
             Quaternion targetRotation = Quaternion.LookRotation(new Vector3(dir, 0, 0));
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * enemyScriptable.rotateSpd);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotateSpd);
         }
     }
 
@@ -117,7 +120,7 @@ public class Enemy : MonoBehaviour
         Direction();
         if (isFloor)
         {
-            rigid.velocity = new Vector2(dir * enemyScriptable.moveSpd * value, rigid.velocity.y);
+            rigid.velocity = new Vector2(dir * speed * value, rigid.velocity.y);
         }
         else
         {
@@ -142,30 +145,62 @@ public class Enemy : MonoBehaviour
     }
 
     // 벽인지 확인하는 함수
-    protected void WallCheck()
-    {
-        if (this.transform.rotation.y>0)
-            isWall =
-            Physics.Raycast(wallCheck.position, Vector2.right, 1.5f, w_Layer);
-        else if(this.transform.rotation.y<0)
-            isWall =
-            Physics.Raycast(wallCheck.position, Vector2.left, 1, w_Layer);
+    //protected void WallCheck()
+    //{
+    //    if (this.transform.rotation.y>0)
+    //        isWall =
+    //        Physics.Raycast(wallCheck.position, Vector2.right, 1.5f, w_Layer);
+    //    else if(this.transform.rotation.y<0)
+    //        isWall =
+    //        Physics.Raycast(wallCheck.position, Vector2.left, 1, w_Layer);
 
-        //if (isWall)
+    //    //if (isWall)
+    //    //{
+    //    //    Debug.Log("WallCheck!");
+    //    //}
+    //}
+
+    //// 바닥인지 확인하는 함수
+    //protected void FloorCheck()
+    //{
+    //    isFloor =
+    //        (Physics.Raycast(floorCheck.position, Vector2.down,
+    //        1, f_Layer));
+    //    //if (isFloor)
+    //    //{
+    //    //    Debug.Log("FloorCheck!");
+    //    //}             
+    //}
+
+    protected void CheckWallAndGroundCollision()
+    {
+        // 플레이어의 위치와 방향을 기반으로 레이캐스트를 발사하여 충돌 검사
+        RaycastHit hitInfo;
+        isFloor = Physics.Raycast(floorCheck.position, Vector3.down, out hitInfo, 0.1f);
+        isWall = Physics.Raycast(wallCheck.position, transform.forward, out hitInfo, 0.5f, w_Layer);
+        if (Physics.Raycast(floorCheck.position, Vector3.down, out hitInfo, 0.1f))
+        {
+            // 바닥과 충돌
+
+        }
+        if (isFloor)
+        {
+            //Debug.Log(gameObject.name+"가 바닥에 닿아있습니다.");
+            //ani.SetBool("isJump", false);
+            //jumpTime = 0;
+            //curJump = 0;
+            //isJump = false;
+        }
+        //else
         //{
-        //    Debug.Log("WallCheck!");
+        //    isJump = true;
+        //    curJump++;
         //}
-    }
 
-    // 바닥인지 확인하는 함수
-    protected void FloorCheck()
-    {
-        isFloor =
-            (Physics.Raycast(floorCheck.position, Vector2.down,
-            1, f_Layer));
-        //if (isFloor)
-        //{
-        //    Debug.Log("FloorCheck!");
-        //}             
+        if (isWall)
+        {
+            // 벽과 충돌
+            Debug.Log(gameObject.name+"가 벽에 닿아있습니다.");
+        }
     }
 }

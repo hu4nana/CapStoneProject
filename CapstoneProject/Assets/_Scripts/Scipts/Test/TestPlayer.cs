@@ -93,7 +93,9 @@ public class TestPlayer : MonoBehaviour
         CheckWallAndGroundCollision();
         //ModeChange();
     }
-
+    public void PlayerEffect() { 
+        weaponManager.PlayEffect();
+    }
     void PlayerAttack()
     {
         if (isFloor&&Input.GetKeyDown(KeyCode.X))
@@ -261,17 +263,20 @@ public class TestPlayer : MonoBehaviour
 
     void WeaponChange()
     {
-        if (Input.GetKeyDown(InputManager.GetGreatSwordModeKey()))//A버튼 입력을 받아서
+        if (!isAttack)
         {
-            weaponManager.ChangeWeapon(weaponManager.weapons[0]);
-        }
-        else if (Input.GetKeyDown(InputManager.GetDualBladeModeKey()))//S버튼을 입력받아서
-        {
-            weaponManager.ChangeWeapon(weaponManager.weapons[1]);
-        }
-        else if (Input.GetKeyDown(InputManager.GetHandCannonKey()))//D버튼을 입력받아서
-        {
-            weaponManager.ChangeWeapon(weaponManager.weapons[2]);
+            if (Input.GetKeyDown(InputManager.GetGreatSwordModeKey()))//A버튼 입력을 받아서
+            {
+                weaponManager.ChangeWeapon(weaponManager.weapons[0]);
+            }
+            else if (Input.GetKeyDown(InputManager.GetDualBladeModeKey()))//S버튼을 입력받아서
+            {
+                weaponManager.ChangeWeapon(weaponManager.weapons[1]);
+            }
+            else if (Input.GetKeyDown(InputManager.GetHandCannonKey()))//D버튼을 입력받아서
+            {
+                weaponManager.ChangeWeapon(weaponManager.weapons[2]);
+            }
         }
     }
     void CheckWallAndGroundCollision()

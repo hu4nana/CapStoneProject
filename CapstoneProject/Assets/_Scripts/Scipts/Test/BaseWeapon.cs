@@ -76,15 +76,16 @@ public  class BaseWeapon : MonoBehaviour
     }
     public void PlayEffect()
     {
-        if(effectParticle != null&&!playedEffect)
-        {
-            effectParticle.Play();
-            playedEffect = true;
-        }
-        else
-        {
-            Debug.Log("effectParticle이 존재하지 않음");
-        }
+        effectParticle.Play();
+        //if (effectParticle != null&&!playedEffect)
+        //{
+        //    effectParticle.Play();
+        //    playedEffect = true;
+        //}
+        //else
+        //{
+        //    Debug.Log("effectParticle이 존재하지 않음");
+        //}
     }
     public void SetEffectGenerator(int curCombo)
     {
