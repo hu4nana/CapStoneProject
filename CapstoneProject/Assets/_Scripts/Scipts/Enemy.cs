@@ -50,6 +50,7 @@ public class Enemy : MonoBehaviour
     private void Awake()
     {
         ani = GetComponentInChildren<Animator>();
+        //ani = GetComponent<Animator>();
         rigid = GetComponent<Rigidbody>();
     }
 
