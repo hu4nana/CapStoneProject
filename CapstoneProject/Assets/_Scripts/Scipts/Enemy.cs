@@ -29,15 +29,18 @@ public class Enemy : MonoBehaviour
 
     protected GameObject target = null;
 
+    
     /*--Bool 작성해야 함 --*/
-    protected bool damaged = false;
-    protected bool dead = false;
-    protected bool isEnd = false;
-    protected bool isTrace = false;
-    protected float traceTimer = 0;
+    public bool isDamaged { get; set; }
+    public bool isDead { get; set; }
+    public bool isEnd { get; set; }
+    public bool isTrace { get; set; }
+    public bool isWall { get;set; }
+    public bool isFloor { get; set; }
+
+    [SerializeField]protected float traceTimer = 0;
     protected float traceTime = 0;
-    protected bool isWall;
-    protected bool isFloor;
+    
     /*--Bool 작성해야 함 --*/
     [SerializeField]
     protected Transform floorCheck;
@@ -53,6 +56,8 @@ public class Enemy : MonoBehaviour
         //ani = GetComponent<Animator>();
         rigid = GetComponent<Rigidbody>();
     }
+
+
 
     // 0 ~ maxPattern까지의 숫자를 랜덤 출력
     protected void PatternSelecter()
@@ -78,6 +83,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
+
     // -1 = 왼쪽, 1 = 오른쪽 , 어디를 바라볼지 정하는 함수
     public void Direction()
     {
@@ -88,7 +94,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    // 적을 쫓는 타이머
+    // 적이 탑지범위에서 나갔을 때 탐지가 종료되는 타이머
     protected void TraceTimer()
     {
         if (isTrace)
@@ -101,7 +107,7 @@ public class Enemy : MonoBehaviour
                 target = null;
             }
         }
-        if (damaged)
+        if (isDamaged)
         {
             traceTime = 0;
         }
@@ -130,49 +136,21 @@ public class Enemy : MonoBehaviour
     }
     public bool GetDead()
     {
-        return dead;
+        return isDead;
     }
     public void SetDead(bool value)
     {
-        dead = value;
+        isDead = value;
     }
     public bool GetDamaged()
     {
-        return damaged;
+        return isDamaged;
     }
     public void SetDamaged(bool value)
     {
-        damaged=value;
+        isDamaged=value;
     }
-
-    // 벽인지 확인하는 함수
-    //protected void WallCheck()
-    //{
-    //    if (this.transform.rotation.y>0)
-    //        isWall =
-    //        Physics.Raycast(wallCheck.position, Vector2.right, 1.5f, w_Layer);
-    //    else if(this.transform.rotation.y<0)
-    //        isWall =
-    //        Physics.Raycast(wallCheck.position, Vector2.left, 1, w_Layer);
-
-    //    //if (isWall)
-    //    //{
-    //    //    Debug.Log("WallCheck!");
-    //    //}
-    //}
-
-    //// 바닥인지 확인하는 함수
-    //protected void FloorCheck()
-    //{
-    //    isFloor =
-    //        (Physics.Raycast(floorCheck.position, Vector2.down,
-    //        1, f_Layer));
-    //    //if (isFloor)
-    //    //{
-    //    //    Debug.Log("FloorCheck!");
-    //    //}             
-    //}
-
+    // 벽인지 바닥인지 Ray를 뽜서 확인하는 함수
     protected void CheckWallAndGroundCollision()
     {
         // 플레이어의 위치와 방향을 기반으로 레이캐스트를 발사하여 충돌 검사

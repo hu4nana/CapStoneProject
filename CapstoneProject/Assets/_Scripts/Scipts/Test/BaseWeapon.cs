@@ -37,11 +37,11 @@ public  class BaseWeapon : MonoBehaviour
     [SerializeField] protected float speed;
     [SerializeField] protected int curCombo;
     [SerializeField] protected int maxCombo;
+    [SerializeField] protected Collider arrackRange;
     [SerializeField] protected CoreType core;
     
 
     protected bool playedEffect;
-
 
 
 

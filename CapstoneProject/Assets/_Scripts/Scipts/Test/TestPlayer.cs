@@ -243,7 +243,7 @@ public class TestPlayer : MonoBehaviour
             isDash = true;
             
             rigid.velocity = Vector3.zero;
-            //gameObject.layer = 0;
+            gameObject.layer = 12;
             rigid.useGravity = false;
             InputManager.SetIsCanInput(false);
         }
@@ -253,6 +253,7 @@ public class TestPlayer : MonoBehaviour
             {
                 //Debug.Log("¤±");
                 InputManager.SetIsCanInput(true);
+                gameObject.layer = 10;
                 isDash = false;
                 rigid.useGravity = true;
             }

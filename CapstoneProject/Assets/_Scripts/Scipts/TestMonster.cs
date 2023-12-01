@@ -42,7 +42,7 @@ public class TestMonster : Enemy
         }
         else
         {
-            if (!damaged)
+            if (!isDamaged)
             {
                 switch (curPattern)
                 {
@@ -82,7 +82,7 @@ public class TestMonster : Enemy
             }
             else if (rigid.velocity.x == 0)
             {
-                damaged = false;
+                isDamaged = false;
             }
         }
         if (rigid.velocity != Vector3.zero)

@@ -13,11 +13,11 @@ TagManager:
   - UI
   - Wall
   - Floor
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Enemy
+  - EnemyAttack
+  - Player
+  - PlayerAttack
+  - Invicible
   - 
   - 
   - 
