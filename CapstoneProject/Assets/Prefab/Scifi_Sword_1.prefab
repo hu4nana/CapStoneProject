@@ -105,7 +105,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 0.034888368, y: 0.004815832, z: 0.2966639}
-  m_Center: {x: 0.0035743627, y: -0.00000012062779, z: 0.02506626}
+  m_Center: {x: 0.0035743627, y: -0.00000012062779, z: 0.06}
 --- !u!114 &6553509229184372785
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118,10 +118,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59420e6ad6e12a5458884c6b67d2be2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Player: {fileID: 0}
   weaponAnimator: {fileID: 0}
+  effectGenerator: {fileID: 0}
+  effectParticle: {fileID: 0}
+  effectPos: []
+  effectRot: []
   _name: GreatSword
   attackDamage: 5
   attackSpeed: 1
-  attackRange: 0
   skillCost: 0
+  exitTime: 0
+  attackEndTime: 0
+  speed: 0
+  curCombo: 0
+  maxCombo: 0
   core: 2

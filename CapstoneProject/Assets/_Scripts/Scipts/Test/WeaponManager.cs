@@ -25,7 +25,6 @@ public class WeaponManager : MonoBehaviour
         get { return weaponObject.GetComponent<BaseWeapon>().PlayedEffect; }
         set { weaponObject.GetComponent<BaseWeapon>().PlayedEffect = value; }
     }
-
     public void PlayEffect()
     {
         weaponObject.GetComponent<BaseWeapon>().PlayEffect();
@@ -70,7 +69,7 @@ public class WeaponManager : MonoBehaviour
             if (weaponObject == weapons[1])
             {
                 leftHand.SetActive(value);
-                Debug.Log(weaponObject.name + value);
+                //Debug.Log(weaponObject.name + value);
             }
         }
     }

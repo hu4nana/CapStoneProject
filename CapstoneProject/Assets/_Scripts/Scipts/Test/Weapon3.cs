@@ -8,19 +8,8 @@ public class Weapon3 : BaseWeapon
     public override void Attack()
     {
         TestPlayer testPlayer = Player.GetComponent<TestPlayer>();
-        //if(testPlayer.curCombo>=maxCombo)
-        //{
-        //    testPlayer.curCombo = maxCombo;
-        //}
-        //else
-        //{
-            
-        //    SetEffectGenerator(testPlayer.curCombo);
-        //    PlayEffect();
-        //    testPlayer.curCombo++;
-        //}
-        //testPlayer.ani.SetInteger("AttackCombo", testPlayer.curCombo);
         SetEffectGenerator(testPlayer.curCombo);
+        Instantiate(bullet, transform.position,Quaternion.Euler(0,testPlayer.transform.rotation.y,0));
         PlayEffect();
     }
 

@@ -93,18 +93,28 @@ public class TestPlayer : MonoBehaviour
         CheckWallAndGroundCollision();
         //ModeChange();
     }
+
     public void PlayerEffect() { 
         weaponManager.PlayEffect();
+    }
+    public void WeaponSetActiveTrue()
+    {
+        weaponManager.SetActive(true);
+    }
+    public void WeaponSetActiveFalse()
+    {
+        weaponManager.SetActive(false);
     }
     void PlayerAttack()
     {
         if (isFloor&&Input.GetKeyDown(KeyCode.X))
         {
-            isAttack = true;
-
             ani.SetBool("isAttack", true);
+            //ani.Play("Attack_0");
+            isAttack = true;
+            
             transform.rotation = Quaternion.Euler(0, 90 * dir, 0);
-
+            Debug.Log("=============================="+curCombo+"==========================================");
             if (curCombo >= weaponManager.MaxCombo)
             {
                 curCombo = weaponManager.MaxCombo;
@@ -112,15 +122,12 @@ public class TestPlayer : MonoBehaviour
             }
             else
             {
-                ani.SetBool("NextCombo", true);
-                Debug.Log(weaponManager.MaxCombo);
                 //if (ani.GetCurrentAnimatorStateInfo(0).IsName("Attack_" + (curCombo-1)))
                 //{
                 //    weaponManager.PlayedEffect = false;
                 //}
-                weaponManager.PlayedEffect = false;
+                ani.SetBool("NextCombo",true);
                 weaponManager.WeaponAttack();
-                weaponManager.SetActive(true);
                 curCombo++;
                 ani.SetInteger("AttackCombo", curCombo);
             }
@@ -139,21 +146,20 @@ public class TestPlayer : MonoBehaviour
             {
                 isAttack = false;
                 ani.SetBool("isAttack", false);
-                weaponManager.PlayedEffect = true;
                 //InputManager.SetIsCanInput(true);
             }
         }
         else
         {
-            curCombo = 0;
             weaponManager.SetActive(false);
-            ani.StopPlayback();
+            curCombo = 0;
+            //ani.StopPlayback();
+            ani.SetInteger("AttackCombo", curCombo);
             ani.SetBool("NextCombo", false);
             ani.SetBool("AttackEnd", false);
         }
         //ani.SetBool("isAttack", isAttack);
         //ani.SetInteger("AttackCombo", curCombo);
-
 
     }
     void PlayerJump()
@@ -308,7 +314,7 @@ public class TestPlayer : MonoBehaviour
         if (Physics.Raycast(transform.position, transform.forward, out hitInfo, 0.5f))
         {
             // 벽과 충돌
-            Debug.Log("플레이어가 벽에 닿아있습니다.");
+            //Debug.Log("플레이어가 벽에 닿아있습니다.");
         }
     }
     public interface IEffect
