@@ -9,8 +9,10 @@ public class Weapon3 : BaseWeapon
     {
         TestPlayer testPlayer = Player.GetComponent<TestPlayer>();
         SetEffectGenerator(testPlayer.curCombo);
-        Instantiate(bullet, transform.position,Quaternion.Euler(0,testPlayer.transform.rotation.y,0));
-        PlayEffect();
+        bullet.transform.localPosition = effectPos[0];
+        bullet.transform.rotation = testPlayer.transform.rotation;
+        Instantiate(bullet);
+        //PlayEffect();
     }
 
     public override void Skill()
