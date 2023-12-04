@@ -58,7 +58,7 @@ public class Manuka_Gun : MonoBehaviour
 
     void G_PlayerMove()
     {
-        if (!g_isAttack && InputManager.GetIsCanInput() && (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow)))
+        if (!g_isAttack && (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow)))
         {
             if (InputManager.GetHorizontal() != 0)
                 g_dir = (int)InputManager.GetHorizontal();
@@ -71,7 +71,7 @@ public class Manuka_Gun : MonoBehaviour
                 //g_ani.SetBool("isWalk", false);
                 //InputManager.SetIsCg_aninput(false);
                 g_isAttack = true;
-                g_ani.SetBool("g_isAttack", true);
+                g_ani.SetBool("isAttack", true);
                 return;
             }
         }
@@ -89,7 +89,7 @@ public class Manuka_Gun : MonoBehaviour
             g_rigid.velocity = Vector3.zero;
             gameObject.layer = 12;
             g_rigid.useGravity = false;
-            InputManager.SetIsCanInput(false);
+            //InputManager.SetIsCanInput(false);
         }
         if (g_ani.GetCurrentAnimatorStateInfo(0).IsName("Dash"))
         {
@@ -97,7 +97,7 @@ public class Manuka_Gun : MonoBehaviour
             if (g_ani.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.9f)
             {
                 //Debug.Log("¤±");
-                InputManager.SetIsCanInput(true);
+                //InputManager.SetIsCanInput(true);
                 gameObject.layer = 10;
                 g_isDash = false;
                 g_rigid.useGravity = true;

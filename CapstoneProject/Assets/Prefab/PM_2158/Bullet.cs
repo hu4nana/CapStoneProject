@@ -55,10 +55,6 @@ public class Bullet : MonoBehaviour
             rigid.velocity= Vector3.zero;
         }
     }
-    private void OnDestroy()
-    {
-        Debug.Log("a");
-    }
 
     private void OnTriggerEnter(Collider other)
     {
