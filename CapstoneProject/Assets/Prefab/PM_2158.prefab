@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8447585436585751015}
   - component: {fileID: 477075868550841256}
   m_Layer: 0
-  m_Name: PM_2158_Shade
+  m_Name: PM_2158
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26,14 +26,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3744534352961295524}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7069834, y: 0, z: 0, w: 0.7072302}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8668702129175365898}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: -89.98, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!137 &8447585436585751015
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 0
@@ -99,9 +99,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7abdc6c97b9f7a8438068a27e100cc6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gunFirePos: {fileID: 8668702129175365898}
-  gunFireEffect: {fileID: 8076600590811146938, guid: 82b7c124153195c45ac337c610205fe1,
+  gunFireTransform: {fileID: 8668702129175365898}
+  gunFireEffect: {fileID: 5883907733758804480, guid: 82b7c124153195c45ac337c610205fe1,
     type: 3}
+  gunProjEffect: {fileID: 6122306613899967545, guid: 5ab2af5d2dcf45c4a98a051d9e4f6f9f,
+    type: 3}
+  gunHitEffect: {fileID: 4057334425147978861, guid: e2034a34195f09e4a84758cdd2682601,
+    type: 3}
+  bullet: {fileID: 7644748924480494098, guid: 6903e4ff43a401d46ba3cd3100865d9d, type: 3}
 --- !u!1 &6843980180322356045
 GameObject:
   m_ObjectHideFlags: 0

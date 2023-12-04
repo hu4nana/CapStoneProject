@@ -29,7 +29,7 @@ public class Bullet : MonoBehaviour
         //Instantiate(hitEffect, transform);
         if (lifeTime<=lifeTimer)
         {
-            rigid.velocity = Vector3.right * speed;
+            rigid.velocity = -transform.up * speed;
             lifeTime += Time.deltaTime;
         }
         else
@@ -44,11 +44,15 @@ public class Bullet : MonoBehaviour
             else
             {
                 deadTime += Time.deltaTime;
-                if (deadTime>=2)
+                if (deadTime>=1)
                 {
                     Destroy(gameObject);
                 }
             }
+        }
+        if (col.enabled == false)
+        {
+            rigid.velocity= Vector3.zero;
         }
     }
     private void OnDestroy()
@@ -59,7 +63,6 @@ public class Bullet : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         col.enabled = false;
-        rigid.velocity = Vector3.zero;
         if (count == 0)
         {
             Instantiate(hitEffect, transform);

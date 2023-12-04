@@ -85,11 +85,11 @@ public class TestPlayer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        PlayerAttack();
         PlayerMove();
         PlayerDash();
         PlayerJump();
         WeaponChange();
+        PlayerWeaponAttack();
         CheckWallAndGroundCollision();
         //ModeChange();
     }
@@ -105,7 +105,7 @@ public class TestPlayer : MonoBehaviour
     {
         weaponManager.SetActive(false);
     }
-    void PlayerAttack()
+    void PlayerWeaponAttack()
     {
         if (isFloor&&Input.GetKeyDown(KeyCode.X))
         {

@@ -21,11 +21,10 @@ public class MP_2158 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.DrawRay(gunFireTransform.position, Vector3.down * 50, Color.red);
-        Attack();
+        Gun_Shoot_Bullet();
     }
 
-    public void Attack()
+    public void Gun_Shoot_Bullet()
     {
         if(Input.GetKeyDown(KeyCode.X))
         {
@@ -35,8 +34,23 @@ public class MP_2158 : MonoBehaviour
                transform.rotation * gunProjEffect.transform.rotation);
             //Instantiate(gunHitEffect, gunFireTransform.position,
             //   transform.rotation * gunHitEffect.transform.rotation);
+
             Instantiate(bullet, gunFireTransform.position,
-               transform.rotation * bullet.transform.rotation);
+               transform.rotation);
+            //bul.GetComponent<Rigidbody>().velocity = transform.right * 10;
         }
+    }
+    public void Gun_Shoot_Bullet(Transform parents)
+    {
+        Instantiate(gunFireEffect, gunFireTransform.position,
+               transform.rotation * gunFireEffect.transform.rotation);
+        Instantiate(gunProjEffect, gunFireTransform.position,
+           transform.rotation * gunProjEffect.transform.rotation);
+        //Instantiate(gunHitEffect, gunFireTransform.position,
+        //   transform.rotation * gunHitEffect.transform.rotation);
+
+        Instantiate(bullet, gunFireTransform.position,
+           parents.rotation);
+        //bul.GetComponent<Rigidbody>().velocity = transform.right * 10;
     }
 }
