@@ -10,24 +10,25 @@ public class SandBag : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        //Debug.Log(other.name + " 충돌함 Laye : " + other.gameObject.layer);
+        Debug.Log(other.name + " 충돌함 Laye : " + other.gameObject.layer);
         if (other.gameObject.layer == 11)
         {
-            BaseWeapon core = other.GetComponent<BaseWeapon>();
+            //BaseWeapon core = other.GetComponent<BaseWeapon>();
+            //DroneManager core=other.GetComponent<DroneManager>();
 
-            switch (core.Core)
-            {
-                case CoreType.Magenta:
-                    Debug.Log(other.name + "'s Core is Magenta // " + core.Core);
-                    break;
-                case CoreType.Yellow:
-                    Debug.Log(other.name + "'s Core is Yellow // " + core.Core);
-                    break;
-                case CoreType.Saian:
-                    Debug.Log(other.name + "'s Core is Sian // " + core.Core);
-                    break;
+            //switch (core.Core)
+            //{
+            //    case CoreType.Magenta:
+            //        Debug.Log(other.name + "'s Core is Magenta // " + core.Core);
+            //        break;
+            //    case CoreType.Yellow:
+            //        Debug.Log(other.name + "'s Core is Yellow // " + core.Core);
+            //        break;
+            //    case CoreType.Saian:
+            //        Debug.Log(other.name + "'s Core is Sian // " + core.Core);
+            //        break;
 
-            }
+            //}
             Debug.Log(other.gameObject.tag);
         }
     }
