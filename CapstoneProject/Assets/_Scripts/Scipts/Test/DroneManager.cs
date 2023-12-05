@@ -6,61 +6,60 @@ using UnityEngine;
 
 public class DroneManager : MonoBehaviour
 {
-    public BaseWeapon Weapon { get; private set; }
     private GameObject weaponObject;
     public List<GameObject> weapons = new List<GameObject>();
     public GameObject FollowingTarget;
-    public TestPlayer testPlayer;
-    
+    public Transform effectGenerator;
+    public List<ParticleSystem> particleSystems = new List<ParticleSystem>();
+
     public float stayTimer;
     float stayTime;
+    int input = 0;
     Animator ani;
     Collider droneCol;
     Collider weaponCol;
     public bool isAttacking { get; set; }
-    //public float Speed { get { return weaponObject.GetComponent<BaseWeapon>().Speed; } }
-    //public float AttackEndTime { get { return weaponObject.
-    //            GetComponent<BaseWeapon>().AttackEndTime; } }
-    //public int CurCombo { get { return weaponObject.GetComponent<BaseWeapon>().CurCombo; }
-    //    set { weaponObject.GetComponent<BaseWeapon>().CurCombo = value; } }
-    //public int MaxCombo { get { return weaponObject.GetComponent<BaseWeapon>().MaxCombo; } }
-    //public float ExitTime
-    //{
-    //    get { return weaponObject.GetComponent<BaseWeapon>().ExitTime; }}
-    public bool PlayedEffect
-    {
-        get { return weaponObject.GetComponent<BaseWeapon>().PlayedEffect; }
-        set { weaponObject.GetComponent<BaseWeapon>().PlayedEffect = value; }
-    }
+    public bool isStandby { get;set; }
 
     private void Awake()
     {
         ani=GetComponent<Animator>();
         droneCol=GetComponent<Collider>();
+        isStandby = true;
     }
     private void Update()
     {
         //DroneMove();
-        if(Input.GetKeyDown(KeyCode.A))
+        if(isStandby)
         {
+            ani.SetBool("isAttack", false);
+            ani.SetBool("LongSword", false);
+            ani.SetBool("Dual", false);
+
+        }
+        if(isStandby&&Input.GetKeyDown(KeyCode.A))
+        {
+            input = 0;
             ChangeWeapon(weapons[0]);
             ani.SetBool("isAttack",true);
             ani.SetBool("LongSword", true);
         }
-        if (Input.GetKeyDown(KeyCode.S))
+        if (isStandby&&Input.GetKeyDown(KeyCode.S))
         {
+            input = 1;
             ChangeWeapon(weapons[1]);
             ani.SetBool("isAttack",true);
             ani.SetBool("Dual", true);
         }
-        if (weaponCol!=null&&weaponCol.enabled == false)
-        {
-            stayTime += Time.deltaTime;
-        }
-        if (stayTime>=stayTimer)
-        {
-            ani.SetBool("isAttack", false);
-        }
+        //if (weaponCol!=null&&weaponCol.enabled == false)
+        //{
+        //    stayTime += Time.deltaTime;
+        //}
+        //if (stayTime>=stayTimer)
+        //{
+        //    ani.SetBool("isAttack", false);
+        //    stayTime = 0;
+        //}
     }
 
     void DroneMove()
@@ -76,33 +75,27 @@ public class DroneManager : MonoBehaviour
     public void AtttackStart()
     {
         weaponObject.SetActive(true);
-        isAttacking = true;
         droneCol.enabled = false;
         weaponCol.enabled = true;
+        isAttacking = true;
+        isStandby = false;
         Debug.Log("DroneAttackTrue");
     }
     public void AttackEnd()
     {
         weaponObject.SetActive(false);
-        isAttacking = false;
         droneCol.enabled = true;
         weaponCol.enabled = false;
+        isAttacking = false;
+        isStandby = true;
         Debug.Log("DroneAttackFalse");
     }
     public void PlayEffect()
     {
-        weaponObject.GetComponent<BaseWeapon>().PlayEffect();
+        particleSystems[input].Play();
         Debug.Log("PlayEffect");
     }
-
-
-
     /* ====================Animator Events==================== */
-
-
-
-
-    //private List<GameObject> weapons = new List<GameObject>();
     public void ChangeWeapon(GameObject weapon)
     {
         for(int i=0; i< weapons.Count; i++)
@@ -114,15 +107,8 @@ public class DroneManager : MonoBehaviour
             else
             {
                 weapons[i].SetActive(false);
-                
-                Weapon = null;
             }
         }
-    }
-    public void WeaponAttack()
-    {
-        weaponObject.GetComponent<BaseWeapon>().Attack();
-        
     }
     public void SetActive(bool value)
     {
@@ -133,25 +119,8 @@ public class DroneManager : MonoBehaviour
     }
     public void SetWeapon(GameObject weapon)
     {
-        if (Weapon == null)
-        {
-            weaponObject = weapon;
-            weaponObject.SetActive(true);
-            weaponCol =weapon.GetComponent<Collider>();
-
-            return;
-        }
-
-        for(int i=0;i<weapons.Count; i++)
-        {
-            if (weapons[i].Equals(weapon))
-            {
-                weaponObject = weapon;
-                weaponObject.SetActive(true);
-                weaponCol = weapon.GetComponent<Collider>();
-                continue;
-            }
-        }
-        
+        weaponObject = weapon;
+        weaponObject.SetActive(true);
+        weaponCol = weapon.GetComponent<Collider>();        
     }
 }
