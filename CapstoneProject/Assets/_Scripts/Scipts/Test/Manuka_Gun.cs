@@ -16,7 +16,7 @@ public class Manuka_Gun : MonoBehaviour
     Animator g_ani;
     Rigidbody g_rigid;
     MP_2158 mp;
-    
+    public int Dir { get { return g_dir; } }
     public bool g_isDash { get; set; }
     public bool g_isAttack { get; set; }
     public bool g_isJump { get; set; }

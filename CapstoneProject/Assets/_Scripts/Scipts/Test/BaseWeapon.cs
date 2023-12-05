@@ -67,7 +67,8 @@ public  class BaseWeapon : MonoBehaviour
     }
     public void PlayEffect()
     {
-        effectParticle.Play();
+        Instantiate(effectParticle);
+        //effectParticle.Play();
         //if (effectParticle != null&&!playedEffect)
         //{
         //    effectParticle.Play();
@@ -80,13 +81,12 @@ public  class BaseWeapon : MonoBehaviour
     }
     public void SetEffectGenerator(int curCombo)
     {
-        TestPlayer testPlayer = Player.GetComponent<TestPlayer>();
+        //TestPlayer testPlayer = Player.GetComponent<TestPlayer>();
         effectGenerator.transform.localPosition= effectPos[curCombo];
         effectGenerator.transform.localRotation = Quaternion.Euler(effectRot[curCombo]);
     }
     public virtual void Skill()
     {
         Debug.Log("Virtual Skill...");
-    }
-    
+    }   
 }
