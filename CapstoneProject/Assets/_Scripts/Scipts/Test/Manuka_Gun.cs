@@ -20,6 +20,7 @@ public class Manuka_Gun : MonoBehaviour
     public bool g_isDash { get; set; }
     public bool g_isAttack { get; set; }
     public bool g_isJump { get; set; }
+    public bool g_isWalk { get; set; }
     bool g_isWall = false;
     bool g_isFloor = false;
     float g_jumpTime = 0;
@@ -43,9 +44,10 @@ public class Manuka_Gun : MonoBehaviour
         G_PlayerDash();
         G_PlayerJump();
         G_CheckWallAndGroundCollision();
-        if(g_isFloor&&Input.GetKeyDown(KeyCode.X))
+        if(!g_isDash&&!g_isJump&&g_isFloor&&Input.GetKeyDown(KeyCode.X))
         {
             transform.rotation = Quaternion.Euler(0, 90 * g_dir, 0);
+            InputManager.SetIsCanInput(false);
             g_ani.SetBool("isAttack", true);
             //if (g_ani.GetCurrentAnimatorStateInfo(0).IsName("Attack_0"))
             //{
@@ -58,29 +60,50 @@ public class Manuka_Gun : MonoBehaviour
 
     void G_PlayerMove()
     {
-        if ((Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow)))
+        if (InputManager.GetIsCanInput()&&((Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow))))
         {
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(
-                Vector3.right * g_dir), Time.deltaTime * 24);
-            if (g_ani.GetBool("isAttack")==true)
-                g_ani.Play("Run_Fast_Loop_RM");
-            g_ani.SetLayerWeight(0, 1);
-            g_ani.SetBool("isAttack", false);
+            g_isWalk = true;
+        }
+        if ((Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.RightArrow)))
+        {
+            g_isWalk = false;
+        }
+        if (InputManager.GetIsCanInput()&&g_isWalk)
+        {
             if (InputManager.GetHorizontal() != 0)
                 g_dir = (int)InputManager.GetHorizontal();
-            g_ani.SetBool("isWalk", true);
-
-            transform.position = new Vector3(transform.position.x, transform.position.y, 0);
-            if (Input.GetKeyDown(InputManager.GetAttackKey()))
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(
+                Vector3.right * g_dir), Time.deltaTime * 24);
+            if (g_isFloor)
             {
-                //g_ani.SetBool("isWalk", false);
-                //InputManager.SetIsCg_aninput(false);
-                g_isAttack = true;
-                g_ani.SetBool("isAttack", true);
-                return;
+                
+                if (g_ani.GetBool("isAttack") == true)
+                {
+                    g_ani.Play("Run_Fast_Loop_RM");
+                    g_ani.SetLayerWeight(0, 1);
+                    g_ani.SetBool("isAttack", false);
+                    g_ani.SetBool("isWalk", true);
+                }
+                else
+                {
+                    g_ani.SetBool("isWalk", true);
+                    if (InputManager.GetIsCanInput() && Input.GetKey(InputManager.GetAttackKey()))
+                    {
+                        g_isAttack = true;
+                        g_ani.SetBool("isAttack", true);
+                        return;
+                    }
+                }
+
+
+                //if (g_isAttack || InputManager.GetHorizontal() == 0)
+                //{
+                //    g_ani.SetBool("isWalk", false);
+                //}
             }
+            transform.position = new Vector3(transform.position.x, transform.position.y, 0);
         }
-        if (g_isAttack || InputManager.GetHorizontal() == 0)
+        else
         {
             g_ani.SetBool("isWalk", false);
         }
@@ -91,25 +114,26 @@ public class Manuka_Gun : MonoBehaviour
         {
             g_ani.SetBool("isAttack", false);
             g_isDash = true;
-
+            g_ani.SetBool("isDash", true);
             g_rigid.velocity = Vector3.zero;
             gameObject.layer = 12;
             g_rigid.useGravity = false;
-            //InputManager.SetIsCanInput(false);
+            InputManager.SetIsCanInput(false);
         }
         if (g_ani.GetCurrentAnimatorStateInfo(0).IsName("Dash"))
         {
 
-            if (g_ani.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.9f)
+            if (g_ani.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.8f)
             {
                 //Debug.Log("¤±");
-                //InputManager.SetIsCanInput(true);
+                InputManager.SetIsCanInput(true);
                 gameObject.layer = 10;
                 g_isDash = false;
                 g_rigid.useGravity = true;
+                g_ani.SetBool("isDash", false);
             }
         }
-        g_ani.SetBool("isDash", g_isDash);
+        
     }
     void G_PlayerJump()
     {
@@ -181,7 +205,16 @@ public class Manuka_Gun : MonoBehaviour
         else
         {
             mp.Gun_Shoot_Bullet();
+
         }
+    }
+    public void IsCanInputTrue()
+    {
+        InputManager.SetIsCanInput(true);
+    }
+    public void isCanInputFalse()
+    {
+        InputManager.SetIsCanInput(false);
     }
     public void MP_2158_AttackEnd()
     {
