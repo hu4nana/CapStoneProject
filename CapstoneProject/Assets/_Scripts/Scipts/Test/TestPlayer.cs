@@ -12,7 +12,6 @@ public class TestPlayer : MonoBehaviour
     [SerializeField] float maxMp;
     public float curHp { get; set; }
     public float curMp { get; set; }
-    ModeType mode = 0;
 
     bool isWall = false;
     bool isFloor = false;

@@ -9703,6 +9703,7 @@ GameObject:
   - component: {fileID: 3773704457594152996}
   - component: {fileID: 8383191803583021617}
   - component: {fileID: 3301034784324808334}
+  - component: {fileID: 6952526141921944191}
   m_Layer: 11
   m_Name: Scifi_Sword_1
   m_TagString: Magenta
@@ -9823,6 +9824,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &6952526141921944191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1214205911028181298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3af53e9bfce26454a91041784e0e7310, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 20
 --- !u!1 &1400094234760968584
 GameObject:
   m_ObjectHideFlags: 0
@@ -24552,7 +24566,6 @@ GameObject:
   - component: {fileID: 1934230187910967593}
   - component: {fileID: 9221510462436069705}
   - component: {fileID: 5951073803150620473}
-  - component: {fileID: 5349349710292332666}
   m_Layer: 11
   m_Name: Scifi_Sword_2 (1)
   m_TagString: Untagged
@@ -24625,41 +24638,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &5349349710292332666
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2248650169757921280}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e8d18b313e26e446876a6c1c74f023b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Player: {fileID: 0}
-  weaponAnimator: {fileID: 22100000, guid: 89f122ea150a56b48ae6776d39ae27dd, type: 2}
-  effectGenerator: {fileID: 0}
-  effectParticle: {fileID: 0}
-  effectPos:
-  - {x: 0, y: 0.8, z: -0.013}
-  - {x: 0, y: 0.8, z: -0.013}
-  - {x: 0, y: 0.8, z: -0.013}
-  - {x: 0, y: 0.6, z: -0.013}
-  effectRot:
-  - {x: 0, y: 0, z: -365}
-  - {x: 0, y: 0, z: -508}
-  - {x: 0, y: 0, z: -328}
-  - {x: 0, y: 0, z: 0}
-  _name: DuelBlades
-  attackDamage: 4
-  skillCost: 0
-  exitTime: 0.7
-  attackEndTime: 0.4
-  speed: 2.25
-  curCombo: 0
-  maxCombo: 4
-  core: 1
 --- !u!1 &2477566879138284987
 GameObject:
   m_ObjectHideFlags: 0
@@ -29598,6 +29576,7 @@ GameObject:
   - component: {fileID: 8475802904740132678}
   - component: {fileID: 2430570564579809974}
   - component: {fileID: 8922758867240671772}
+  - component: {fileID: 7277885521261081082}
   m_Layer: 11
   m_Name: Dual
   m_TagString: Yellow
@@ -29691,6 +29670,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &7277885521261081082
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2620252453114549797}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3af53e9bfce26454a91041784e0e7310, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 10
 --- !u!1 &2704514892908208510
 GameObject:
   m_ObjectHideFlags: 0
@@ -59212,6 +59204,7 @@ GameObject:
   - component: {fileID: 3867299653844332940}
   - component: {fileID: 501230514739000769}
   - component: {fileID: 4705394499410162791}
+  - component: {fileID: 3435637799849454861}
   m_Layer: 10
   m_Name: PlayerDrone
   m_TagString: Untagged
@@ -59280,6 +59273,9 @@ MonoBehaviour:
   particleSystems:
   - {fileID: 3349653845254926026}
   - {fileID: 95121414589624611}
+  audioClip:
+  - {fileID: 8300000, guid: 4b2d4196af9881b46b18b39f7f78f15f, type: 3}
+  - {fileID: 8300000, guid: 980b61aa720be2242bff8dcba06f3571, type: 3}
   stayTimer: 3
 --- !u!65 &4705394499410162791
 BoxCollider:
@@ -59302,6 +59298,102 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 0.7, z: 1.12}
   m_Center: {x: 0, y: 0.04, z: 0}
+--- !u!82 &3435637799849454861
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6146351152360483804}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &7013055751177449760
 GameObject:
   m_ObjectHideFlags: 0
@@ -78902,7 +78994,6 @@ GameObject:
   - component: {fileID: 3572474366892243786}
   - component: {fileID: 5779240538578214610}
   - component: {fileID: 6873508979278856447}
-  - component: {fileID: 637651732079384896}
   m_Layer: 11
   m_Name: Scifi_Sword_2
   m_TagString: Untagged
@@ -78975,41 +79066,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &637651732079384896
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8993116887979511951}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e8d18b313e26e446876a6c1c74f023b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Player: {fileID: 0}
-  weaponAnimator: {fileID: 22100000, guid: 89f122ea150a56b48ae6776d39ae27dd, type: 2}
-  effectGenerator: {fileID: 0}
-  effectParticle: {fileID: 0}
-  effectPos:
-  - {x: 0, y: 0.8, z: -0.013}
-  - {x: 0, y: 0.8, z: -0.013}
-  - {x: 0, y: 0.8, z: -0.013}
-  - {x: 0, y: 0.6, z: -0.013}
-  effectRot:
-  - {x: 0, y: 0, z: -365}
-  - {x: 0, y: 0, z: -508}
-  - {x: 0, y: 0, z: -328}
-  - {x: 0, y: 0, z: 0}
-  _name: DuelBlades
-  attackDamage: 4
-  skillCost: 0
-  exitTime: 0.7
-  attackEndTime: 0.4
-  speed: 2.25
-  curCombo: 0
-  maxCombo: 4
-  core: 1
 --- !u!1 &9111371498117662828
 GameObject:
   m_ObjectHideFlags: 0

@@ -24,7 +24,7 @@ public class Manuka_Gun : MonoBehaviour
     bool g_isFloor = false;
     float g_jumpTime = 0;
     public int g_curHP { get; set; }
-    int g_maxJump = 0;
+    int g_maxJump = 1;
     int g_curJump = 0;
     int g_dir = 1;
     // Start is called before the first frame update
@@ -43,7 +43,7 @@ public class Manuka_Gun : MonoBehaviour
         G_PlayerDash();
         G_PlayerJump();
         G_CheckWallAndGroundCollision();
-        if(Input.GetKeyDown(KeyCode.X))
+        if(g_isFloor&&Input.GetKeyDown(KeyCode.X))
         {
             transform.rotation = Quaternion.Euler(0, 90 * g_dir, 0);
             g_ani.SetBool("isAttack", true);
@@ -58,13 +58,18 @@ public class Manuka_Gun : MonoBehaviour
 
     void G_PlayerMove()
     {
-        if (!g_isAttack && (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow)))
+        if ((Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow)))
         {
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(
+                Vector3.right * g_dir), Time.deltaTime * 24);
+            if (g_ani.GetBool("isAttack")==true)
+                g_ani.Play("Run_Fast_Loop_RM");
+            g_ani.SetLayerWeight(0, 1);
+            g_ani.SetBool("isAttack", false);
             if (InputManager.GetHorizontal() != 0)
                 g_dir = (int)InputManager.GetHorizontal();
             g_ani.SetBool("isWalk", true);
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(
-     Vector3.right * g_dir), Time.deltaTime * 24);
+
             transform.position = new Vector3(transform.position.x, transform.position.y, 0);
             if (Input.GetKeyDown(InputManager.GetAttackKey()))
             {
@@ -84,6 +89,7 @@ public class Manuka_Gun : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.C))
         {
+            g_ani.SetBool("isAttack", false);
             g_isDash = true;
 
             g_rigid.velocity = Vector3.zero;
@@ -140,19 +146,23 @@ public class Manuka_Gun : MonoBehaviour
 
         //}
         Vector3 jumpPow = new Vector3(g_rigid.velocity.x, 6, g_rigid.velocity.z);
-        if (!g_isDash && Input.GetKeyDown(InputManager.GetJumpKey()) && g_curJump <= g_maxJump)
+        if (g_curJump ==0 &&!g_isDash && Input.GetKeyDown(InputManager.GetJumpKey()))
         {
+            g_ani.SetBool("isAttack", false);
             g_rigid.velocity = jumpPow;
+            Debug.Log(g_curJump);
+            g_curJump+=1;
         }
-        if (g_jumpTime <= jumpTimer && !g_isDash && Input.GetKey(InputManager.GetJumpKey()))
+        if (g_curJump < g_maxJump && g_jumpTime <= jumpTimer && !g_isDash && Input.GetKey(InputManager.GetJumpKey()))
         {
             g_rigid.velocity = jumpPow;
             g_jumpTime += Time.deltaTime;
         }
         if (Input.GetKeyUp(InputManager.GetJumpKey()))
         {
-            g_rigid.velocity = g_rigid.velocity;
-            g_jumpTime = 0;
+            //g_rigid.velocity = g_rigid.velocity;
+            //g_jumpTime = 0;
+            g_curJump += 1;
         }
         if (!g_isWall && g_rigid.velocity.y != 0)
         {
@@ -170,7 +180,7 @@ public class Manuka_Gun : MonoBehaviour
         }
         else
         {
-            mp.Gun_Shoot_Bullet(transform);
+            mp.Gun_Shoot_Bullet();
         }
     }
     public void MP_2158_AttackEnd()
@@ -199,7 +209,6 @@ public class Manuka_Gun : MonoBehaviour
         else
         {
             g_isJump = true;
-            g_curJump++;
         }
 
         if (Physics.Raycast(transform.position, transform.forward, out hitInfo, 0.5f))

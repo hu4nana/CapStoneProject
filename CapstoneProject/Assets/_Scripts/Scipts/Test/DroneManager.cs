@@ -12,6 +12,9 @@ public class DroneManager : MonoBehaviour
     public GameObject FollowingTarget;
     public Transform effectGenerator;
     public List<ParticleSystem> particleSystems = new List<ParticleSystem>();
+    public List<AudioClip> audioClip = new List<AudioClip>();
+    
+
     public CoreType Core { get { return core; } }
 
     CoreType core;
@@ -19,6 +22,7 @@ public class DroneManager : MonoBehaviour
     float stayTime;
     int input = 0;
     Animator ani;
+    AudioSource aud;
     Collider droneCol;
     Collider weaponCol;
     public bool isAttacking { get; set; }
@@ -27,6 +31,7 @@ public class DroneManager : MonoBehaviour
     private void Awake()
     {
         ani=GetComponent<Animator>();
+        aud=GetComponent<AudioSource>();
         droneCol=GetComponent<Collider>();
         isStandby = true;
     }
@@ -45,6 +50,7 @@ public class DroneManager : MonoBehaviour
             input = 0;
             core = CoreType.Magenta;
             ChangeWeapon(weapons[0]);
+            aud.clip = audioClip[0];
             ani.SetBool("isAttack",true);
             ani.SetBool("LongSword", true);
         }
@@ -53,6 +59,7 @@ public class DroneManager : MonoBehaviour
             input = 1;
             core = CoreType.Yellow;
             ChangeWeapon(weapons[1]);
+            aud.clip = audioClip[1];
             ani.SetBool("isAttack",true);
             ani.SetBool("Dual", true);
         }
@@ -109,6 +116,7 @@ public class DroneManager : MonoBehaviour
     public void PlayEffect()
     {
         particleSystems[input].Play();
+        aud.Play();
         //Debug.Log("PlayEffect");
     }
     /* ====================Animator Events==================== */
