@@ -121,7 +121,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 22
-  lifeTimer: 0.2
+  g_lifeTimer: 1.5
   hitEffect: {fileID: 4057334425147978861, guid: e2034a34195f09e4a84758cdd2682601,
     type: 3}
 --- !u!54 &-4521468423009192172

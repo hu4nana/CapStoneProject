@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 
-public class Bullet : MonoBehaviour
+public class G_Bullet : MonoBehaviour
 {
     public float speed;
-    public float lifeTimer;
+    public float g_lifeTimer;
     public GameObject hitEffect;
 
-    float lifeTime;
+    float g_lifeTime;
     Rigidbody rigid;
     Collider col;
     int count = 0;
@@ -27,10 +27,10 @@ public class Bullet : MonoBehaviour
     {
         ////ø°≥ ¡ˆ≈∫....?
         //Instantiate(hitEffect, transform);
-        if (lifeTime<=lifeTimer)
+        if (g_lifeTime<=g_lifeTimer)
         {
             rigid.velocity = -transform.up * speed;
-            lifeTime += Time.deltaTime;
+            g_lifeTime += Time.deltaTime;
         }
         else
         {
