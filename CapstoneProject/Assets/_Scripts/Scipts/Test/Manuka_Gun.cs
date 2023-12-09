@@ -60,53 +60,87 @@ public class Manuka_Gun : MonoBehaviour
 
     void G_PlayerMove()
     {
-        if (InputManager.GetIsCanInput()&&((Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow))))
+        //if (InputManager.GetIsCanInput()&&((Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow))))
+        //{
+        //    g_isWalk = true;
+        //}
+        //if ((Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.RightArrow)))
+        //{
+        //    g_isWalk = false;
+        //}
+        //if (InputManager.GetIsCanInput()&&g_isWalk)
+        //{
+        //    if (InputManager.GetHorizontal() != 0)
+        //        g_dir = (int)InputManager.GetHorizontal();
+        //    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(
+        //        Vector3.right * g_dir), Time.deltaTime * 24);
+        //    if (g_isFloor)
+        //    {
+
+        //        if (g_ani.GetBool("isAttack") == true)
+        //        {
+        //            g_ani.Play("Run_Fast_Loop_RM");
+        //            g_ani.SetLayerWeight(0, 1);
+        //            g_ani.SetBool("isAttack", false);
+        //            g_ani.SetBool("isWalk", true);
+        //        }
+        //        else
+        //        {
+        //            g_ani.SetBool("isWalk", true);
+        //            if (InputManager.GetIsCanInput() && Input.GetKey(InputManager.GetAttackKey()))
+        //            {
+        //                g_isAttack = true;
+        //                g_ani.SetBool("isAttack", true);
+        //                return;
+        //            }
+        //        }
+        //    }
+        //    transform.position = new Vector3(transform.position.x, transform.position.y, 0);
+        //}
+        //else
+        //{
+        //    g_ani.SetBool("isWalk", false);
+        //}
+
+        /*============================================빌드된 버전 코드===============================*/
+        if (InputManager.GetIsCanInput() && (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow)))
         {
-            g_isWalk = true;
-        }
-        if ((Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.RightArrow)))
-        {
-            g_isWalk = false;
-        }
-        if (InputManager.GetIsCanInput()&&g_isWalk)
-        {
-            if (InputManager.GetHorizontal() != 0)
-                g_dir = (int)InputManager.GetHorizontal();
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(
                 Vector3.right * g_dir), Time.deltaTime * 24);
+            if (InputManager.GetHorizontal() != 0)
+            {
+                g_dir = (int)InputManager.GetHorizontal();
+            }
+
+
+
             if (g_isFloor)
             {
-                
+                g_ani.SetBool("isWalk", true);
                 if (g_ani.GetBool("isAttack") == true)
                 {
                     g_ani.Play("Run_Fast_Loop_RM");
                     g_ani.SetLayerWeight(0, 1);
                     g_ani.SetBool("isAttack", false);
-                    g_ani.SetBool("isWalk", true);
+                    //g_ani.SetBool("isWalk", true);
                 }
-                else
+                if (Input.GetKeyDown(InputManager.GetAttackKey()))
                 {
-                    g_ani.SetBool("isWalk", true);
-                    if (InputManager.GetIsCanInput() && Input.GetKey(InputManager.GetAttackKey()))
-                    {
-                        g_isAttack = true;
-                        g_ani.SetBool("isAttack", true);
-                        return;
-                    }
+                    //g_ani.SetBool("isWalk", false);
+                    InputManager.SetIsCanInput(false);
+                    g_isAttack = true;
+                    g_ani.SetBool("isAttack", true);
+                    return;
                 }
-
-
-                //if (g_isAttack || InputManager.GetHorizontal() == 0)
-                //{
-                //    g_ani.SetBool("isWalk", false);
-                //}
             }
+
             transform.position = new Vector3(transform.position.x, transform.position.y, 0);
         }
-        else
+        if (InputManager.GetHorizontal() == 0)
         {
             g_ani.SetBool("isWalk", false);
         }
+        /*============================================빌드된 버전 코드===============================*/
     }
     void G_PlayerDash()
     {

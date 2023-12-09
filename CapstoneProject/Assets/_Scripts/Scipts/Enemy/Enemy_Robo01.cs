@@ -16,6 +16,7 @@ public class Enemy_Robo01 : Enemy
     private void Start()
     {
         curHp = maxHp;
+        isEnd = true;
         ani = GetComponent<Animator>();
         rigid = GetComponent<Rigidbody>();
         ani.SetFloat("speedMultiplier", speed);
@@ -28,9 +29,33 @@ public class Enemy_Robo01 : Enemy
     {
         PatternSelecter();
         CheckWallAndGroundCollision();
+        //Direction();
         TestPattern();
-        TraceTimer();
         TraceTarget(speed);
+
+        if (attackTimer <= attackTime)
+        {
+            ani.SetBool("shoot", false);
+            attackTimer += Time.deltaTime;
+        }
+        else
+        {
+            ani.SetBool("shoot", true);
+            var bulletL = Instantiate(bulletPrefab, bulletSpawnPointLeft.position, bulletSpawnPointLeft.rotation);
+            bulletL.GetComponent<Rigidbody>().velocity = bulletSpawnPointLeft.forward * bulletSpeed;
+            var bulletR = Instantiate(bulletPrefab, bulletSpawnPointRight.position, bulletSpawnPointRight.rotation);
+            bulletR.GetComponent<Rigidbody>().velocity = bulletSpawnPointRight.forward * bulletSpeed;
+            //StartDelay();
+            if (ani.GetCurrentAnimatorStateInfo(1).IsName("Armature|ShootX1")&&
+                ani.GetCurrentAnimatorStateInfo(1).normalizedTime >= 1f)
+            {
+                attackTimer = 0;
+            }
+            
+            
+            //ani.SetBool("shoot", false);
+        }
+
         //if (Input.GetKeyDown("e"))
         //{
         //    ani.SetBool("shoot", true);
@@ -77,10 +102,12 @@ public class Enemy_Robo01 : Enemy
                 if (isFloor && !isWall)
                 {
                     rigid.velocity = new Vector3(dir * speed, rigid.velocity.y, 0);
+                    //Debug.Log("움직임 실행중");
                 }
                 else
                 {
-                    rigid.velocity = Vector3.zero;
+                    rigid.velocity = new Vector3(0, rigid.velocity.y, 0);
+                    //Debug.Log("정지 실행중");
                 }
 
 
@@ -101,9 +128,9 @@ public class Enemy_Robo01 : Enemy
             }
         }
         if (rigid.velocity != Vector3.zero)
-            ani.SetBool("Walk Forward", true);
+            ani.SetBool("isWalk", true);
         else
-            ani.SetBool("Walk Forward", false);
+            ani.SetBool("isWalk", false);
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -121,8 +148,8 @@ public class Enemy_Robo01 : Enemy
         if(other.gameObject.layer==10)
         {
             target=other.gameObject;
-            ani.SetBool("shoot", true);
-            StartCoroutine(StartDelay());
+
+            
         }
     }
     private void OnTriggerExit(Collider other)

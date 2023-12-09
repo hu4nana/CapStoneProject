@@ -28,7 +28,13 @@ public class Enemy : MonoBehaviour
     protected float curHp;
     // 패턴의 지속시간
     protected float patternTimer;
+    [SerializeField]
     protected int patternTime;
+
+    // 공격 간격
+    protected float attackTimer;
+    [SerializeField]
+    protected int attackTime;
     // Start is called before the first frame update
 
     protected GameObject target = null;
@@ -63,7 +69,6 @@ public class Enemy : MonoBehaviour
     //}
 
 
-
     // 0 ~ maxPattern까지의 숫자를 랜덤 출력
     protected void PatternSelecter()
     {
@@ -74,7 +79,7 @@ public class Enemy : MonoBehaviour
                 curPattern = Random.Range(0, maxPattern);
                 patternTime = Random.Range(3, 6);
                 isEnd = false;
-                //Debug.Log(curPattern);
+                Debug.Log(curPattern);
             }
             else
             {
@@ -99,17 +104,46 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    // 대상의 x값에 따라 좌, 우로 이동하는 함수
+    protected void TraceTarget(float value)
+    {
+        if (target != null)
+        {
+            isTrace = true;
+            if (target.transform.position.x - transform.position.x > 0)
+            {
+                dir = 1;
+            }
+            else
+            {
+                dir = -1;
+            }
+            Direction();
+            if (isFloor)
+            {
+                rigid.velocity = new Vector2(dir * speed * value, rigid.velocity.y);
+            }
+            else
+            {
+                rigid.velocity = new Vector3(0, rigid.velocity.y, 0);
+            }
+        }
+        TraceTimer();
+    }
+
     // 적이 탑지범위에서 나갔을 때 탐지가 종료되는 타이머
     protected void TraceTimer()
     {
         if (isTrace)
         {
-            isTrace = true;
-            traceTime += Time.deltaTime;
-            if (traceTime >= traceTimer)
+            if (target == null)
             {
-                isTrace= false;
-                target = null;
+                traceTime += Time.deltaTime;
+                if (traceTime >= traceTimer)
+                {
+                    isTrace = false;
+                    target = null;
+                }
             }
         }
         if (isDamaged)
@@ -118,34 +152,18 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    // 대상의 x값에 따라 좌, 우로 이동하는 함수
-    protected void TraceTarget(float value)
-    {
-        if (target.transform.position.x - transform.position.x > 0)
-        {
-            dir = 1;
-        }
-        else
-        {
-            dir = -1;
-        }
-        Direction();
-        if (isFloor)
-        {
-            rigid.velocity = new Vector2(dir * speed * value, rigid.velocity.y);
-        }
-        else
-        {
-            rigid.velocity = Vector2.zero;
-        }
-    }
     // 벽인지 바닥인지 Ray를 뽜서 확인하는 함수
     protected void CheckWallAndGroundCollision()
     {
-        // 플레이어의 위치와 방향을 기반으로 레이캐스트를 발사하여 충돌 검사
+        // 위치와 방향을 기반으로 레이캐스트를 발사하여 충돌 검사
+        RaycastHit hit;
         RaycastHit hitInfo;
-        isFloor = Physics.Raycast(floorCheck.position, Vector3.down, out hitInfo, 0.1f);
-        isWall = Physics.Raycast(wallCheck.position, transform.forward, out hitInfo, 0.5f, w_Layer);
+        isFloor = Physics.Raycast(floorCheck.position, Vector3.down, out hit, 0.1f);
+        isWall = Physics.Raycast(wallCheck.position, transform.forward
+            , out hitInfo, 0.1f);
+        Debug.DrawRay(wallCheck.position, transform.forward ,
+            Color.red, 0.1f);
+        //Debug.Log(wallCheck.transform.forward);
         if (Physics.Raycast(floorCheck.position, Vector3.down, out hitInfo, 0.1f))
         {
             // 바닥과 충돌
@@ -153,22 +171,18 @@ public class Enemy : MonoBehaviour
         }
         if (isFloor)
         {
-            Debug.Log(gameObject.name+"가 바닥에 닿아있습니다.");
+            //Debug.Log(gameObject.name+"가 바닥에 닿아있습니다.");
             //ani.SetBool("isJump", false);
             //jumpTime = 0;
             //curJump = 0;
             //isJump = false;
         }
-        //else
-        //{
-        //    isJump = true;
-        //    curJump++;
-        //}
 
-        if (isWall)
-        {
-            // 벽과 충돌
-            Debug.Log(gameObject.name+"가 벽에 닿아있습니다.");
-        }
+        //if (isWall&& hitInfo.collider.gameObject.layer != 8)
+        //{
+        //    Debug.Log("벽과 충돌함");
+        //    Debug.Log(hitInfo.collider.gameObject.transform.localPosition);
+        //    Debug.Log(hitInfo.collider.gameObject.name + "가 벽에 닿아있습니다.");
+        //}
     }
 }
