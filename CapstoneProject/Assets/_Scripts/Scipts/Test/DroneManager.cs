@@ -7,7 +7,7 @@ using UnityEngine;
 public class DroneManager : MonoBehaviour
 {
     private GameObject weaponObject;
-    public Vector2 offSet;
+    public Vector3 offSet;
     public List<GameObject> weapons = new List<GameObject>();
     public GameObject FollowingTarget;
     public Transform effectGenerator;
@@ -48,6 +48,9 @@ public class DroneManager : MonoBehaviour
         if(isStandby&&Input.GetKeyDown(KeyCode.A))
         {
             input = 0;
+            //transform.position = new Vector3((
+            //FollowingTarget.transform.position.x - offSet.x * FollowingTarget.GetComponent<Manuka_Gun>().g_Dir),
+            //FollowingTarget.transform.position.y + offSet.y, 0);
             core = CoreType.Magenta;
             ChangeWeapon(weapons[0]);
             aud.clip = audioClip[0];
@@ -57,13 +60,35 @@ public class DroneManager : MonoBehaviour
         if (isStandby&&Input.GetKeyDown(KeyCode.S))
         {
             input = 1;
+            //transform.position = new Vector3((
+            //FollowingTarget.transform.position.x + offSet.x * FollowingTarget.GetComponent<Manuka_Gun>().g_Dir),
+            //FollowingTarget.transform.position.y + offSet.y, 0);
             core = CoreType.Yellow;
             ChangeWeapon(weapons[1]);
             aud.clip = audioClip[1];
             ani.SetBool("isAttack",true);
             ani.SetBool("Dual", true);
         }
-        if (weaponCol != null && weaponCol.enabled == false&&isStay==true)
+        if (isStandby && Input.GetKeyDown(KeyCode.D))
+        {
+            isStay = false;
+            transform.position = new Vector3((
+            FollowingTarget.transform.position.x + offSet.x * FollowingTarget.GetComponent<Manuka_Gun>().g_Dir),
+            FollowingTarget.transform.position.y + offSet.y, 0);
+        }
+        DroneColliderController();
+    }
+    void DroneColliderController()
+    {
+        if (isStay)
+        {
+            droneCol.enabled = true;
+        }
+        else
+        {
+            droneCol.enabled = false;
+        }
+        if (weaponCol != null && weaponCol.enabled == false && isStay == true)
         {
             stayTime += Time.deltaTime;
         }
@@ -71,20 +96,23 @@ public class DroneManager : MonoBehaviour
         {
             ani.SetBool("isAttack", false);
             stayTime = 0;
-            isStay= false;
+            isStay = false;
         }
     }
-
     void DroneMove()
     {
         if(isAttacking==false&&isStay==false)
         {
+
+            // 이동 적용
+            transform.position = Vector3.Lerp(transform.position,
+                new Vector3((
+            FollowingTarget.transform.position.x + offSet.x * FollowingTarget.GetComponent<Manuka_Gun>().g_Dir),
+            FollowingTarget.transform.position.y + offSet.y, 0),
+                6f * Time.deltaTime);
             transform.rotation = Quaternion.Euler(transform.rotation.x,
-            FollowingTarget.GetComponent<Manuka_Gun>().Dir * 90, transform.rotation.z);
-            this.transform.position =
-            new Vector3((
-            FollowingTarget.transform.position.x+offSet.x * FollowingTarget.GetComponent<Manuka_Gun>().Dir),
-            FollowingTarget.transform.position.y+offSet.y, 0);
+            FollowingTarget.GetComponent<Manuka_Gun>().g_Dir * 90, transform.rotation.z);
+            //transform.Translate((FollowingTarget.transform.position - transform.position));
         }
 
         

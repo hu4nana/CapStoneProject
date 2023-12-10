@@ -59264,7 +59264,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 763aac8c9f0fe6042bbbe44335eb6e70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offSet: {x: -0.7, y: 0.5}
+  offSet: {x: -0.7, y: 0.5, z: 0}
   weapons:
   - {fileID: 1214205911028181298}
   - {fileID: 2620252453114549797}
@@ -59276,7 +59276,7 @@ MonoBehaviour:
   audioClip:
   - {fileID: 8300000, guid: 4b2d4196af9881b46b18b39f7f78f15f, type: 3}
   - {fileID: 8300000, guid: 980b61aa720be2242bff8dcba06f3571, type: 3}
-  stayTimer: 3
+  stayTimer: 7
 --- !u!65 &4705394499410162791
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -59296,7 +59296,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 0.7, z: 1.12}
+  m_Size: {x: 1, y: 0.7, z: 1.5}
   m_Center: {x: 0, y: 0.04, z: 0}
 --- !u!82 &3435637799849454861
 AudioSource:

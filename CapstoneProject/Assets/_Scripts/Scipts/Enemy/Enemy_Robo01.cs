@@ -11,7 +11,6 @@ public class Enemy_Robo01 : Enemy
     public Transform bulletSpawnPointRight;
     public GameObject bulletPrefab;
     public float bulletSpeed = 5;
-    public float particleDalay = 2;
 
     private void Start()
     {
@@ -29,42 +28,35 @@ public class Enemy_Robo01 : Enemy
     {
         PatternSelecter();
         CheckWallAndGroundCollision();
-        //Direction();
         TestPattern();
         TraceTarget(speed);
-
-        if (attackTimer <= attackTime)
+        if (isTrace)
         {
-            ani.SetBool("shoot", false);
-            attackTimer += Time.deltaTime;
+            ani.SetBool("isWalk", false);
+            ani.SetBool("isTrace", true);
+            if (attackTimer <= attackTime)
+            {
+                ani.SetBool("shoot", false);
+                attackTimer += Time.deltaTime;
+            }
+            else
+            {
+                ani.SetBool("shoot", true);
+                if (ani.GetCurrentAnimatorStateInfo(1).IsName("Armature|ShootX1") &&
+                    ani.GetCurrentAnimatorStateInfo(1).normalizedTime >= 1f)
+                {
+                    attackTimer = 0;
+                }
+            }
         }
         else
         {
-            ani.SetBool("shoot", true);
-            var bulletL = Instantiate(bulletPrefab, bulletSpawnPointLeft.position, bulletSpawnPointLeft.rotation);
-            bulletL.GetComponent<Rigidbody>().velocity = bulletSpawnPointLeft.forward * bulletSpeed;
-            var bulletR = Instantiate(bulletPrefab, bulletSpawnPointRight.position, bulletSpawnPointRight.rotation);
-            bulletR.GetComponent<Rigidbody>().velocity = bulletSpawnPointRight.forward * bulletSpeed;
-            //StartDelay();
-            if (ani.GetCurrentAnimatorStateInfo(1).IsName("Armature|ShootX1")&&
-                ani.GetCurrentAnimatorStateInfo(1).normalizedTime >= 1f)
-            {
-                attackTimer = 0;
-            }
-            
-            
-            //ani.SetBool("shoot", false);
+            ani.SetBool("isTrace", false);
         }
-
-        //if (Input.GetKeyDown("e"))
-        //{
-        //    ani.SetBool("shoot", true);
-        //    StartCoroutine(StartDelay());
-        //}
     }
     public void TestPattern()
     {
-
+        // Target을 인식했을 때의 행동
         if (isTrace && target != null)
         {
 
@@ -77,11 +69,13 @@ public class Enemy_Robo01 : Enemy
                 dir = -1;
             }
             Direction();
-            rigid.velocity = new Vector2(dir * speed, rigid.velocity.y);
-
+            //rigid.velocity = new Vector2(dir * speed, rigid.velocity.y);
+            rigid.velocity = new Vector2(0, rigid.velocity.y);
         }
         else
         {
+            // Target이 없을 때의 행동
+            // 피해를 입었을 때엔 일정시간 행동정지
             if (!isDamaged)
             {
                 switch (curPattern)
@@ -98,7 +92,7 @@ public class Enemy_Robo01 : Enemy
                         Direction();
                         break;
                 }
-
+                // 바닥과 전방의 장애물이 있고없고를 판단하고 움직임
                 if (isFloor && !isWall)
                 {
                     rigid.velocity = new Vector3(dir * speed, rigid.velocity.y, 0);
@@ -106,21 +100,10 @@ public class Enemy_Robo01 : Enemy
                 }
                 else
                 {
+
                     rigid.velocity = new Vector3(0, rigid.velocity.y, 0);
                     //Debug.Log("정지 실행중");
                 }
-
-
-
-                //if ((isWall || !isFloor))
-                //{
-                //    rigid.velocity = Vector2.zero;
-                //}
-                //else
-                //{
-                //    rigid.velocity = new Vector2(-dir * stats.moveSpeed, rigid.velocity.y);
-                //}
-
             }
             else if (rigid.velocity.x == 0)
             {
@@ -131,6 +114,17 @@ public class Enemy_Robo01 : Enemy
             ani.SetBool("isWalk", true);
         else
             ani.SetBool("isWalk", false);
+        //Debug.Log("isFloor is "+isFloor);
+        //Debug.Log("isWall is "+!isWall);
+        
+    }
+
+    public void Enemy_Robo01_Attack()
+    {
+        var bulletL = Instantiate(bulletPrefab, bulletSpawnPointLeft.position, bulletSpawnPointLeft.rotation);
+        bulletL.GetComponent<Rigidbody>().velocity = bulletSpawnPointLeft.forward * bulletSpeed;
+        var bulletR = Instantiate(bulletPrefab, bulletSpawnPointRight.position, bulletSpawnPointRight.rotation);
+        bulletR.GetComponent<Rigidbody>().velocity = bulletSpawnPointRight.forward * bulletSpeed;
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -148,8 +142,6 @@ public class Enemy_Robo01 : Enemy
         if(other.gameObject.layer==10)
         {
             target=other.gameObject;
-
-            
         }
     }
     private void OnTriggerExit(Collider other)
@@ -158,14 +150,5 @@ public class Enemy_Robo01 : Enemy
         {
             target = null;
         }
-    }
-
-    IEnumerator StartDelay()
-    {
-        yield return new WaitForSeconds(particleDalay);
-        var bulletL = Instantiate(bulletPrefab, bulletSpawnPointLeft.position, bulletSpawnPointLeft.rotation);
-        bulletL.GetComponent<Rigidbody>().velocity = bulletSpawnPointLeft.forward * bulletSpeed;
-        var bulletR = Instantiate(bulletPrefab, bulletSpawnPointRight.position, bulletSpawnPointRight.rotation);
-        bulletR.GetComponent<Rigidbody>().velocity = bulletSpawnPointRight.forward * bulletSpeed;
     }
 }

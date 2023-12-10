@@ -22,7 +22,6 @@ public class Enemy : MonoBehaviour
 
     protected int maxPattern;
     protected int curPattern;
-    [SerializeField]
     protected int dir = -1;
 
     protected float curHp;
@@ -41,12 +40,14 @@ public class Enemy : MonoBehaviour
 
     
     /*--Bool 작성해야 함 --*/
+    public float CurHp { get { return curHp; } }
     public bool isDamaged { get; set; }
     public bool isDead { get; set; }
     public bool isEnd { get; set; }
     public bool isTrace { get; set; }
     public bool isWall { get;set; }
     public bool isFloor { get; set; }
+    public bool isPlayer { get; set; }
 
     [SerializeField]protected float traceTimer = 0;
     protected float traceTime = 0;
@@ -57,9 +58,13 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     protected Transform wallCheck;
     [SerializeField]
+    protected Transform playerCheck;
+    [SerializeField]
     protected LayerMask w_Layer;
     [SerializeField]
     protected LayerMask f_Layer;
+    [SerializeField]
+    protected LayerMask p_Layer;
 
     //private void Awake()
     //{
@@ -138,6 +143,7 @@ public class Enemy : MonoBehaviour
         {
             if (target == null)
             {
+                Debug.Log("TraceTimer 작동됨");
                 traceTime += Time.deltaTime;
                 if (traceTime >= traceTimer)
                 {
@@ -152,37 +158,44 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    // 벽인지 바닥인지 Ray를 뽜서 확인하는 함수
+    // 벽인지 바닥인지 Ray를 쏴서 확인하는 함수
     protected void CheckWallAndGroundCollision()
     {
         // 위치와 방향을 기반으로 레이캐스트를 발사하여 충돌 검사
-        RaycastHit hit;
-        RaycastHit hitInfo;
-        isFloor = Physics.Raycast(floorCheck.position, Vector3.down, out hit, 0.1f);
+        RaycastHit isFloorHit;
+        RaycastHit isWallHit;
+        RaycastHit isPlayerHit;
+        isFloor = Physics.Raycast(floorCheck.position, Vector3.down, out isFloorHit, 0.1f);
         isWall = Physics.Raycast(wallCheck.position, transform.forward
-            , out hitInfo, 0.1f);
-        Debug.DrawRay(wallCheck.position, transform.forward ,
-            Color.red, 0.1f);
-        //Debug.Log(wallCheck.transform.forward);
-        if (Physics.Raycast(floorCheck.position, Vector3.down, out hitInfo, 0.1f))
+            , out isWallHit, 0.1f, w_Layer);
+        // 5f는 4칸
+        isPlayer = Physics.Raycast(playerCheck.position, transform.forward
+            , out isPlayerHit, 5f, p_Layer);
+        Debug.DrawRay(playerCheck.position, transform.forward ,
+            Color.red, 5f);
+        if(isPlayer)
         {
-            // 바닥과 충돌
-
+            Debug.Log(gameObject.name + "는 Player를 감지했다.");
+            target = isPlayerHit.collider.gameObject;
+            Debug.Log(target);
         }
-        if (isFloor)
+        else
         {
-            //Debug.Log(gameObject.name+"가 바닥에 닿아있습니다.");
-            //ani.SetBool("isJump", false);
-            //jumpTime = 0;
-            //curJump = 0;
-            //isJump = false;
+            target = null;
+            Debug.Log(target);
         }
+        //if (isFloor && hit.collider.gameObject.layer != 8)
+        //{
+        //    Debug.Log(gameObject.name + "가 바닥에 닿아있습니다.");
+        //    Debug.Log(isFloorHit.collider.gameObject.transform.localPosition);
+        //    Debug.Log(isFloorHit.collider.gameObject.name + "가 바닥에 닿아있습니다.");
+        //}
 
-        //if (isWall&& hitInfo.collider.gameObject.layer != 8)
+        //if (isWall)
         //{
         //    Debug.Log("벽과 충돌함");
-        //    Debug.Log(hitInfo.collider.gameObject.transform.localPosition);
-        //    Debug.Log(hitInfo.collider.gameObject.name + "가 벽에 닿아있습니다.");
+        //    Debug.Log(isWallHit.collider.gameObject.transform.localPosition);
+        //    Debug.Log(isWallHit.collider.gameObject.name + "가 벽에 닿아있습니다.");
         //}
     }
 }
