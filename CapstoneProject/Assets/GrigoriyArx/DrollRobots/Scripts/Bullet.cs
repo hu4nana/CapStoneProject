@@ -27,4 +27,18 @@ public class Bullet : MonoBehaviour
         Destroy(gameObject);
         //Debug.Log("Collision happened");
     }
+    private void OnTriggerEnter(Collider other)
+    {
+        //ContactPoint contact = other.contacts[0];
+        //Quaternion rot = Quaternion.FromToRotation(Vector3.forward, contact.normal); // turn to Normal
+        //Vector3 pos = contact.point;
+
+        //if (HitSplash != null)
+        //{
+        //    var hitVFX = Instantiate(HitSplash, pos, rot);
+        //}
+
+        Destroy(gameObject);
+        //Debug.Log("Collision happened");
+    }
 }

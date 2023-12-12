@@ -29,7 +29,7 @@ public class Enemy_Robo01 : Enemy
         PatternSelecter();
         CheckWallAndGroundCollision();
         TestPattern();
-        TraceTarget(speed);
+        TargetDetecter();
         if (isTrace)
         {
             ani.SetBool("isWalk", false);
@@ -57,7 +57,7 @@ public class Enemy_Robo01 : Enemy
     public void TestPattern()
     {
         // Target을 인식했을 때의 행동
-        if (isTrace && target != null)
+        if (isTrace&&target!=null)
         {
 
             if (target.transform.position.x - transform.position.x > 0)
@@ -70,7 +70,8 @@ public class Enemy_Robo01 : Enemy
             }
             Direction();
             //rigid.velocity = new Vector2(dir * speed, rigid.velocity.y);
-            rigid.velocity = new Vector2(0, rigid.velocity.y);
+            rigid.velocity = new Vector3(0, rigid.velocity.y,0);
+            Debug.Log("추적 실행중");
         }
         else
         {
@@ -130,11 +131,11 @@ public class Enemy_Robo01 : Enemy
     {
         if (other.gameObject.layer == 11)
         {
-            //isDamaged = true;
+            isDamaged = true;
         }
         if (other.gameObject.layer == 10)
         {
-            target = other.gameObject;
+            //target = other.gameObject;
         }
     }
     private void OnTriggerStay(Collider other)

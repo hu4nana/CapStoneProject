@@ -2777,7 +2777,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 39a9be1b79d9af44baba173befe0fa9b, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: 
@@ -2825,6 +2825,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   g_maxHp: 50
+  g_speed: 4
   g_floorCheck: {fileID: 3354040170642703429}
   g_wallCheck: {fileID: 3691894363674224732}
   MP_2158: {fileID: 7506048477539402665}

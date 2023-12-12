@@ -109,12 +109,20 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    // 대상의 x값에 따라 좌, 우로 이동하는 함수
-    protected void TraceTarget(float value)
+    // 목표를 감지하는 함수
+    protected void TargetDetecter()
     {
         if (target != null)
         {
             isTrace = true;
+        }
+        TraceTimer();
+    }
+    // 대상의 x값에 따라 좌, 우로 이동하는 함수
+    protected void TargetTracer(float value)
+    {
+        if (isTrace&&target != null)
+        {
             if (target.transform.position.x - transform.position.x > 0)
             {
                 dir = 1;
@@ -126,14 +134,13 @@ public class Enemy : MonoBehaviour
             Direction();
             if (isFloor)
             {
-                rigid.velocity = new Vector2(dir * speed * value, rigid.velocity.y);
+                rigid.velocity = new Vector3(dir * speed * value, rigid.velocity.y,0);
             }
             else
             {
                 rigid.velocity = new Vector3(0, rigid.velocity.y, 0);
             }
         }
-        TraceTimer();
     }
 
     // 적이 탑지범위에서 나갔을 때 탐지가 종료되는 타이머
@@ -173,7 +180,7 @@ public class Enemy : MonoBehaviour
             , out isPlayerHit, 5f, p_Layer);
         Debug.DrawRay(playerCheck.position, transform.forward ,
             Color.red, 5f);
-        if(isPlayer)
+        if (isPlayer)
         {
             Debug.Log(gameObject.name + "는 Player를 감지했다.");
             target = isPlayerHit.collider.gameObject;
@@ -182,7 +189,7 @@ public class Enemy : MonoBehaviour
         else
         {
             target = null;
-            Debug.Log(target);
+            //Debug.Log(target);
         }
         //if (isFloor && hit.collider.gameObject.layer != 8)
         //{
