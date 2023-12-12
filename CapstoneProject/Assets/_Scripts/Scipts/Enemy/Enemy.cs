@@ -40,7 +40,7 @@ public class Enemy : MonoBehaviour
 
     
     /*--Bool 작성해야 함 --*/
-    public float CurHp { get { return curHp; } }
+    public float CurHp { get { return curHp; }}
     public bool isDamaged { get; set; }
     public bool isDead { get; set; }
     public bool isEnd { get; set; }
@@ -151,18 +151,21 @@ public class Enemy : MonoBehaviour
             if (target == null)
             {
                 Debug.Log("TraceTimer 작동됨");
-                traceTime += Time.deltaTime;
-                if (traceTime >= traceTimer)
+                if (traceTime <= traceTimer)
+                {
+                    traceTime += Time.deltaTime;
+                }
+                else
                 {
                     isTrace = false;
                     target = null;
                 }
             }
         }
-        if (isDamaged)
-        {
-            traceTime = 0;
-        }
+        //if (isDamaged)
+        //{
+        //    traceTime = 0;
+        //}
     }
 
     // 벽인지 바닥인지 Ray를 쏴서 확인하는 함수
@@ -182,9 +185,9 @@ public class Enemy : MonoBehaviour
             Color.red, 5f);
         if (isPlayer)
         {
-            Debug.Log(gameObject.name + "는 Player를 감지했다.");
             target = isPlayerHit.collider.gameObject;
-            Debug.Log(target);
+            //Debug.Log(gameObject.name + "는 Player를 감지했다.");
+            //Debug.Log(target);
         }
         else
         {
@@ -204,5 +207,26 @@ public class Enemy : MonoBehaviour
         //    Debug.Log(isWallHit.collider.gameObject.transform.localPosition);
         //    Debug.Log(isWallHit.collider.gameObject.name + "가 벽에 닿아있습니다.");
         //}
+    }
+
+    // 체력이 0일 때 죽음
+    protected void Dead()
+    {
+        if (curHp <= 0)
+        {
+            ani.SetBool("isDead",true);
+            isDead = true;
+        }
+    }
+    protected void DamagedTimer()
+    {
+        if(isDamaged)
+        {
+            if (ani.GetCurrentAnimatorStateInfo(0).IsName("Damaged")&&
+                ani.GetCurrentAnimatorStateInfo(0).normalizedTime>=0.1f)
+            {
+                isDamaged = false;
+            }
+        }
     }
 }

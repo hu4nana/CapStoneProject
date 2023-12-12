@@ -26,10 +26,19 @@ public class Enemy_Robo01 : Enemy
 
     private void Update()
     {
-        PatternSelecter();
-        CheckWallAndGroundCollision();
-        TestPattern();
-        TargetDetecter();
+        if (!isDead)
+        {
+            PatternSelecter();
+            CheckWallAndGroundCollision();
+            TestPattern();
+            TargetDetecter();
+            Rob01Attack();
+        }
+        Dead();
+    }
+    void Rob01Attack()
+    {
+
         if (isTrace)
         {
             ani.SetBool("isWalk", false);
@@ -71,9 +80,8 @@ public class Enemy_Robo01 : Enemy
             Direction();
             //rigid.velocity = new Vector2(dir * speed, rigid.velocity.y);
             rigid.velocity = new Vector3(0, rigid.velocity.y,0);
-            Debug.Log("추적 실행중");
         }
-        else
+        else if(!isTrace)
         {
             // Target이 없을 때의 행동
             // 피해를 입었을 때엔 일정시간 행동정지
@@ -132,6 +140,14 @@ public class Enemy_Robo01 : Enemy
         if (other.gameObject.layer == 11)
         {
             isDamaged = true;
+            ani.SetTrigger("isDamaged");
+            curHp -= other.GetComponent<PlayerAttack>().Damage;
+            rigid.AddForce(
+                Mathf.RoundToInt(Mathf.Sign(other.gameObject.GetComponentInParent<Transform>().position.x - transform.position.x))*2,
+                1,
+                0,ForceMode.Impulse);
+            Debug.Log(rigid.velocity);
+            Debug.Log(Mathf.RoundToInt(Mathf.Sign(other.gameObject.transform.position.x - transform.position.x)));
         }
         if (other.gameObject.layer == 10)
         {

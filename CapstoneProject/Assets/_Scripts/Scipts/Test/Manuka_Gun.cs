@@ -26,7 +26,7 @@ public class Manuka_Gun : MonoBehaviour
     bool g_isWall = false;
     bool g_isFloor = false;
     float g_jumpTime = 0;
-    public int g_curHP { get; set; }
+    public float g_curHP { get; set; }
     int g_maxJump = 1;
     int g_curJump = 0;
     int g_dir = 1;
@@ -315,6 +315,13 @@ public class Manuka_Gun : MonoBehaviour
         {
             // 벽과 충돌
             //Debug.Log("플레이어가 벽에 닿아있습니다.");
+        }
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.layer == 9)
+        {
+            g_curHP -= other.GetComponent<MonsterAttack>().Damage;
         }
     }
 }
