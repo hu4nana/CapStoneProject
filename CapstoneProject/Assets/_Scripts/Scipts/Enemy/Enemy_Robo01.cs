@@ -139,15 +139,18 @@ public class Enemy_Robo01 : Enemy
     {
         if (other.gameObject.layer == 11)
         {
-            isDamaged = true;
-            ani.SetTrigger("isDamaged");
-            curHp -= other.GetComponent<PlayerAttack>().Damage;
-            rigid.AddForce(
-                Mathf.RoundToInt(Mathf.Sign(other.gameObject.GetComponentInParent<Transform>().position.x - transform.position.x))*2,
-                1,
-                0,ForceMode.Impulse);
-            Debug.Log(rigid.velocity);
-            Debug.Log(Mathf.RoundToInt(Mathf.Sign(other.gameObject.transform.position.x - transform.position.x)));
+            if (gameObject.tag == "Untagged" || (gameObject.tag != "Untagged" && gameObject.tag == other.gameObject.tag))
+            {
+                isDamaged = true;
+                ani.SetTrigger("isDamaged");
+                curHp -= other.GetComponent<PlayerAttack>().Damage;
+                rigid.AddForce(
+                    Mathf.RoundToInt(Mathf.Sign(other.gameObject.GetComponentInParent<Transform>().position.x - transform.position.x)) * 2,
+                    1,
+                    0, ForceMode.Impulse);
+                Debug.Log(rigid.velocity);
+                Debug.Log(Mathf.RoundToInt(Mathf.Sign(other.gameObject.transform.position.x - transform.position.x)));
+            }
         }
         if (other.gameObject.layer == 10)
         {

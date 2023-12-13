@@ -894,7 +894,10 @@ MonoBehaviour:
   rotateSpd: 30
   patternTime: 5
   attackTime: 2
+  deadParticle: {fileID: 868468853075218060, guid: 1088de5662f7a1346b1d36be122c094a,
+    type: 3}
   traceTimer: 1
+  deadTimer: 3
   floorCheck: {fileID: 364655507371332056}
   wallCheck: {fileID: 7186323432978828898}
   playerCheck: {fileID: 2733004582402238187}

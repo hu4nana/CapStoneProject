@@ -37,8 +37,10 @@ public class Enemy : MonoBehaviour
     // Start is called before the first frame update
 
     protected GameObject target = null;
+    [SerializeField]
+    protected GameObject deadParticle;
 
-    
+
     /*--Bool 작성해야 함 --*/
     public float CurHp { get { return curHp; }}
     public bool isDamaged { get; set; }
@@ -50,8 +52,10 @@ public class Enemy : MonoBehaviour
     public bool isPlayer { get; set; }
 
     [SerializeField]protected float traceTimer = 0;
+    [SerializeField] protected float deadTimer = 0;
     protected float traceTime = 0;
-    
+    protected float deadTime = 0;
+    protected bool isPlayedDead = false;
     /*--Bool 작성해야 함 --*/
     [SerializeField]
     protected Transform floorCheck;
@@ -216,6 +220,26 @@ public class Enemy : MonoBehaviour
         {
             ani.SetBool("isDead",true);
             isDead = true;
+        }
+        if(isDead)
+        {
+            if(ani.GetCurrentAnimatorStateInfo(0).IsName("Death")&&
+                ani.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
+            {
+                if (!isPlayedDead)
+                {
+                    Instantiate(deadParticle, transform);
+                    isPlayedDead = true;
+                }
+                GetComponentInChildren<SkinnedMeshRenderer>().enabled = false;
+                gameObject.layer = 12;
+            }
+            deadTime += Time.deltaTime;
+            if (deadTime >= deadTimer)
+            {
+                Destroy(gameObject);
+            }
+           
         }
     }
     protected void DamagedTimer()
