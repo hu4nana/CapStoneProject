@@ -33,7 +33,7 @@ public class Manuka_Gun : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        g_ani= GetComponent<Animator>();
+        g_ani= GetComponentInChildren<Animator>();
         g_rigid = GetComponent<Rigidbody>();
         mp=MP_2158.GetComponent<MP_2158>();
         g_curHP = g_maxHp;

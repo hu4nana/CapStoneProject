@@ -1576,7 +1576,7 @@ CapsuleCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.15
   m_Height: 1.28
@@ -11065,10 +11065,10 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.3, y: 1.28, z: 0.25}
-  m_Center: {x: 0, y: 0.642, z: 0.02}
+  m_Size: {x: 0.3, y: 1.2, z: 0.25}
+  m_Center: {x: 0, y: 0.6, z: 0.02}
 --- !u!1 &5438080181101916094
 GameObject:
   m_ObjectHideFlags: 0
@@ -12239,8 +12239,8 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2122503006886728569}
   m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 794c44dd2bf8d28419a7953d5a7d228e, type: 3}
-  m_Controller: {fileID: 9100000, guid: 39a9be1b79d9af44baba173befe0fa9b, type: 2}
+  m_Avatar: {fileID: 9000000, guid: b00ba7e8cef1d1741a98e624e40c379c, type: 2}
+  m_Controller: {fileID: 9100000, guid: ecc655b56d92f5a4d9e5ce49cb8cf395, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
