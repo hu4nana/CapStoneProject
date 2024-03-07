@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Searcher.SearcherWindow.Alignment;
 
 
 // Å° ÇÒ´ç
@@ -61,11 +60,6 @@ public static class InputManager
     {
         return KeyCode.X;
     }
-    public static KeyCode GetSkillKey()
-    {
-        return KeyCode.V;
-    }
-
     public static KeyCode GetDashKey()
     {
         return KeyCode.C;
@@ -74,16 +68,26 @@ public static class InputManager
     {
         return KeyCode.Z;
     }
+    public static KeyCode GetSkillKey()
+    {
+
+        return KeyCode.V;
+    }
     public static KeyCode GetGreatSwordModeKey()
     {
+
         return KeyCode.A;
     }
+
     public static KeyCode GetDualBladeModeKey()
     {
+
         return KeyCode.S;
     }
+
     public static KeyCode GetHandCannonKey()
     {
+
         return KeyCode.D;
     }
 }

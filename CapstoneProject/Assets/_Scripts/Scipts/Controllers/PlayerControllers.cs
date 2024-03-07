@@ -1,18 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
-using static UnityEngine.Rendering.DebugUI;
 
 // Players의 기능
 public class PlayerControllers : MonoBehaviour
 {
-    ModeManager modeManager;//모드매니저 객체
-    ModeBase modeA;
-    ModeBase modeB;
-    ModeBase modeC;
-
-
+    
     public StatsScriptableObject playerScriptable;
 
     int dir=1;
@@ -37,24 +30,27 @@ public class PlayerControllers : MonoBehaviour
     bool atkDown = false;
 
     /*=========Attack함수 제작 중1==========*/
-
+    bool combo = false;
+    float comboTime = 0;
+    float comboTimer = 3;
     /*=========Attack함수 제작 중1==========*/
 
-
+    /*=========Jump=========*/
     float jumpPressTimer = 0.2f;
     float jumpPressTime = 0;
     bool jump = false;
+
+    float jumpStartPos;
+    float jumpEndPos = 3.5f;
+    /*=========Jump=========*/
+
+
     // Start is called before the first frame update
     void Start()
     {
         rigid= GetComponent<Rigidbody>();
         ani = GetComponentInChildren<Animator>();
-
-        modeManager = GetComponent<ModeManager>();//modeManager에 컴포넌트를 받아와서 초기화
-        modeA = new GreatSwordMode();
-        modeB = new DuelBladeMode();
-        modeC = new HandCannonMode();
-
+        
     }
 
     // Update is called once per frame
@@ -63,19 +59,12 @@ public class PlayerControllers : MonoBehaviour
         if (InputManager.GetIsCanInput())
         {
             PlayerJump();
+            
         }
-        //Invoke("ModeChange",modeManager.GetModeDelayTime()); //모드변경 함수
-        ModeChange();
+        
         PlayerDash();
+        
 
-        if (Input.GetKeyDown(InputManager.GetAttackKey())) // 공격 입력체크
-        {
-            modeManager.Attack();//모드에 따른 공격 실행
-        }
-        if (Input.GetKeyDown(InputManager.GetSkillKey()))// 스킬 입력 체크
-        {
-            modeManager.UseSkill();//모드에 따른 스킬 실행
-        }
     }
     private void FixedUpdate()
     {
@@ -108,7 +97,28 @@ public class PlayerControllers : MonoBehaviour
     /*=========Attack함수 제작 중1==========*/
     void Attack()
     {
-
+        if (Input.GetKeyDown(InputManager.GetAttackKey()))
+        {
+            combo = true;
+            comboTime = 0;
+            Debug.Log("combo is True Timer has ticking");
+        }
+        if (combo == true)
+        {
+            comboTime += Time.deltaTime;
+            Debug.Log(comboTime);
+            if (comboTime >= comboTimer ||
+                (Input.GetKeyDown(InputManager.GetDashKey())
+                || Input.GetKeyDown(InputManager.GetJumpKey())
+                || InputManager.GetHorizontal() == 1))
+            {
+                combo = false;
+            }
+        }
+        if (combo == false)
+        {
+            Debug.Log("Combo is End");
+        }
     }
     /*=========Attack함수 제작 중1==========*/
 
@@ -127,6 +137,7 @@ public class PlayerControllers : MonoBehaviour
 
 
     // 플레이어 캐릭터가 바라보는 방향
+    // dir = 1 right, dir = -1 left
     void PlayerDirection()
     {
         // 1 == right, -1 == left
@@ -142,12 +153,24 @@ public class PlayerControllers : MonoBehaviour
         //}
 
         // 방법 2 ( 키 입력된 Vector3값에 따라 바라봄 )
-        if(InputManager.GetHorizontal()!=0)
+        if (InputManager.GetHorizontal() != 0)
         {
             Quaternion targetRotation = Quaternion.LookRotation(
-                Vector3.left*InputManager.GetHorizontal());
+                Vector3.left * InputManager.GetHorizontal());
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * playerScriptable.rotateSpd);
-            dir=(int)InputManager.GetHorizontal();
+            dir = (int)InputManager.GetHorizontal();
+            ani.SetBool("isWalk", true);
+        }
+        else
+        {
+            ani.SetBool("isWalk", false);
+        }
+
+        if (InputManager.GetHorizontal() !=0)
+        {
+            dir = (int)InputManager.GetHorizontal();
+            Debug.Log(dir);
+            ani.SetInteger("dir", -dir);
             ani.SetBool("isWalk", true);
         }
         else
@@ -177,11 +200,9 @@ public class PlayerControllers : MonoBehaviour
             rigid.useGravity = false;
             dashTime = 0;
             //rigid.velocity = transform.forward * 3;
-            rigid.velocity = new Vector2(dir * 7,0);
+            //rigid.velocity = new Vector2(dir * playerScriptable.,0);
             curdashCount++;
-            Debug.Log("DashStart");
-            Debug.Log(dash);
-            Debug.Log(rigid.velocity);
+
         }
         if (dash)
         {
@@ -199,67 +220,87 @@ public class PlayerControllers : MonoBehaviour
                 Debug.Log("===================");
             }
         }
-        else
-        {
-
-        }
     }
     void PlayerJump()
     {
-        if (!jump &&
-            curjumpCount < maxJumpCount && 
-            Input.GetKey(KeyCode.V))
-        {
-            jumpPressTime += Time.deltaTime;
-        }
-        if (jumpPressTime >= jumpPressTimer)
-        {
-            jumpPressTime = 1;
-            if (curjumpCount < maxJumpCount)
-            {
-                jump = true;
-                curjumpCount++;
-                //rigid.velocity = Vector2.up * 0;
-                rigid.velocity = Vector2.up * 7;
-                Debug.Log("높은 점프");
-                jumpPressTime = 0;
-            }
-        }
-        if (Input.GetKeyUp(KeyCode.V))
-        {
-            if (jump)
-            {
-                jumpPressTime = 0;
-                jump = false;
-            }
-            else if (curjumpCount < maxJumpCount)
-                {
-                Debug.Log(jumpPressTime);
-                curjumpCount++;
-                //rigid.velocity = Vector2.up * 0;
-                rigid.velocity = Vector2.up * 5;
-                jumpPressTime = 0;
-                jump = false;
-                Debug.Log("낮은 점프");
-            }
-        }
-    }
-    void ModeChange()//모드변경 메서드
-    {
-        if (Input.GetKeyDown(InputManager.GetGreatSwordModeKey()))//A버튼 입력을 받아서
-        {
-            modeManager.SetMode(modeA); // 대검모드로 변환
-        }
-        else if (Input.GetKeyDown(InputManager.GetDualBladeModeKey()))//S버튼을 입력받아서
-        {
-            modeManager.SetMode(modeB);//쌍검모드로 전환
-        }
-        else if (Input.GetKeyDown(InputManager.GetHandCannonKey()))//D버튼을 입력받아서
-        {
-            modeManager.SetMode(modeC);//총모드로 변환
-        }
-    }
+        // Type 1
+        //if (!jump &&
+        //    curjumpCount < maxJumpCount &&
+        //    Input.GetKey(KeyCode.V))
+        //{
+        //    jumpPressTime += Time.deltaTime;
+        //}
+        //if (jumpPressTime >= jumpPressTimer)
+        //{
+        //    jumpPressTime = 1;
+        //    if (curjumpCount < maxJumpCount)
+        //    {
+        //        jump = true;
+        //        curjumpCount++;
+        //        //rigid.velocity = Vector2.up * 0;
+        //        rigid.velocity = Vector2.up * playerScriptable.maxJumpPow;
+        //        Debug.Log("높은 점프");
+        //        jumpPressTime = 0;
+        //    }
+        //}
+        //if (Input.GetKeyUp(KeyCode.V))
+        //{
+        //    if (jump)
+        //    {
+        //        jumpPressTime = 0;
+        //        jump = false;
+        //    }
+        //    else if (curjumpCount < maxJumpCount)
+        //    {
+        //        Debug.Log(jumpPressTime);
+        //        curjumpCount++;
+        //        //rigid.velocity = Vector2.up * 0;
+        //        rigid.velocity = Vector2.up * playerScriptable.minJumpPow;
+        //        jumpPressTime = 0;
+        //        jump = false;
+        //        Debug.Log("낮은 점프");
+        //    }
+        //}
 
+        // Type2
+        //if (!jump &&
+        //    curjumpCount < maxJumpCount &&
+        //    Input.GetKey(KeyCode.V))
+        //{
+        //    jumpPressTime += Time.deltaTime;
+
+        //    if (jumpPressTime <= jumpPressTimer)
+        //    {
+        //        jump = true;
+        //    }
+        //    else
+        //    {
+        //        jump = false;
+        //    }
+
+        //}
+        //if (Input.GetKeyUp(KeyCode.V))
+        //{
+        //    jump = false;
+        //}
+        //if(jump)
+        //{
+        //    rigid.velocity = Vector2.up * 10;
+        //}
+        //if(Input.GetKeyUp(KeyCode.V))
+        //{
+        //    rigid.velocity = Vector2.up * 0;
+        //    jumpPressTime = 0;
+        //}
+
+        //Type 3
+        if((!jump &&
+            curjumpCount < maxJumpCount &&
+            Input.GetKey(KeyCode.V))){
+            
+        }
+
+    }
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.layer == 7)

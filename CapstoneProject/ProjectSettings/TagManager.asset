@@ -5,6 +5,11 @@ TagManager:
   serializedVersion: 2
   tags:
   - Core
+  - Magenta
+  - Sian
+  - Yellow
+  - Obstacle
+  - UI
   layers:
   - Default
   - TransparentFX
@@ -15,12 +20,12 @@ TagManager:
   - Wall
   - Floor
   - Enemy
-  - Core
+  - EnemyAttack
   - Player
-  - 
-  - 
-  - 
-  - 
+  - PlayerAttack
+  - Invicible
+  - Monster
+  - Core
   - 
   - 
   - 

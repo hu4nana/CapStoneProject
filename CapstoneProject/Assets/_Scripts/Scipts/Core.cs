@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class Core : MonoBehaviour
 {
-    int cur_Core_Hp; // 현재 체력
-    int max_Core_Hp = 100;//최대체력
+    float cur_Core_Hp; // 현재 체력
+    float max_Core_Hp = 100;//최대체력
 
-    int player_Damaged_Value = 0;//플레이어가 가하는 데미지 저장
+    float player_Damaged_Value = 0;//플레이어가 가하는 데미지 저장
 
     bool isCoreAlive = true; // 코어살아있는지 체크
 
@@ -55,9 +55,16 @@ public class Core : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            playerType = collision.gameObject.GetComponent<ModeManager>().GetCoreType();
-            player_Damaged_Value = collision.gameObject.GetComponent<ModeManager>().GetAttackDamage();
-            Core_Damaged(playerType);
+            //playerType = collision.gameObject.GetComponent<ModeManager>().GetCoreType();
+            PlayerAttack pa = collision.gameObject.GetComponent<PlayerAttack>();
+
+            if (pa != null)
+            {
+                player_Damaged_Value = pa.Damage;
+
+                Core_Damaged();
+            }
+
         }
     }
 
@@ -71,18 +78,33 @@ public class Core : MonoBehaviour
 
 
     }
-    private void Core_Damaged(CoreType type)//코어데미지입기
+    //private void Core_Damaged(CoreType type)//코어데미지입기
+    //{
+    //    if (isCoreAlive)
+    //    {
+    //        if (coreType == type)
+    //        {
+    //            cur_Core_Hp -= 2 * player_Damaged_Value;
+    //        }
+    //        else
+    //        {
+    //            cur_Core_Hp -= player_Damaged_Value;
+    //        }
+    //        if (cur_Core_Hp < 0)
+    //        {
+    //            SetCoreAlive(false);
+    //            CoreBreak();
+    //        }
+    //        Debug.Log($"현재 코어의 체력은 {cur_Core_Hp}입니다.");
+    //    }
+
+    //}
+    private void Core_Damaged()//코어데미지입기
     {
         if (isCoreAlive)
         {
-            if (coreType == type)
-            {
-                cur_Core_Hp -= 2 * player_Damaged_Value;
-            }
-            else
-            {
-                cur_Core_Hp -= player_Damaged_Value;
-            }
+            cur_Core_Hp -= player_Damaged_Value;
+            
             if (cur_Core_Hp < 0)
             {
                 SetCoreAlive(false);
@@ -92,6 +114,8 @@ public class Core : MonoBehaviour
         }
 
     }
+
+
     public void Set_CoreType(CoreType type)//코어 타입 세팅
     {
         coreType = type;
@@ -115,7 +139,7 @@ public class Core : MonoBehaviour
     {
         return isCoreAlive;
     }
-    public int GetCurCoreHp()//현재 코어의 HP반환
+    public float GetCurCoreHp()//현재 코어의 HP반환
     {
         return cur_Core_Hp;
     }
